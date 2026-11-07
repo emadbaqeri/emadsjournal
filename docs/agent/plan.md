@@ -32,3 +32,11 @@ Phases follow the Build Partner handover, one reviewable chunk at a time.
 
 - Phase 3 adds thin `/posts/[...slug]` pages so RSS links resolve and production builds can omit drafts. Designed PostLayout variants still land in Phase 4.
 - `getFeedPosts()` always drops drafts (RSS, `/posts` list). `getPosts()` includes drafts only when `import.meta.env.PROD` is false, so local `astro dev` can preview them.
+
+- Phase 4 home title is the designed page title “Notes from learning in public”; the lead is the first sentence only (“Series, TILs, essays and build logs in one feed.”).
+- Build-log cards and headers use `publishedAt` as the started date and omit repo, status, and entry-count (not in the Zod schema).
+- Series/Books layout is MDX components (`BookCard`, `ReadingLogEntry`, `ChapterNote`). Current fixtures use the Track `SeriesLayout`; there is no series `kind` field.
+- Featured/current series is the ongoing series whose latest published part is newest.
+- Home and section filters are a bundled Astro script (matching ThemeToggle), not React. That matches the `client:idle` intent.
+- Layout column measures live in `src/styles/layout.css`, same idea as the 1024px desktop breakpoint.
+- `/algorithms` waits for Phase 5.

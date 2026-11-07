@@ -1,0 +1,17 @@
+---
+import styles from './BookCard.module.css';
+
+interface Props {
+  title: string;
+  author: string;
+  status: 'reading' | 'done';
+}
+
+const { title, author, status } = Astro.props;
+---
+
+<article class={styles.card} data-status={status}>
+  <p class:list={['text-mono-eyebrow', styles.status]}>{status}</p>
+  <h3 class:list={['text-heading-h3', styles.title]}>{title}</h3>
+  <p class:list={['text-body-small', styles.author]}>{author}</p>
+</article>

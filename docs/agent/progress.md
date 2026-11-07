@@ -38,3 +38,17 @@
 - `src/lib/content.ts` sorts by `publishedAt` descending and filters drafts. `/rss.xml` lists published posts only.
 - Thin post pages exist so production `npm run build` can prove the draft has no HTML page and is absent from RSS and the sitemap.
 - `z` is imported from `astro/zod` (Astro 7 deprecates `z` on `astro:content`). Production build: 0 errors, 0 warnings, 0 hints. Draft title “Fixture draft: unpublished notes” is absent from `dist/rss.xml`, the sitemap, and `dist/posts/`.
+
+## Phase 4
+
+- Status: complete pending review
+- Designed templates and the home feed from Figma file `EZlPgKhKhlL4g3AJOuDPBp` (PostCard `50:253`, PageIntro `20:50`, Post Type Label `48:26`, Tag `1:508`, home `52:543`).
+- Layout measures recorded in `src/styles/layout.css`: `--column-article: 680px`, `--column-main: 718px`, `--column-aside: 400px`.
+- `PostLayout` variants for `series-post`, `til`, `essay`, and `build-log`. `SeriesLayout` is the Track variant (fixture series have no books kind). `BookCard`, `ReadingLogEntry`, and `ChapterNote` are available as MDX components.
+- `PageLayout` is used by `/about`. The home feed is static `PostCard`s with a bundled filter script (Type AND Track via `?type=` and `?track=`). Without JS, all cards stay visible and chips are plain links.
+- Section indexes: `/posts` (tag filter), `/tils` `/essays` `/build-logs` (track + topic, grouped by month), `/series` (track filter), `/series/[slug]`, `/track/[track]` (home feed with that track preselected).
+- Build-log cards and headers use `publishedAt` as the started date. The schema has no repo, status, or entry-count fields, so those are omitted rather than invented.
+- Featured series on the home aside is the ongoing series whose latest published part is newest. Published series parts always link; progress marks the current part (or the last part on the series page).
+- MDX components passed through `<Content components={…} />`: Callout, Footnote, Figure, CodeBlock, RunnableCodeBlock (static; worker playground is Phase 6), DemoFrame (conceptual before/after strings), BuildLogEntry, and the book components.
+- Series progress rail uses flex segments, no inline `style` widths (CSP-safe).
+- `/algorithms` is not added in this phase.

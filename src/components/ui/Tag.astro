@@ -1,0 +1,43 @@
+---
+import styles from './Tag.module.css';
+
+interface Props {
+  kind?: 'default' | 'accent' | 'outline' | 'terminal';
+  href?: string;
+  showHash?: boolean;
+  selected?: boolean;
+  filterKey?: string;
+  filterValue?: string;
+}
+
+const {
+  kind = 'default',
+  href,
+  showHash = true,
+  selected = false,
+  filterKey,
+  filterValue,
+} = Astro.props;
+const className = [styles.tag, 'text-mono-label', styles[kind] ?? styles.default].join(' ');
+---
+
+{
+  href ? (
+    <a
+      class={className}
+      href={href}
+      data-filter-link
+      data-filter-key={filterKey}
+      data-filter-value={filterValue}
+      data-selected={selected ? 'true' : 'false'}
+    >
+      {showHash && <span class={styles.hash} aria-hidden="true">#</span>}
+      <span><slot /></span>
+    </a>
+  ) : (
+    <span class={className}>
+      {showHash && <span class={styles.hash} aria-hidden="true">#</span>}
+      <span><slot /></span>
+    </span>
+  )
+}

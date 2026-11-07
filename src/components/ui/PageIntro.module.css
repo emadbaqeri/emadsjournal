@@ -1,0 +1,21 @@
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: var(--column-article);
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--color-accent-default);
+}
+
+.title {
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+.lead {
+  margin: 0;
+  color: var(--color-text-secondary);
+}

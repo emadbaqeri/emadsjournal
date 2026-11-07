@@ -1,0 +1,46 @@
+---
+import { render } from 'astro:content';
+import SeriesLayout from '../../layouts/SeriesLayout.astro';
+import BookCard from '../../components/ui/BookCard.astro';
+import ReadingLogEntry from '../../components/ui/ReadingLogEntry.astro';
+import ChapterNote from '../../components/ui/ChapterNote.astro';
+import Callout from '../../components/ui/Callout.astro';
+import {
+  getSeriesEntries,
+  getPostsInSeries,
+  type SeriesEntry,
+  type Post,
+} from '../../lib/content';
+
+export async function getStaticPaths() {
+  const entries = await getSeriesEntries();
+  return Promise.all(
+    entries.map(async (series) => ({
+      params: { slug: series.id },
+      props: {
+        series,
+        parts: await getPostsInSeries(series.id),
+      },
+    })),
+  );
+}
+
+interface Props {
+  series: SeriesEntry;
+  parts: Post[];
+}
+
+const { series, parts } = Astro.props;
+const { Content } = await render(series);
+---
+
+<SeriesLayout series={series} parts={parts}>
+  <Content
+    components={{
+      BookCard,
+      ReadingLogEntry,
+      ChapterNote,
+      Callout,
+    }}
+  />
+</SeriesLayout>

@@ -1,0 +1,28 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.main {
+  min-width: 0;
+  max-width: var(--column-main);
+}
+
+.aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+  min-width: 0;
+  max-width: var(--column-aside);
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, var(--column-main)) var(--column-aside);
+    justify-content: space-between;
+    align-items: start;
+    gap: var(--space-7);
+  }
+}

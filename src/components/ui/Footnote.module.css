@@ -1,0 +1,17 @@
+.note {
+  display: flex;
+  gap: var(--space-2);
+  margin-block: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-subtle);
+  color: var(--color-text-secondary);
+}
+
+.marker {
+  color: var(--color-accent-default);
+}
+
+.body,
+.body p {
+  margin: 0;
+}

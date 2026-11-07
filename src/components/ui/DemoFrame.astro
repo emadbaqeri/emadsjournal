@@ -1,0 +1,22 @@
+---
+import styles from './DemoFrame.module.css';
+
+interface Props {
+  topic: 'xss' | 'idor';
+  before: string;
+  after: string;
+}
+
+const { topic, before, after } = Astro.props;
+---
+
+<div class={styles.pair} data-topic={topic}>
+  <figure class={styles.frame} data-state="before">
+    <p class:list={['text-mono-eyebrow', styles.label]}>{topic} · before</p>
+    <p class:list={['text-body-small', styles.body]}>{before}</p>
+  </figure>
+  <figure class={styles.frame} data-state="after">
+    <p class:list={['text-mono-eyebrow', styles.label]}>{topic} · after</p>
+    <p class:list={['text-body-small', styles.body]}>{after}</p>
+  </figure>
+</div>

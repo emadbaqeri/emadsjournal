@@ -1,0 +1,167 @@
+---
+import Tag from './Tag.astro';
+import { getTrack, type TrackId } from '../../lib/tracks';
+import styles from './FilterBar.module.css';
+
+interface Props {
+  pathname: string;
+  typeFilter?: boolean;
+  trackFilter?: 'home' | 'all';
+  tags?: string[];
+  initialTrack?: string;
+}
+
+const TYPE_OPTIONS = [
+  { value: '', label: 'All' },
+  { value: 'series-post', label: 'Series' },
+  { value: 'til', label: 'TILs' },
+  { value: 'essay', label: 'Essays' },
+  { value: 'build-log', label: 'Build logs' },
+] as const;
+
+const { pathname, typeFilter = false, trackFilter, tags = [], initialTrack = '' } = Astro.props;
+
+function hrefFor(updates: { type?: string | null; track?: string | null; tag?: string | null }): string {
+  const params = new URLSearchParams();
+  if (updates.type) params.set('type', updates.type);
+  if (updates.track) params.set('track', updates.track);
+  if (updates.tag) params.set('tag', updates.tag);
+  const query = params.toString();
+  return query ? `${pathname}?${query}` : pathname;
+}
+---
+
+<div class={styles.bar} data-filter-bar data-initial-track={initialTrack}>
+  {
+    typeFilter && (
+      <div class={styles.group}>
+        <p class:list={['text-mono-eyebrow', styles.legend]}>Type</p>
+        <div class={styles.chips}>
+          {TYPE_OPTIONS.map((option) => (
+            <Tag
+              kind="outline"
+              href={hrefFor({ type: option.value || null })}
+              selected={option.value === ''}
+              showHash={false}
+              filterKey="type"
+              filterValue={option.value}
+            >
+              {option.label}
+            </Tag>
+          ))}
+        </div>
+      </div>
+    )
+  }
+  {
+    trackFilter && (
+      <div class={styles.group}>
+        <p class:list={['text-mono-eyebrow', styles.legend]}>Track</p>
+        <div class={styles.chips}>
+          {trackFilter === 'all' && (
+            <Tag
+              kind="outline"
+              href={pathname}
+              selected={true}
+              showHash={false}
+              filterKey="track"
+              filterValue=""
+            >
+              All
+            </Tag>
+          )}
+          {(['cs', 'security'] as TrackId[]).map((id) => {
+            const track = getTrack(id);
+            return (
+              <Tag kind="outline" href={hrefFor({ track: id })} selected={id === initialTrack} showHash={false} filterKey="track" filterValue={id}>
+                {`${track.glyph} ${id === 'cs' ? 'CS' : 'Security'}`}
+              </Tag>
+            );
+          })}
+        </div>
+      </div>
+    )
+  }
+  {
+    tags.length > 0 && (
+      <div class={styles.group}>
+        <p class:list={['text-mono-eyebrow', styles.legend]}>Topic</p>
+        <div class={styles.chips}>
+          <Tag kind="outline" href={pathname} selected={true} filterKey="tag" filterValue="">
+            all
+          </Tag>
+          {tags.map((tag) => (
+            <Tag kind="outline" href={hrefFor({ tag })} filterKey="tag" filterValue={tag}>
+              {tag}
+            </Tag>
+          ))}
+        </div>
+      </div>
+    )
+  }
+</div>
+
+<script>
+  function currentParams(): URLSearchParams {
+    return new URLSearchParams(window.location.search);
+  }
+
+  function applyFilters(): void {
+    const params = currentParams();
+    const bar = document.querySelector<HTMLElement>('[data-filter-bar]');
+    const type = params.get('type') ?? '';
+    const track = params.get('track') ?? bar?.dataset.initialTrack ?? '';
+    const tag = params.get('tag') ?? '';
+
+    document.querySelectorAll<HTMLElement>('[data-filter-key]').forEach((chip) => {
+      const key = chip.dataset.filterKey;
+      const value = chip.dataset.filterValue ?? '';
+      const selected =
+        key === 'type' ? value === type : key === 'track' ? value === track : value === tag;
+      chip.dataset.selected = selected ? 'true' : 'false';
+    });
+
+    const items = document.querySelectorAll<HTMLElement>('[data-feed-item]');
+    let visible = 0;
+    items.forEach((item) => {
+      const matchType = !type || item.dataset.type === type;
+      const matchTrack = !track || item.dataset.trackId === track;
+      const tags = (item.dataset.tags ?? '').split(',').filter(Boolean);
+      const matchTag = !tag || tags.includes(tag);
+      const show = Boolean(matchType && matchTrack && matchTag);
+      item.hidden = !show;
+      if (show) visible += 1;
+    });
+
+    document.querySelectorAll<HTMLElement>('[data-month-group]').forEach((group) => {
+      const anyVisible = group.querySelectorAll<HTMLElement>('[data-feed-item]:not([hidden])').length > 0;
+      group.hidden = !anyVisible;
+    });
+
+    document.querySelectorAll<HTMLElement>('[data-feed-empty]').forEach((node) => {
+      node.hidden = visible > 0;
+    });
+  }
+
+  function enhance(): void {
+    document.querySelectorAll<HTMLAnchorElement>('a[data-filter-link]').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        const key = link.dataset.filterKey;
+        if (!key) return;
+        const value = link.dataset.filterValue ?? '';
+        const params = currentParams();
+        const current = params.get(key) ?? '';
+        if (value === '' || current === value) params.delete(key);
+        else params.set(key, value);
+        const query = params.toString();
+        window.history.pushState({}, '', `${window.location.pathname}${query ? `?${query}` : ''}`);
+        applyFilters();
+      });
+    });
+    window.addEventListener('popstate', applyFilters);
+    applyFilters();
+  }
+
+  enhance();
+</script>

@@ -1,0 +1,71 @@
+---
+import type { Post, SeriesEntry } from '../../lib/content';
+import { getPostPath } from '../../lib/content';
+import styles from './SeriesNav.module.css';
+
+interface Props {
+  series: SeriesEntry;
+  parts: Post[];
+  variant?: 'list' | 'prev-next';
+  currentId?: string;
+}
+
+const { series, parts, variant = 'list', currentId } = Astro.props;
+const found = currentId ? parts.findIndex((part) => part.id === currentId) : -1;
+const resolvedIndex = found >= 0 ? found : Math.max(parts.length - 1, 0);
+const prev = resolvedIndex > 0 ? parts[resolvedIndex - 1] : undefined;
+const next = resolvedIndex < parts.length - 1 ? parts[resolvedIndex + 1] : undefined;
+const progressCount = parts.length === 0 ? 0 : resolvedIndex + 1;
+---
+
+{variant === 'list' ? (
+  <section class={styles.list} data-track={series.data.track} aria-label={`${series.data.title} parts`}>
+    <header class={styles.head}>
+      <p class:list={['text-mono-eyebrow', styles.kicker]}>{series.data.title}</p>
+      <p class:list={['text-mono-meta', styles.count]}>{progressCount} / {parts.length}</p>
+    </header>
+    <div class={styles.rail} aria-hidden="true">
+      {parts.map((_, index) => (
+        <span class:list={[styles.seg, index < progressCount && styles.segFilled]}></span>
+      ))}
+    </div>
+    <ol class={styles.parts}>
+      {parts.map((part, index) => {
+        const state = index < resolvedIndex ? 'done' : index === resolvedIndex ? 'current' : 'upcoming';
+        return (
+          <li class:list={[styles.part, styles[state]]}>
+            <span class:list={['text-mono-meta', styles.index]}>
+              {String(part.data.seriesOrder ?? index + 1).padStart(2, '0')}
+            </span>
+            <a
+              class:list={['text-body-small', styles.partTitle]}
+              href={getPostPath(part)}
+              aria-current={state === 'current' ? 'page' : undefined}
+            >
+              {part.data.title}
+            </a>
+          </li>
+        );
+      })}
+    </ol>
+  </section>
+) : (
+  <nav class={styles.prevNext} data-track={series.data.track} aria-label="Series previous and next">
+    {prev ? (
+      <a class={styles.sibling} href={getPostPath(prev)}>
+        <span class:list={['text-mono-eyebrow', styles.dir]}>Previous</span>
+        <span class:list={['text-body-small', styles.sibTitle]}>{prev.data.title}</span>
+      </a>
+    ) : (
+      <span class={styles.sibling}></span>
+    )}
+    {next ? (
+      <a class={styles.sibling} href={getPostPath(next)}>
+        <span class:list={['text-mono-eyebrow', styles.dir]}>Next</span>
+        <span class:list={['text-body-small', styles.sibTitle]}>{next.data.title}</span>
+      </a>
+    ) : (
+      <span class={styles.sibling}></span>
+    )}
+  </nav>
+)}

@@ -1,5 +1,58 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageFrame from '../components/shell/PageFrame.astro';
+import PageIntro from '../components/ui/PageIntro.astro';
+import FilterBar from '../components/ui/FilterBar.astro';
+import PostCard from '../components/ui/PostCard.astro';
+import TwoColumn from '../components/ui/TwoColumn.astro';
+import SeriesNav from '../components/ui/SeriesNav.astro';
+import { getFeedPosts, getFeaturedSeries, getPostsByType } from '../lib/content';
+
+const posts = await getFeedPosts();
+const featured = await getFeaturedSeries();
+const latestTils = (await getPostsByType('til')).slice(0, 2);
 ---
 
-<BaseLayout title="emad/journal" />
+<BaseLayout title="emad/journal">
+  <PageFrame>
+    <TwoColumn>
+      <PageIntro
+        eyebrow="Notebook · CS & Security"
+        title="Notes from learning in public"
+        lead="Series, TILs, essays and build logs in one feed."
+      />
+      <FilterBar pathname="/" typeFilter={true} trackFilter="home" />
+      <div>
+        {posts.map((post) => (
+          <PostCard post={post} />
+        ))}
+        <p class="text-mono-meta" data-feed-empty hidden>
+          No matching posts. <a href="/">Clear filters</a>
+        </p>
+      </div>
+      <fragment slot="aside">
+        <section>
+          <h2 class="text-mono-eyebrow">Sections</h2>
+          <p><a href="/series">Series →</a></p>
+          <p><a href="/tils">TILs →</a></p>
+          <p><a href="/essays">Essays →</a></p>
+          <p><a href="/build-logs">Build logs →</a></p>
+        </section>
+        {featured && (
+          <section>
+            <h2 class="text-mono-eyebrow">Current series</h2>
+            <SeriesNav series={featured.series} parts={featured.parts} variant="list" />
+          </section>
+        )}
+        {latestTils.length > 0 && (
+          <section>
+            <h2 class="text-mono-eyebrow">Latest TILs</h2>
+            {latestTils.map((post) => (
+              <PostCard post={post} headingLevel="h3" />
+            ))}
+          </section>
+        )}
+      </fragment>
+    </TwoColumn>
+  </PageFrame>
+</BaseLayout>

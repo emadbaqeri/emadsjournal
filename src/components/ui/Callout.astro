@@ -1,0 +1,21 @@
+---
+import styles from './Callout.module.css';
+
+interface Props {
+  kind?: 'info' | 'warn' | 'note';
+  title?: string;
+}
+
+const ICONS = { info: 'i', warn: '!', note: '→' } as const;
+const { kind = 'note', title } = Astro.props;
+---
+
+<aside class:list={[styles.callout, styles[kind]]} data-kind={kind}>
+  <span class:list={['text-mono-heading', styles.icon]} aria-hidden="true">{ICONS[kind]}</span>
+  <div class={styles.body}>
+    {title && <p class:list={['text-body-strong', styles.title]}>{title}</p>}
+    <div class:list={['text-body-small', styles.content]}>
+      <slot />
+    </div>
+  </div>
+</aside>

@@ -1,0 +1,34 @@
+.center {
+  max-width: var(--column-main);
+  margin-inline: auto;
+}
+
+.more {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-8);
+}
+
+.more h2 {
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-muted);
+}
+
+.inlineToc {
+  margin-bottom: var(--space-6);
+}
+
+.sidebarToc {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .inlineToc {
+    display: none;
+  }
+
+  .sidebarToc {
+    display: block;
+  }
+}

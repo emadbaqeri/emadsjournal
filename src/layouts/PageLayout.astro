@@ -1,0 +1,30 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageFrame from '../components/shell/PageFrame.astro';
+import PageIntro from '../components/ui/PageIntro.astro';
+import TwoColumn from '../components/ui/TwoColumn.astro';
+
+interface Props {
+  title: string;
+  eyebrow: string;
+  heading: string;
+  lead?: string;
+}
+
+const { title, eyebrow, heading, lead } = Astro.props;
+const hasAside = Astro.slots.has('aside');
+---
+
+<BaseLayout title={title}>
+  <PageFrame>
+    <TwoColumn>
+      <PageIntro eyebrow={eyebrow} title={heading} lead={lead} />
+      <slot />
+      {hasAside && (
+        <fragment slot="aside">
+          <slot name="aside" />
+        </fragment>
+      )}
+    </TwoColumn>
+  </PageFrame>
+</BaseLayout>

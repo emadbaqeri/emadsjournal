@@ -1,0 +1,16 @@
+---
+import styles from './ReadingLogEntry.module.css';
+
+interface Props {
+  title: string;
+  status: string;
+  maturity: 'seedling' | 'budding' | 'evergreen';
+}
+
+const { title, status, maturity } = Astro.props;
+---
+
+<article class={styles.row}>
+  <p class:list={['text-body-small', styles.title]}>{title}</p>
+  <p class:list={['text-mono-meta', styles.meta]}>{status} · {maturity}</p>
+</article>

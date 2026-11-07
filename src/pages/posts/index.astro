@@ -1,26 +1,39 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageFrame from '../../components/shell/PageFrame.astro';
-import { getFeedPosts, getPostPath } from '../../lib/content';
+import PageIntro from '../../components/ui/PageIntro.astro';
+import FilterBar from '../../components/ui/FilterBar.astro';
+import PostCard from '../../components/ui/PostCard.astro';
+import TwoColumn from '../../components/ui/TwoColumn.astro';
+import Callout from '../../components/ui/Callout.astro';
+import { getFeedPosts, uniqueTags } from '../../lib/content';
 
 const posts = await getFeedPosts();
+const tags = uniqueTags(posts);
 ---
 
 <BaseLayout title="Posts · emad/journal">
   <PageFrame>
-    <p class="text-mono-eyebrow">Posts · Archive</p>
-    <h1 class="text-heading-h1">All posts</h1>
-    <ul>
-      {
-        posts.map((post) => (
-          <li data-track={post.data.track}>
-            <a href={getPostPath(post)}>{post.data.title}</a>
-            <time datetime={post.data.publishedAt.toISOString()}>
-              {post.data.publishedAt.toISOString().slice(0, 10)}
-            </time>
-          </li>
-        ))
-      }
-    </ul>
+    <TwoColumn>
+      <PageIntro
+        eyebrow="Posts · Archive"
+        title="All posts"
+        lead="Everything published, newest first."
+      />
+      <FilterBar pathname="/posts" tags={tags} />
+      <div>
+        {posts.map((post) => (
+          <PostCard post={post} />
+        ))}
+        <p class="text-mono-meta" data-feed-empty hidden>
+          No matching posts. <a href="/posts">Clear filters</a>
+        </p>
+      </div>
+      <fragment slot="aside">
+        <Callout kind="note" title="About the archive">
+          This list is every published post. Use a tag to narrow it.
+        </Callout>
+      </fragment>
+    </TwoColumn>
   </PageFrame>
 </BaseLayout>

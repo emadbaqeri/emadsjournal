@@ -1,0 +1,107 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import PageFrame from '../components/shell/PageFrame.astro';
+import TwoColumn from '../components/ui/TwoColumn.astro';
+import Prose from '../components/ui/Prose.astro';
+import TOC from '../components/ui/TOC.astro';
+import SeriesNav from '../components/ui/SeriesNav.astro';
+import PostCard from '../components/ui/PostCard.astro';
+import Callout from '../components/ui/Callout.astro';
+import PostHeader from '../components/content/PostHeader.astro';
+import type { Post, SeriesEntry } from '../lib/content';
+import Footnote from '../components/ui/Footnote.astro';
+import Figure from '../components/ui/Figure.astro';
+import CodeBlock from '../components/ui/CodeBlock.astro';
+import RunnableCodeBlock from '../components/ui/RunnableCodeBlock.astro';
+import DemoFrame from '../components/ui/DemoFrame.astro';
+import BuildLogEntry from '../components/ui/BuildLogEntry.astro';
+import BookCard from '../components/ui/BookCard.astro';
+import ReadingLogEntry from '../components/ui/ReadingLogEntry.astro';
+import ChapterNote from '../components/ui/ChapterNote.astro';
+import styles from './PostLayout.module.css';
+
+interface Props {
+  post: Post;
+  series?: SeriesEntry;
+  seriesParts?: Post[];
+  moreTils?: Post[];
+}
+
+const { post, series, seriesParts = [], moreTils = [] } = Astro.props;
+const { Content, headings } = await render(post);
+const tocHeadings = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 3);
+const showToc =
+  (post.data.type === 'essay' || post.data.type === 'series-post') && tocHeadings.length > 0;
+const showBuildNote = post.data.type === 'build-log';
+const centered = post.data.type === 'til';
+const components = {
+  Callout,
+  Footnote,
+  Figure,
+  CodeBlock,
+  RunnableCodeBlock,
+  DemoFrame,
+  BuildLogEntry,
+  BookCard,
+  ReadingLogEntry,
+  ChapterNote,
+};
+---
+
+<BaseLayout title={`${post.data.title} · emad/journal`}>
+  <PageFrame>
+    {centered ? (
+      <div class={styles.center} data-track={post.data.track}>
+        <PostHeader post={post} />
+        <Prose>
+          <Content components={components} />
+        </Prose>
+        {moreTils.length > 0 && (
+          <section class={styles.more} aria-label="More TILs">
+            <h2 class="text-mono-eyebrow">More TILs</h2>
+            {moreTils.map((item) => (
+              <PostCard post={item} headingLevel="h3" />
+            ))}
+          </section>
+        )}
+      </div>
+    ) : (
+      <div data-track={post.data.track}>
+        <TwoColumn>
+          {showToc && (
+            <div class={styles.inlineToc}>
+              <TOC headings={headings} variant="inline" />
+            </div>
+          )}
+          <PostHeader
+            post={post}
+            seriesTitle={series?.data.title}
+            seriesPart={post.data.seriesOrder}
+            seriesTotal={seriesParts.length || undefined}
+          />
+          <Prose>
+            <Content components={components} />
+          </Prose>
+          {post.data.type === 'series-post' && series && (
+            <SeriesNav series={series} parts={seriesParts} variant="prev-next" currentId={post.id} />
+          )}
+          {(showToc || showBuildNote) && (
+            <fragment slot="aside">
+              {showToc && (
+                <div class={styles.sidebarToc}>
+                  <TOC headings={headings} variant="sidebar" />
+                </div>
+              )}
+              {showBuildNote && (
+                <Callout kind="note" title="About this log">
+                  {post.data.description}
+                </Callout>
+              )}
+            </fragment>
+          )}
+        </TwoColumn>
+      </div>
+    )}
+  </PageFrame>
+</BaseLayout>

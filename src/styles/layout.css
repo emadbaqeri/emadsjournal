@@ -1,0 +1,6 @@
+/* Layout measures from Figma desktop frames (article 680, main 718, aside 400). */
+:root {
+  --column-article: 680px;
+  --column-main: 718px;
+  --column-aside: 400px;
+}

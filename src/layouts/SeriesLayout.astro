@@ -1,0 +1,49 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageFrame from '../components/shell/PageFrame.astro';
+import PageIntro from '../components/ui/PageIntro.astro';
+import TwoColumn from '../components/ui/TwoColumn.astro';
+import SeriesNav from '../components/ui/SeriesNav.astro';
+import ProgressTimeline from '../components/ui/ProgressTimeline.astro';
+import Callout from '../components/ui/Callout.astro';
+import Prose from '../components/ui/Prose.astro';
+import type { Post, SeriesEntry } from '../lib/content';
+
+interface Props {
+  series: SeriesEntry;
+  parts: Post[];
+}
+
+const { series, parts } = Astro.props;
+const trackLabel = series.data.track === 'cs' ? 'CS' : 'Security';
+---
+
+<BaseLayout title={`${series.data.title} · emad/journal`}>
+  <PageFrame>
+    <div data-track={series.data.track}>
+      <TwoColumn>
+        <PageIntro
+          eyebrow={`Series · ${trackLabel}`}
+          title={series.data.title}
+          lead={series.data.description}
+        />
+        <section>
+          <h2 class="text-mono-eyebrow">Parts</h2>
+          <SeriesNav series={series} parts={parts} variant="list" />
+        </section>
+        <section>
+          <h2 class="text-mono-eyebrow">Track timeline</h2>
+          <ProgressTimeline parts={parts} />
+        </section>
+        <Prose>
+          <slot />
+        </Prose>
+        <fragment slot="aside">
+          <Callout kind="info" title="How to read this">
+            Published parts are listed in order.
+          </Callout>
+        </fragment>
+      </TwoColumn>
+    </div>
+  </PageFrame>
+</BaseLayout>

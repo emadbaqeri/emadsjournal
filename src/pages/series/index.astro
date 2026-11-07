@@ -1,11 +1,44 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageFrame from '../../components/shell/PageFrame.astro';
+import PageIntro from '../../components/ui/PageIntro.astro';
+import FilterBar from '../../components/ui/FilterBar.astro';
+import TwoColumn from '../../components/ui/TwoColumn.astro';
+import { getSeriesEntries, getPostsInSeries, getSeriesPath } from '../../lib/content';
+
+const seriesEntries = await getSeriesEntries();
+const listed = await Promise.all(
+  seriesEntries.map(async (series) => ({
+    series,
+    parts: await getPostsInSeries(series.id),
+  })),
+);
 ---
 
 <BaseLayout title="Series · emad/journal">
   <PageFrame>
-    <p class="text-mono-eyebrow">Series</p>
-    <h1 class="text-heading-h1">Series</h1>
+    <TwoColumn>
+      <PageIntro
+        eyebrow="Series · Tracks"
+        title="Series"
+        lead="Longer arcs, ordered part by part."
+      />
+      <FilterBar pathname="/series" trackFilter="all" />
+      <div>
+        {listed.map(({ series, parts }) => (
+          <article data-feed-item data-track-id={series.data.track} data-track={series.data.track}>
+            <p class="text-mono-eyebrow">{series.data.track === 'cs' ? 'CS' : 'Security'}</p>
+            <h2 class="text-heading-h3">
+              <a href={getSeriesPath(series)}>{series.data.title}</a>
+            </h2>
+            <p class="text-body-small">{series.data.description}</p>
+            <p class="text-mono-meta">{parts.length} parts · {series.data.status}</p>
+          </article>
+        ))}
+        <p class="text-mono-meta" data-feed-empty hidden>
+          No matching series. <a href="/series">Clear filters</a>
+        </p>
+      </div>
+    </TwoColumn>
   </PageFrame>
 </BaseLayout>

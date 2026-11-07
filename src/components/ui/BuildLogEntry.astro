@@ -1,0 +1,46 @@
+---
+import styles from './BuildLogEntry.module.css';
+
+interface Props {
+  date: string;
+  entry: number;
+  status: 'planned' | 'in-progress' | 'done' | 'blocked';
+  title: string;
+  commitHref?: string;
+}
+
+const MARK = {
+  planned: '○',
+  'in-progress': '◐',
+  done: '●',
+  blocked: '■',
+} as const;
+
+const LABEL = {
+  planned: 'planned',
+  'in-progress': 'in progress',
+  done: 'done',
+  blocked: 'blocked',
+} as const;
+
+const { date, entry, status, title, commitHref } = Astro.props;
+---
+
+<article class={styles.entry} data-status={status}>
+  <p class:list={['text-mono-meta', styles.date]}>{date}</p>
+  <div class={styles.body}>
+    <p class:list={['text-mono-eyebrow', styles.kicker]}>Entry {String(entry).padStart(2, '0')}</p>
+    <p class:list={['text-mono-meta', styles.status]}>
+      <span aria-hidden="true">{MARK[status]}</span> {LABEL[status]}
+    </p>
+    <h3 class:list={['text-heading-h3', styles.title]}>{title}</h3>
+    <div class:list={['text-body-small', styles.copy]}>
+      <slot />
+    </div>
+    {commitHref && (
+      <p class={styles.commit}>
+        <a class="text-mono-meta" href={commitHref}>commit →</a>
+      </p>
+    )}
+  </div>
+</article>

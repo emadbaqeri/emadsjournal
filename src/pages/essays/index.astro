@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageFrame from '../../components/shell/PageFrame.astro';
+import PageIntro from '../../components/ui/PageIntro.astro';
+import FilterBar from '../../components/ui/FilterBar.astro';
+import PostCard from '../../components/ui/PostCard.astro';
+import TwoColumn from '../../components/ui/TwoColumn.astro';
+import { getPostsByType, uniqueTags } from '../../lib/content';
+import { groupPostsByMonth } from '../../lib/format';
+
+const posts = await getPostsByType('essay');
+const tags = uniqueTags(posts);
+const groups = groupPostsByMonth(posts);
+---
+
+<BaseLayout title="Essays · emad/journal">
+  <PageFrame>
+    <TwoColumn>
+      <PageIntro
+        eyebrow="Essays · Longer notes"
+        title="Essays"
+        lead="Longer pieces, grouped by month."
+      />
+      <FilterBar pathname="/essays" trackFilter="all" tags={tags} />
+      <div>
+        {groups.map((group) => (
+          <section data-month-group>
+            <h2 class="text-mono-eyebrow">{group.month}</h2>
+            {group.posts.map((post) => (
+              <PostCard post={post} />
+            ))}
+          </section>
+        ))}
+        <p class="text-mono-meta" data-feed-empty hidden>
+          No matching posts. <a href="/essays">Clear filters</a>
+        </p>
+      </div>
+    </TwoColumn>
+  </PageFrame>
+</BaseLayout>

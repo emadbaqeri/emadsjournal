@@ -1,0 +1,23 @@
+.block {
+  margin-block: var(--space-5);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-code);
+  overflow: hidden;
+}
+
+.header {
+  margin: 0;
+  padding: var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--color-border-subtle);
+  color: var(--color-text-muted);
+}
+
+.code {
+  overflow-x: auto;
+}
+
+.code :global(pre) {
+  margin: 0;
+  padding: var(--space-4);
+}

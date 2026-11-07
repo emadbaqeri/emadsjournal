@@ -1,0 +1,21 @@
+---
+import type { Post } from '../../lib/content';
+import { formatDate } from '../../lib/format';
+import styles from './ProgressTimeline.module.css';
+
+interface Props {
+  parts: Post[];
+}
+
+const { parts } = Astro.props;
+---
+
+<ol class={styles.timeline}>
+  {parts.map((part) => (
+    <li class={styles.item}>
+      <span class={styles.dot} aria-hidden="true"></span>
+      <span class:list={['text-mono-meta', styles.when]}>{formatDate(part.data.publishedAt)}</span>
+      <span class:list={['text-body-small', styles.label]}>{part.data.title}</span>
+    </li>
+  ))}
+</ol>

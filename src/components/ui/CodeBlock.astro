@@ -1,0 +1,16 @@
+---
+import styles from './CodeBlock.module.css';
+
+interface Props {
+  filename?: string;
+}
+
+const { filename } = Astro.props;
+---
+
+<div class={styles.block}>
+  {filename && <p class:list={['text-mono-meta', styles.header]}>{filename}</p>}
+  <div class={styles.code}>
+    <slot />
+  </div>
+</div>

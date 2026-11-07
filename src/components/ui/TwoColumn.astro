@@ -1,0 +1,16 @@
+---
+import styles from './TwoColumn.module.css';
+
+const hasAside = Astro.slots.has('aside');
+---
+
+<div class={styles.layout}>
+  <div class={styles.main}>
+    <slot />
+  </div>
+  {hasAside && (
+    <aside class={styles.aside}>
+      <slot name="aside" />
+    </aside>
+  )}
+</div>

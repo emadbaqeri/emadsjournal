@@ -1,0 +1,92 @@
+---
+import type { Post } from '../../lib/content';
+import { formatDate, readingTimeMinutes } from '../../lib/format';
+import { getTrack } from '../../lib/tracks';
+import PostTypeLabel from '../ui/PostTypeLabel.astro';
+import Tag from '../ui/Tag.astro';
+import styles from './PostHeader.module.css';
+
+interface Props {
+  post: Post;
+  seriesTitle?: string;
+  seriesPart?: number;
+  seriesTotal?: number;
+}
+
+const { post, seriesTitle, seriesPart, seriesTotal } = Astro.props;
+const date = formatDate(post.data.publishedAt);
+const track = getTrack(post.data.track);
+const source = typeof post.body === 'string' ? post.body : post.data.description;
+const minutes = readingTimeMinutes(`${post.data.title} ${post.data.description} ${source}`);
+const type = post.data.type;
+
+const seriesEyebrow =
+  seriesTitle && seriesPart && seriesTotal
+    ? `Series · ${seriesTitle} · Part ${seriesPart} of ${seriesTotal}`
+    : `Series · ${track.label}`;
+
+const essayPath = `Essay · ${post.data.track === 'cs' ? 'CS' : 'Security'}`;
+const buildPath = `Build log · ${post.data.track === 'cs' ? 'CS' : 'Security'}`;
+---
+
+<header class={styles.header} data-track={post.data.track} data-type={type}>
+  {type === 'series-post' && (
+    <>
+      <p class:list={['text-mono-eyebrow', styles.eyebrow]}>{seriesEyebrow}</p>
+      <h1 class:list={['text-display-l', styles.title]}>{post.data.title}</h1>
+      <p class:list={['text-body-lead', styles.dek]}>{post.data.description}</p>
+      <p class:list={['text-mono-meta', styles.meta]}>
+        <time datetime={post.data.publishedAt.toISOString()}>{date}</time>
+      </p>
+    </>
+  )}
+
+  {type === 'til' && (
+    <>
+      <div class={styles.row}>
+        <PostTypeLabel type={type} track={post.data.track} />
+        <p class:list={['text-mono-meta', styles.meta]}>
+          <time datetime={post.data.publishedAt.toISOString()}>{date}</time>
+        </p>
+      </div>
+      <h1 class:list={['text-heading-h2', styles.title]}>{post.data.title}</h1>
+    </>
+  )}
+
+  {type === 'essay' && (
+    <>
+      <p class:list={['text-mono-eyebrow', styles.eyebrow]}>{essayPath}</p>
+      <h1 class:list={['text-heading-h1', styles.title]}>{post.data.title}</h1>
+      <p class:list={['text-body-lead', styles.dek]}>{post.data.description}</p>
+      <p class:list={['text-mono-meta', styles.meta]}>
+        <time datetime={post.data.publishedAt.toISOString()}>{date}</time>
+        {' · '}
+        {minutes} min read
+      </p>
+    </>
+  )}
+
+  {type === 'build-log' && (
+    <>
+      <p class:list={['text-mono-eyebrow', styles.eyebrow]}>{buildPath}</p>
+      <h1 class:list={['text-heading-h1', styles.title]}>{post.data.title}</h1>
+      <p class:list={['text-body-lead', styles.dek]}>{post.data.description}</p>
+      <dl class={styles.facts}>
+        <div>
+          <dt class="text-mono-eyebrow">Started</dt>
+          <dd class="text-mono-meta">
+            <time datetime={post.data.publishedAt.toISOString()}>{date}</time>
+          </dd>
+        </div>
+      </dl>
+    </>
+  )}
+
+  {post.data.tags.length > 0 && type !== 'til' && (
+    <p class={styles.tags}>
+      {post.data.tags.map((tag) => (
+        <Tag>{tag}</Tag>
+      ))}
+    </p>
+  )}
+</header>

@@ -1,14 +1,21 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PageFrame from '../components/shell/PageFrame.astro';
+import PageLayout from '../layouts/PageLayout.astro';
+import Prose from '../components/ui/Prose.astro';
 ---
 
-<BaseLayout title="About · emad/journal">
-  <PageFrame>
-    <p class="text-mono-eyebrow">About</p>
-    <h1 class="text-heading-h1">About</h1>
-    <p class="text-body-default">
-      Placeholder until the about copy is written.
+<PageLayout
+  title="About · emad/journal"
+  eyebrow="About · The notebook"
+  heading="About"
+  lead="A public notebook for computer science and security."
+>
+  <Prose>
+    <p>
+      This is my learning journal. I write series, short TILs, essays and build logs
+      as I work through computer science and security.
     </p>
-  </PageFrame>
-</BaseLayout>
+    <p>
+      Contact: <a href="mailto:contact@emaaad.com">contact@emaaad.com</a>
+    </p>
+  </Prose>
+</PageLayout>

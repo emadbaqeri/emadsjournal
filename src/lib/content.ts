@@ -49,6 +49,45 @@ export async function getPostsInSeries(seriesId: string): Promise<Post[]> {
     .sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0));
 }
 
+export async function getPostsByType(
+  type: Post['data']['type'],
+): Promise<Post[]> {
+  return (await getFeedPosts()).filter((post) => post.data.type === type);
+}
+
+export async function getMoreTils(current: Post, limit = 3): Promise<Post[]> {
+  return (await getPostsByType('til'))
+    .filter((post) => post.id !== current.id)
+    .slice(0, limit);
+}
+
+export async function getFeaturedSeries(): Promise<{
+  series: SeriesEntry;
+  parts: Post[];
+} | null> {
+  const all = await getSeriesEntries();
+  let best: { series: SeriesEntry; parts: Post[]; latest: number } | null =
+    null;
+  for (const series of all) {
+    if (series.data.status !== 'ongoing') continue;
+    const parts = await getPostsInSeries(series.id);
+    if (parts.length === 0) continue;
+    const latest = Math.max(
+      ...parts.map((part) => part.data.publishedAt.valueOf()),
+    );
+    if (!best || latest > best.latest) best = { series, parts, latest };
+  }
+  return best ? { series: best.series, parts: best.parts } : null;
+}
+
+export function uniqueTags(posts: Post[]): string[] {
+  const tags = new Set<string>();
+  for (const post of posts) {
+    for (const tag of post.data.tags) tags.add(tag);
+  }
+  return [...tags].sort((a, b) => a.localeCompare(b));
+}
+
 export function getPostPath(post: Post): string {
   return `/posts/${post.id}`;
 }

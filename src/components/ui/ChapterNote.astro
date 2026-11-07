@@ -1,0 +1,20 @@
+---
+import styles from './ChapterNote.module.css';
+
+interface Props {
+  title: string;
+  maturity: 'seedling' | 'budding' | 'evergreen';
+}
+
+const { title, maturity } = Astro.props;
+---
+
+<details class={styles.note}>
+  <summary class={styles.summary}>
+    <span class:list={['text-body-strong', styles.title]}>{title}</span>
+    <span class:list={['text-mono-meta', styles.maturity]}>{maturity}</span>
+  </summary>
+  <div class:list={['text-body-small', styles.body]}>
+    <slot />
+  </div>
+</details>

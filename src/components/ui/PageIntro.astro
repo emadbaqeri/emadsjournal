@@ -1,0 +1,17 @@
+---
+import styles from './PageIntro.module.css';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead?: string;
+}
+
+const { eyebrow, title, lead } = Astro.props;
+---
+
+<header class={styles.intro}>
+  <p class:list={['text-mono-eyebrow', styles.eyebrow]}>{eyebrow}</p>
+  <h1 class:list={['text-display-l', styles.title]}>{title}</h1>
+  {lead && <p class:list={['text-body-lead', styles.lead]}>{lead}</p>}
+</header>

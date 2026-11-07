@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageFrame from '../../components/shell/PageFrame.astro';
+import PageIntro from '../../components/ui/PageIntro.astro';
+import FilterBar from '../../components/ui/FilterBar.astro';
+import PostCard from '../../components/ui/PostCard.astro';
+import TwoColumn from '../../components/ui/TwoColumn.astro';
+import { getFeedPosts } from '../../lib/content';
+import { getTrack, type TrackId } from '../../lib/tracks';
+
+export function getStaticPaths() {
+  return (['cs', 'security'] as TrackId[]).map((track) => ({
+    params: { track },
+    props: { track },
+  }));
+}
+
+interface Props {
+  track: TrackId;
+}
+
+const { track } = Astro.props;
+const info = getTrack(track);
+const posts = await getFeedPosts();
+const heading = track === 'cs' ? 'Computer science' : 'Security';
+---
+
+<BaseLayout title={`${heading} · emad/journal`}>
+  <PageFrame>
+    <TwoColumn>
+      <div data-track={track}>
+        <PageIntro
+          eyebrow={`Track · ${info.glyph} ${heading}`}
+          title={heading}
+          lead="The home feed, already filtered to this track."
+        />
+        <FilterBar pathname={`/track/${track}`} typeFilter={true} trackFilter="home" initialTrack={track} />
+        <div>
+          {posts.map((post) => (
+            <PostCard post={post} />
+          ))}
+          <p class="text-mono-meta" data-feed-empty hidden>
+            No matching posts. <a href={`/track/${track}`}>Clear filters</a>
+          </p>
+        </div>
+      </div>
+    </TwoColumn>
+  </PageFrame>
+</BaseLayout>

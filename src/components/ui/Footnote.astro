@@ -1,0 +1,17 @@
+---
+import styles from './Footnote.module.css';
+
+interface Props {
+  id: string;
+  marker: string;
+}
+
+const { id, marker } = Astro.props;
+---
+
+<aside class={styles.note} id={id}>
+  <sup class:list={['text-mono-meta', styles.marker]}>{marker}</sup>
+  <div class:list={['text-body-small', styles.body]}>
+    <slot />
+  </div>
+</aside>

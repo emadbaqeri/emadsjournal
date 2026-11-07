@@ -1,0 +1,23 @@
+---
+import { getTrack, type TrackId } from '../../lib/tracks';
+import { POST_TYPE_LABELS } from '../../lib/format';
+import type { Post } from '../../lib/content';
+import styles from './PostTypeLabel.module.css';
+
+interface Props {
+  type: Post['data']['type'];
+  track: TrackId;
+}
+
+const { type, track } = Astro.props;
+const meta = getTrack(track);
+const outlined = type === 'series-post';
+---
+
+<span
+  class:list={[styles.label, 'text-mono-meta', outlined && styles.outlined]}
+  data-track={track}
+>
+  <span aria-hidden="true">{meta.glyph}</span>
+  <span>{POST_TYPE_LABELS[type]}</span>
+</span>

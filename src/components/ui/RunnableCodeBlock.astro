@@ -1,0 +1,21 @@
+---
+import styles from './RunnableCodeBlock.module.css';
+
+interface Props {
+  filename?: string;
+  output: string;
+}
+
+const { filename, output } = Astro.props;
+---
+
+<div class={styles.block}>
+  {filename && <p class:list={['text-mono-meta', styles.header]}>{filename}</p>}
+  <div class={styles.code}>
+    <slot />
+  </div>
+  <div class={styles.output}>
+    <p class:list={['text-mono-eyebrow', styles.legend]}>Output</p>
+    <pre class="text-mono-code">{output}</pre>
+  </div>
+</div>
