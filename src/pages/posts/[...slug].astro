@@ -1,0 +1,43 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageFrame from '../../components/shell/PageFrame.astro';
+import { getPostPath, getPosts, type Post } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const path = getPostPath(post);
+---
+
+<BaseLayout title={`${post.data.title} · emad/journal`}>
+  <PageFrame>
+    <article data-track={post.data.track}>
+      <p class="text-mono-eyebrow">
+        {post.data.type} · {post.data.track}
+      </p>
+      <h1 class="text-heading-h1">{post.data.title}</h1>
+      <p class="text-body-lead">{post.data.description}</p>
+      <p class="text-mono-meta">
+        <time datetime={post.data.publishedAt.toISOString()}>
+          {post.data.publishedAt.toISOString().slice(0, 10)}
+        </time>
+        · {path}
+      </p>
+      <div class="text-body-default">
+        <Content />
+      </div>
+    </article>
+  </PageFrame>
+</BaseLayout>

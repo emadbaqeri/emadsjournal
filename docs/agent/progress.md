@@ -29,3 +29,12 @@
 - Nav is `posts · series · about · rss` plus `◐ theme`. `/dev/kitchen-sink` is not in the nav. Footer tagline and `rss · github · email` use https://github.com/emadbaqeri and mailto:contact@emaaad.com.
 - Stub routes so the nav works before collections land: `/posts`, `/series`, `/about` (placeholder line only), and an empty `/rss.xml` channel. Phase 3 will fill RSS from posts.
 - Track glyphs remain in `src/lib/tracks.ts` (λ / §). They are not applied on `<html>`.
+
+## Phase 3
+
+- Status: complete pending review
+- `src/content.config.ts` matches the handover schema, plus `series` and `seriesOrder` on algorithms. Collections: posts, series, algorithms.
+- Fixtures: 3 series-posts, 3 TILs, 2 essays, 2 build-logs, 1 draft TIL, 2 series, and 3 algorithm pages (`two-number-sum`, `validate-subsequence`, `tournament-winner`) with `listInFeed: false`. Emad did not supply a real draft, so the draft is a fixture.
+- `src/lib/content.ts` sorts by `publishedAt` descending and filters drafts. `/rss.xml` lists published posts only.
+- Thin post pages exist so production `npm run build` can prove the draft has no HTML page and is absent from RSS and the sitemap.
+- `z` is imported from `astro/zod` (Astro 7 deprecates `z` on `astro:content`). Production build: 0 errors, 0 warnings, 0 hints. Draft title “Fixture draft: unpublished notes” is absent from `dist/rss.xml`, the sitemap, and `dist/posts/`.

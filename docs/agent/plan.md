@@ -29,3 +29,6 @@ Phases follow the Build Partner handover, one reviewable chunk at a time.
 
 - Mobile nav uses a no-JS `details`/`summary` control labelled `menu ≡`. The open panel overlays below the header rather than pushing content. Theme toggle lives in the desktop nav and inside that mobile panel.
 - Theme toggle label matches the drawing (`◐ theme`) and uses `--color-terminal-fg` (mint in dark, as drawn). Current preference is exposed via `aria-label` only.
+
+- Phase 3 adds thin `/posts/[...slug]` pages so RSS links resolve and production builds can omit drafts. Designed PostLayout variants still land in Phase 4.
+- `getFeedPosts()` always drops drafts (RSS, `/posts` list). `getPosts()` includes drafts only when `import.meta.env.PROD` is false, so local `astro dev` can preview them.
