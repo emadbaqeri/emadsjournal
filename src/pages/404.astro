@@ -1,10 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageFrame from '../components/shell/PageFrame.astro';
 ---
 
 <BaseLayout title="Not found — emad/journal">
-  <main>
-    <h1>Page not found</h1>
-    <p><a href="/">Back home</a></p>
-  </main>
+  <PageFrame>
+    <p class="text-mono-eyebrow">404</p>
+    <h1 class="text-heading-h1">Page not found</h1>
+    <p class="text-body-default"><a href="/">Back home</a></p>
+  </PageFrame>
 </BaseLayout>

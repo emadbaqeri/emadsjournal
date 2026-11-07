@@ -3,6 +3,8 @@ import '../tokens/tokens.css';
 import '../styles/fonts.css';
 import '../styles/reset.css';
 import '../styles/breakpoints.css';
+import SiteHeader from '../components/shell/SiteHeader.astro';
+import SiteFooter from '../components/shell/SiteFooter.astro';
 
 interface Props {
   title?: string;
@@ -36,6 +38,10 @@ const { title = 'emad/journal', noindex = false } = Astro.props;
     />
   </head>
   <body>
-    <slot />
+    <SiteHeader />
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter />
   </body>
 </html>

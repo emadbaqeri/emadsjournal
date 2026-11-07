@@ -1,0 +1,47 @@
+---
+import { PRIMARY_NAV, isCurrentPath } from '../../lib/site';
+import ThemeToggle from './ThemeToggle.astro';
+import styles from './SiteHeader.module.css';
+
+const pathname = Astro.url.pathname;
+---
+
+<a class={styles.skip} href="#main">Skip to content</a>
+<header class={styles.header}>
+  <a class={styles.wordmark} href="/" aria-label="emad/journal home">
+    <span class={styles.brand}>emad</span><span class={styles.slash}>/</span><span class={styles.name}>journal</span>
+  </a>
+
+  <nav class={styles.desktopNav} aria-label="Primary">
+    {
+      PRIMARY_NAV.map((item) => (
+        <a
+          class={styles.navLink}
+          href={item.href}
+          aria-current={isCurrentPath(pathname, item.href) ? 'page' : undefined}
+        >
+          {item.label}
+        </a>
+      ))
+    }
+    <ThemeToggle />
+  </nav>
+
+  <details class={styles.menu}>
+    <summary class={styles.menuToggle}>menu ≡</summary>
+    <nav class={styles.panel} aria-label="Primary">
+      {
+        PRIMARY_NAV.map((item) => (
+          <a
+            class={styles.navLink}
+            href={item.href}
+            aria-current={isCurrentPath(pathname, item.href) ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <ThemeToggle />
+    </nav>
+  </details>
+</header>

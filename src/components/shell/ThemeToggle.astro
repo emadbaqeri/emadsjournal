@@ -8,7 +8,7 @@ import styles from './ThemeToggle.module.css';
   data-theme-toggle
   aria-label="Theme: dark"
 >
-  ◐ theme <span class={styles.pref} data-theme-pref>dark</span>
+  ◐ theme
 </button>
 
 <script>
@@ -16,25 +16,21 @@ import styles from './ThemeToggle.module.css';
     cycleTheme,
     persistTheme,
     readStoredTheme,
-    type ThemePreference,
   } from '../../lib/theme';
 
+  function sync(button: HTMLButtonElement) {
+    const pref = readStoredTheme();
+    button.setAttribute('aria-label', `Theme: ${pref}`);
+    button.dataset.themePref = pref;
+  }
+
   function bind(button: HTMLButtonElement) {
-    const prefLabel = button.querySelector<HTMLElement>('[data-theme-pref]');
-    let pref: ThemePreference = readStoredTheme();
-
-    const sync = () => {
-      button.setAttribute('aria-label', `Theme: ${pref}`);
-      button.dataset.themePref = pref;
-      if (prefLabel) prefLabel.textContent = pref;
-    };
-
-    sync();
-
+    sync(button);
     button.addEventListener('click', () => {
-      pref = cycleTheme(pref);
-      persistTheme(pref);
-      sync();
+      persistTheme(cycleTheme(readStoredTheme()));
+      document
+        .querySelectorAll<HTMLButtonElement>('[data-theme-toggle]')
+        .forEach(sync);
     });
   }
 

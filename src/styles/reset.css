@@ -11,11 +11,22 @@ html {
 
 body {
   margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background-color: var(--color-bg-canvas);
   color: var(--color-text-primary);
   font-family: var(--font-sans);
   font-size: var(--font-size-base);
   line-height: var(--line-height-body);
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+a {
+  color: var(--color-text-primary);
 }
 
 button {

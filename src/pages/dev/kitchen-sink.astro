@@ -1,7 +1,6 @@
 ---
 import { Code } from 'astro:components';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ThemeToggle from '../../components/shell/ThemeToggle.astro';
 import { TRACKS } from '../../lib/tracks';
 import { cssVarName } from '../../tokens/names';
 import tokens from '../../tokens/tokens.json';
@@ -34,7 +33,7 @@ const sample = `function twoNumberSum(array: number[], target: number) {
 ---
 
 <BaseLayout title="Kitchen sink · emad/journal" noindex>
-  <main class={styles.page}>
+  <div class={styles.page}>
     <header class={styles.header}>
       <div>
         <p class="text-mono-eyebrow">Dev / kitchen sink</p>
@@ -44,7 +43,6 @@ const sample = `function twoNumberSum(array: number[], target: number) {
           dark and light; the two track panels cover CS and Security.
         </p>
       </div>
-      <ThemeToggle />
     </header>
 
     <section class={styles.section} aria-labelledby="type-heading">
@@ -192,5 +190,5 @@ const sample = `function twoNumberSum(array: number[], target: number) {
         <Code code={sample} lang="ts" />
       </div>
     </section>
-  </main>
+  </div>
 </BaseLayout>

@@ -21,3 +21,11 @@
 - Semantic color tokens alias primitives (`var(--primitives-…)`). Track mode tokens alias semantic color tokens so they follow dark/light automatically. Alpha primitives use the Figma hex + alpha as `rgba(...)`.
 - Fonts: self-hosted Latin `woff2` for Inter (400, 400 italic, 500, 600, 700) and JetBrains Mono (400, 500, 700) in `public/fonts/`, with SIL OFL notices. No Google Fonts CDN.
 - Theme toggle on `/dev/kitchen-sink`. Sitemap filter drops `/dev/` URLs.
+
+## Phase 2
+
+- Status: complete pending review
+- SiteHeader and SiteFooter wrap every page via BaseLayout. Wordmark is `emad/journal` with the slash in `--color-accent-default`; `emad` is primary and `journal` is secondary, matching the component.
+- Nav is `posts · series · about · rss` plus `◐ theme`. `/dev/kitchen-sink` is not in the nav. Footer tagline and `rss · github · email` use https://github.com/emadbaqeri and mailto:contact@emaaad.com.
+- Stub routes so the nav works before collections land: `/posts`, `/series`, `/about` (placeholder line only), and an empty `/rss.xml` channel. Phase 3 will fill RSS from posts.
+- Track glyphs remain in `src/lib/tracks.ts` (λ / §). They are not applied on `<html>`.

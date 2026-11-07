@@ -1,0 +1,9 @@
+.frame {
+  padding: var(--space-7) var(--space-5) var(--space-10);
+}
+
+@media (min-width: 1024px) {
+  .frame {
+    padding-inline: var(--space-9);
+  }
+}

@@ -26,3 +26,6 @@ Phases follow the Build Partner handover, one reviewable chunk at a time.
 - Theme toggle cycles `dark` → `light` → `system` → `dark` and writes `localStorage['emaaad-theme']`. It is an Astro component with a bundled script (no UI framework yet); it runs on load, matching the `client:load` intent.
 - Until the Phase 2 header exists, the toggle lives on `/dev/kitchen-sink`. Mobile placement for the real header: inside the `menu ≡` panel.
 - `/dev/kitchen-sink` also sends `noindex`.
+
+- Mobile nav uses a no-JS `details`/`summary` control labelled `menu ≡`. The open panel overlays below the header rather than pushing content. Theme toggle lives in the desktop nav and inside that mobile panel.
+- Theme toggle label matches the drawing (`◐ theme`) and uses `--color-terminal-fg` (mint in dark, as drawn). Current preference is exposed via `aria-label` only.
