@@ -1,0 +1,196 @@
+---
+import { Code } from 'astro:components';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ThemeToggle from '../../components/shell/ThemeToggle.astro';
+import { TRACKS } from '../../lib/tracks';
+import { cssVarName } from '../../tokens/names';
+import tokens from '../../tokens/tokens.json';
+import styles from './kitchen-sink.module.css';
+
+const byName = Object.fromEntries(
+  tokens.collections.map((collection) => [collection.name, collection]),
+);
+
+const colorVars = byName.Color?.variables ?? [];
+const primitiveVars = byName.Primitives?.variables ?? [];
+const spacingVars = byName.Spacing?.variables ?? [];
+const radiusVars = byName.Radius?.variables ?? [];
+const trackColorVars = (byName.Track?.variables ?? []).filter(
+  (variable) => variable.resolvedType === 'COLOR',
+);
+const trackStringVars = (byName.Track?.variables ?? []).filter(
+  (variable) => variable.resolvedType === 'STRING',
+);
+
+const sample = `function twoNumberSum(array: number[], target: number) {
+  const seen = new Set<number>();
+  for (const value of array) {
+    const complement = target - value;
+    if (seen.has(complement)) return [complement, value];
+    seen.add(value);
+  }
+  return [];
+}`;
+---
+
+<BaseLayout title="Kitchen sink · emad/journal" noindex>
+  <main class={styles.page}>
+    <header class={styles.header}>
+      <div>
+        <p class="text-mono-eyebrow">Dev / kitchen sink</p>
+        <h1 class="text-heading-h1">Tokens, type, tracks, theme</h1>
+        <p class={`text-body-default ${styles.lede}`}>
+          Not linked from production nav or the sitemap. Toggle the theme to check
+          dark and light; the two track panels cover CS and Security.
+        </p>
+      </div>
+      <ThemeToggle />
+    </header>
+
+    <section class={styles.section} aria-labelledby="type-heading">
+      <h2 id="type-heading" class="text-heading-h2">Type styles</h2>
+      {
+        tokens.textStyles.map((style) => {
+          const className = `text-${style.name.toLowerCase().replaceAll('/', '-')}`;
+          return (
+            <p class={`${className} ${styles.typeRow}`}>
+              {style.name}
+              {style.textCase === 'UPPER' ? '' : ' — The quick brown fox'}
+            </p>
+          );
+        })
+      }
+    </section>
+
+    <section class={styles.section} aria-labelledby="color-heading">
+      <h2 id="color-heading" class="text-heading-h2">Color</h2>
+      <div class={styles.grid}>
+        {
+          colorVars.map((variable) => {
+            const name = cssVarName('Color', variable.name);
+            return (
+              <div class={styles.swatch}>
+                <div class={styles.chip} style={`background: var(${name})`} />
+                <span class={`text-mono-meta ${styles.meta}`}>{name}</span>
+              </div>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <section class={styles.section} aria-labelledby="track-heading">
+      <h2 id="track-heading" class="text-heading-h2">Tracks</h2>
+      <div class={styles.tracks}>
+        {
+          (['cs', 'security'] as const).map((id) => {
+            const track = TRACKS[id];
+            return (
+              <div class={styles.trackPanel} data-track={id}>
+                <h3 class={`text-heading-h3 ${styles.trackTitle}`}>
+                  <span class={styles.glyph} />
+                  <span>{track.label}</span>
+                  <span class={`text-mono-meta ${styles.label}`} />
+                </h3>
+                <div class={styles.row}>
+                  <span class={`text-mono-label ${styles.pill}`}>
+                    {track.glyph} {track.label}
+                  </span>
+                  {
+                    trackStringVars.map((variable) => (
+                      <span class={`text-mono-meta ${styles.meta}`}>
+                        {cssVarName('Track', variable.name)}
+                      </span>
+                    ))
+                  }
+                </div>
+                <div class={styles.grid}>
+                  {
+                    trackColorVars.map((variable) => {
+                      const name = cssVarName('Track', variable.name);
+                      return (
+                        <div class={styles.swatch}>
+                          <div
+                            class={styles.chip}
+                            style={`background: var(${name})`}
+                          />
+                          <span class={`text-mono-meta ${styles.meta}`}>
+                            {name}
+                          </span>
+                        </div>
+                      );
+                    })
+                  }
+                </div>
+              </div>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <section class={styles.section} aria-labelledby="space-heading">
+      <h2 id="space-heading" class="text-heading-h2">Spacing</h2>
+      <div class={styles.spaces}>
+        {
+          spacingVars.map((variable) => {
+            const name = cssVarName('Spacing', variable.name);
+            return (
+              <div class={styles.spaceItem}>
+                <span class="text-mono-meta">{name}</span>
+                <div class={styles.spaceBar} style={`width: var(${name})`} />
+              </div>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <section class={styles.section} aria-labelledby="radius-heading">
+      <h2 id="radius-heading" class="text-heading-h2">Radius</h2>
+      <div class={styles.radii}>
+        {
+          radiusVars.map((variable) => {
+            const name = cssVarName('Radius', variable.name);
+            return (
+              <div class={styles.radiusItem}>
+                <span class="text-mono-meta">{name}</span>
+                <div
+                  class={styles.radiusBox}
+                  style={`border-radius: var(${name})`}
+                />
+              </div>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <section class={styles.section} aria-labelledby="primitives-heading">
+      <h2 id="primitives-heading" class="text-heading-h2">Primitives</h2>
+      <div class={styles.grid}>
+        {
+          primitiveVars.map((variable) => {
+            const name = cssVarName('Primitives', variable.name);
+            return (
+              <div class={styles.swatch}>
+                <div class={styles.chip} style={`background: var(${name})`} />
+                <span class={`text-mono-meta ${styles.meta}`}>{name}</span>
+              </div>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <section class={styles.section} aria-labelledby="code-heading">
+      <h2 id="code-heading" class="text-heading-h2">Shiki (css-variables)</h2>
+      <p class={`text-body-small ${styles.note}`}>
+        Highlight colours are bound to theme tokens, so they follow dark and light.
+      </p>
+      <div class={styles.code}>
+        <Code code={sample} lang="ts" />
+      </div>
+    </section>
+  </main>
+</BaseLayout>

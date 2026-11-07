@@ -4,6 +4,11 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://emaaad.com',
-  integrations: [mdx(), sitemap()],
+  integrations: [
+    mdx(),
+    sitemap({
+      filter: (page) => !page.includes('/dev/'),
+    }),
+  ],
   markdown: { shikiConfig: { theme: 'css-variables' } },
 });

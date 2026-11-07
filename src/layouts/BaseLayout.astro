@@ -1,9 +1,15 @@
 ---
+import '../tokens/tokens.css';
+import '../styles/fonts.css';
+import '../styles/reset.css';
+import '../styles/breakpoints.css';
+
 interface Props {
   title?: string;
+  noindex?: boolean;
 }
 
-const { title = 'emad/journal' } = Astro.props;
+const { title = 'emad/journal', noindex = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -11,6 +17,7 @@ const { title = 'emad/journal' } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {noindex && <meta name="robots" content="noindex" />}
     <title>{title}</title>
     <script is:inline src="/theme-init.js"></script>
     <link

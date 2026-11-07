@@ -12,6 +12,14 @@ astro dev --background
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
+Regenerate design tokens after updating `src/tokens/tokens.json`:
+
+```
+npm run tokens
+```
+
+Commit both `tokens.json` and the generated `src/tokens/tokens.css`.
+
 ## Documentation
 
 Full documentation: https://docs.astro.build

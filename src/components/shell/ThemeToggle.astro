@@ -1,0 +1,44 @@
+---
+import styles from './ThemeToggle.module.css';
+---
+
+<button
+  type="button"
+  class={styles.toggle}
+  data-theme-toggle
+  aria-label="Theme: dark"
+>
+  ◐ theme <span class={styles.pref} data-theme-pref>dark</span>
+</button>
+
+<script>
+  import {
+    cycleTheme,
+    persistTheme,
+    readStoredTheme,
+    type ThemePreference,
+  } from '../../lib/theme';
+
+  function bind(button: HTMLButtonElement) {
+    const prefLabel = button.querySelector<HTMLElement>('[data-theme-pref]');
+    let pref: ThemePreference = readStoredTheme();
+
+    const sync = () => {
+      button.setAttribute('aria-label', `Theme: ${pref}`);
+      button.dataset.themePref = pref;
+      if (prefLabel) prefLabel.textContent = pref;
+    };
+
+    sync();
+
+    button.addEventListener('click', () => {
+      pref = cycleTheme(pref);
+      persistTheme(pref);
+      sync();
+    });
+  }
+
+  document
+    .querySelectorAll<HTMLButtonElement>('[data-theme-toggle]')
+    .forEach(bind);
+</script>

@@ -1,0 +1,148 @@
+.page {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5) var(--space-10);
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-7);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.lede {
+  max-width: 40rem;
+  color: var(--color-text-secondary);
+}
+
+.section {
+  margin-bottom: var(--space-8);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: var(--space-3);
+}
+
+.swatch {
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-bg-surface);
+}
+
+.chip {
+  height: 4rem;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.meta {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-text-muted);
+  word-break: break-word;
+}
+
+.tracks {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+
+@media (min-width: 1024px) {
+  .tracks {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.trackPanel {
+  padding: var(--space-5);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-surface);
+}
+
+.trackTitle {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-4);
+  color: var(--track-accent);
+}
+
+.glyph::before {
+  content: var(--track-glyph);
+}
+
+.label::before {
+  content: var(--track-label);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.pill {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--track-accent-subtle);
+  color: var(--track-accent);
+}
+
+.spaces,
+.radii,
+.typeStack {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.spaceItem,
+.radiusItem {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.spaceBar {
+  background: var(--color-accent-default);
+  height: var(--space-3);
+}
+
+.radiusBox {
+  width: var(--space-8);
+  height: var(--space-8);
+  background: var(--color-bg-raised);
+  border: 1px solid var(--color-border-default);
+}
+
+.code {
+  margin-top: var(--space-4);
+  overflow-x: auto;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.code :global(pre) {
+  margin: 0;
+  padding: var(--space-4);
+}
+
+.typeRow {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+  color: var(--color-text-primary);
+}
+
+.note {
+  color: var(--color-text-muted);
+}
