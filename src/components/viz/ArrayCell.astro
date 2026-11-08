@@ -1,0 +1,8 @@
+---
+interface Props {
+  value?: string | number | null;
+  mark?: 'dim' | 'active' | 'found' | 'compare';
+}
+const { value = '', mark } = Astro.props;
+---
+<div class="viz-cell" data-mark={mark}>{value}</div>

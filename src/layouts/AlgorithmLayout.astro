@@ -1,0 +1,91 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import PageFrame from '../components/shell/PageFrame.astro';
+import TwoColumn from '../components/ui/TwoColumn.astro';
+import Prose from '../components/ui/Prose.astro';
+import TOC from '../components/ui/TOC.astro';
+import SeriesNav from '../components/ui/SeriesNav.astro';
+import Callout from '../components/ui/Callout.astro';
+import AlgorithmHeader from '../components/algo/AlgorithmHeader.astro';
+import TrackChip from '../components/algo/TrackChip.astro';
+import ProblemStatement from '../components/algo/ProblemStatement.astro';
+import SolutionTabs from '../components/algo/SolutionTabs.astro';
+import ComplexityBadge from '../components/algo/ComplexityBadge.astro';
+import CommonTraps from '../components/algo/CommonTraps.astro';
+import TwoNumberSumViz from '../components/viz/TwoNumberSumViz.astro';
+import ValidateSubsequenceViz from '../components/viz/ValidateSubsequenceViz.astro';
+import TournamentWinnerViz from '../components/viz/TournamentWinnerViz.astro';
+import type { Algorithm, SeriesEntry, SeriesNavPart } from '../lib/content';
+import styles from './AlgorithmLayout.module.css';
+
+interface Glance {
+  label: string;
+  time: string;
+  space: string;
+}
+
+interface Props {
+  algorithm: Algorithm;
+  series?: SeriesEntry;
+  seriesParts?: SeriesNavPart[];
+  glance: Glance[];
+}
+
+const { algorithm, series, seriesParts = [], glance } = Astro.props;
+const { Content, headings } = await render(algorithm);
+const tocHeadings = headings.filter((heading) => {
+  if (heading.depth < 2 || heading.depth > 3) return false;
+  return heading.text.toLowerCase() !== 'step through it';
+});
+const components = {
+  Callout,
+  ProblemStatement,
+  SolutionTabs,
+  ComplexityBadge,
+  CommonTraps,
+  TwoNumberSumViz,
+  ValidateSubsequenceViz,
+  TournamentWinnerViz,
+};
+---
+<BaseLayout title={`${algorithm.data.title} · emad/journal`}>
+  <PageFrame>
+    <div data-track={algorithm.data.track}>
+      <TwoColumn>
+        {tocHeadings.length > 0 && (
+          <div class={styles.inlineToc}>
+            <TOC headings={tocHeadings} variant="inline" />
+          </div>
+        )}
+        <AlgorithmHeader algorithm={algorithm} />
+        <Prose>
+          <Content components={components} />
+        </Prose>
+        {series && (
+          <div class={styles.series}>
+            <p class="text-mono-eyebrow">
+              Series · {series.data.title}
+              {algorithm.data.seriesOrder ? ` · Part ${algorithm.data.seriesOrder} of ${seriesParts.length || algorithm.data.seriesOrder}` : ''}
+            </p>
+            <SeriesNav series={series} parts={seriesParts} variant="prev-next" currentId={algorithm.id} />
+          </div>
+        )}
+        <fragment slot="aside">
+          {tocHeadings.length > 0 && (
+            <div class={styles.sidebarToc}>
+              <TOC headings={tocHeadings} variant="sidebar" />
+            </div>
+          )}
+          <TrackChip track={algorithm.data.track} />
+          <section class="glance" aria-label="At a glance">
+            <p class="text-mono-eyebrow">AT A GLANCE</p>
+            {glance.map((item) => (
+              <p class="text-mono-meta">{item.label} · {item.time} · {item.space}</p>
+            ))}
+          </section>
+        </fragment>
+      </TwoColumn>
+    </div>
+  </PageFrame>
+</BaseLayout>

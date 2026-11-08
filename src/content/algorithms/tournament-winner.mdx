@@ -1,10 +1,53 @@
 ---
-title: "Fixture: Tournament Winner"
-description: "Fixture algorithm page for Tournament Winner."
+title: "Tournament Winner"
+description: "Score a round-robin from home/away pairs and 0/1 results, then return the team with the most points."
 track: cs
 publishedAt: 2026-10-27
 viz: TournamentWinnerViz
 listInFeed: false
 ---
 
-Fixture algorithm page. The viz named in frontmatter is a placeholder string until Phase 5.
+<ProblemStatement
+  topic="ARRAYS"
+  difficulty="Easy"
+  sourceHref="https://www.algoexpert.io/questions/tournament-winner"
+  statement="Each match is a home team against an away team. results[i] is 1 when the home team won and 0 when the away team won. A win is worth 3 points. There are no ties, and exactly one team finishes first. Return that team's name."
+  example={`competitions = [
+  ["Tigers", "Owls"],
+  ["Owls", "Wolves"],
+  ["Wolves", "Tigers"],
+]
+results = [0, 0, 1]
+output  = "Wolves"`}
+  hint="Keep a map of team name to points, and remember the current leader as you go. You do not need a second pass over the scoreboard."
+  tags={['arrays', 'hash-map']}
+/>
+
+## Intuition
+
+Walk the matches once. For each result, add 3 points to the winner and, if they just passed the current leader, they become the leader. The TypeScript and Rust versions use a hash map (O(n) time, O(k) space). The C snapshot uses parallel arrays and a linear search instead, which is O(n·k) time.
+
+<TournamentWinnerViz />
+
+## Solution
+
+<SolutionTabs slug="tournament-winner" />
+
+## Complexity
+
+<div class="complexity-row">
+  <ComplexityBadge label="Hash map" time="O(n)" space="O(k)" note="One pass over n matches; the map holds k teams. This is the page figure." />
+  <ComplexityBadge label="Parallel arrays (C)" time="O(n·k)" space="O(n)" note="Each match scans the names seen so far." />
+</div>
+
+## Common traps
+
+<CommonTraps
+  wrong="Treat results[i] === 1 as the away team, or index the pair as [away, home]."
+  right="1 means the home team won, and home is index 0 of the pair."
+/>
+
+<CommonTraps
+  wrong="points[team] += 3 when the team is new, so undefined + 3 becomes NaN."
+  right="Default a missing score to 0 before adding (?? 0, or or_insert(0) in Rust)."
+/>

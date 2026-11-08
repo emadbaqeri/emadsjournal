@@ -1,0 +1,10 @@
+---
+import { getTrack, type TrackId } from '../../lib/tracks';
+
+interface Props {
+  track: TrackId;
+}
+const { track } = Astro.props;
+const meta = getTrack(track);
+---
+<a class="track-chip" href={`/track/${track}`}>{meta.glyph} {meta.label}</a>

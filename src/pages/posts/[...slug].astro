@@ -2,11 +2,12 @@
 import PostLayout from '../../layouts/PostLayout.astro';
 import {
   getPosts,
-  getPostsInSeries,
   getSeriesEntries,
+  getSeriesNavParts,
   getMoreTils,
   type Post,
   type SeriesEntry,
+  type SeriesNavPart,
 } from '../../lib/content';
 
 export async function getStaticPaths() {
@@ -17,7 +18,7 @@ export async function getStaticPaths() {
       const series = post.data.series
         ? allSeries.find((entry) => entry.id === post.data.series?.id)
         : undefined;
-      const seriesParts = series ? await getPostsInSeries(series.id) : [];
+      const seriesParts = series ? await getSeriesNavParts(series.id) : [];
       const moreTils = post.data.type === 'til' ? await getMoreTils(post) : [];
       return {
         params: { slug: post.id },
@@ -30,7 +31,7 @@ export async function getStaticPaths() {
 interface Props {
   post: Post;
   series?: SeriesEntry;
-  seriesParts: Post[];
+  seriesParts: SeriesNavPart[];
   moreTils: Post[];
 }
 

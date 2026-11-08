@@ -1,0 +1,21 @@
+.inlineToc {
+  margin-bottom: var(--space-6);
+}
+
+.sidebarToc {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .inlineToc {
+    display: none;
+  }
+
+  .sidebarToc {
+    display: block;
+  }
+}
+
+.series {
+  margin-top: var(--space-8);
+}

@@ -8,8 +8,10 @@ import Callout from '../../components/ui/Callout.astro';
 import {
   getSeriesEntries,
   getPostsInSeries,
+  getSeriesNavParts,
   type SeriesEntry,
   type Post,
+  type SeriesNavPart,
 } from '../../lib/content';
 
 export async function getStaticPaths() {
@@ -20,6 +22,7 @@ export async function getStaticPaths() {
       props: {
         series,
         parts: await getPostsInSeries(series.id),
+        navParts: await getSeriesNavParts(series.id),
       },
     })),
   );
@@ -28,13 +31,14 @@ export async function getStaticPaths() {
 interface Props {
   series: SeriesEntry;
   parts: Post[];
+  navParts: SeriesNavPart[];
 }
 
-const { series, parts } = Astro.props;
+const { series, parts, navParts } = Astro.props;
 const { Content } = await render(series);
 ---
 
-<SeriesLayout series={series} parts={parts}>
+<SeriesLayout series={series} parts={parts} navParts={navParts}>
   <Content
     components={{
       BookCard,

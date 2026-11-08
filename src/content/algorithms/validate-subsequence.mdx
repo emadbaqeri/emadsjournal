@@ -1,10 +1,43 @@
 ---
-title: "Fixture: Validate Subsequence"
-description: "Fixture algorithm page for Validate Subsequence."
+title: "Validate Subsequence"
+description: "Check whether one integer list appears inside another, in order, without needing the values to sit next to each other."
 track: cs
 publishedAt: 2026-10-29
 viz: ValidateSubsequenceViz
 listInFeed: false
 ---
 
-Fixture algorithm page. Real prose can come from cs-lab later if it exists there.
+<ProblemStatement
+  topic="ARRAYS"
+  difficulty="Easy"
+  sourceHref="https://www.algoexpert.io/questions/validate-subsequence"
+  statement="You get two integer arrays, array and sequence. Return true if sequence is a subsequence of array: every sequence value appears in array, in the same order, not necessarily next to each other. Each array element can be used only once."
+  example={`array    = [5, 1, 22, 25, 6, -1, 8, 10]
+sequence = [1, 6, -1, 10]
+result   = true`}
+  hint="Walk the big array once. Only move the sequence index when the current array value matches the next sequence value you still need."
+  tags={['arrays', 'two-pointers']}
+/>
+
+## Intuition
+
+One index walks the array; another walks the sequence and only advances on a match. If the sequence index reaches the end, every value was found in order. Nested loops are unnecessary here — a flat walk is enough, and it is easier to read.
+
+<ValidateSubsequenceViz />
+
+## Solution
+
+<SolutionTabs slug="validate-subsequence" />
+
+## Complexity
+
+<div class="complexity-row">
+  <ComplexityBadge label="One pass" time="O(n)" space="O(1)" note="n is the length of the array. The sequence index only moves forward." />
+</div>
+
+## Common traps
+
+<CommonTraps
+  wrong="For each sequence value, scan the whole array from the start again. Order is easy to get wrong, and you can reuse an earlier element."
+  right="Keep one array index and one sequence index. Advance the sequence index only on a match, and never look behind you."
+/>

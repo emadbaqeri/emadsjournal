@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageFrame from '../../components/shell/PageFrame.astro';
+import PageIntro from '../../components/ui/PageIntro.astro';
+import TwoColumn from '../../components/ui/TwoColumn.astro';
+import { getAlgorithms, getAlgorithmPath } from '../../lib/content';
+import { formatDate } from '../../lib/format';
+
+const algorithms = await getAlgorithms();
+---
+<BaseLayout title="Algorithms · emad/journal">
+  <PageFrame>
+    <TwoColumn>
+      <PageIntro
+        eyebrow="Algorithms · CS / DSA"
+        title="Algorithms"
+        lead="Worked solutions with a stepper you can walk through."
+      />
+      <div>
+        {algorithms.map((algorithm) => (
+          <article>
+            <p class="text-mono-meta">
+              <time datetime={algorithm.data.publishedAt.toISOString()}>
+                {formatDate(algorithm.data.publishedAt)}
+              </time>
+            </p>
+            <h2 class="text-heading-h2">
+              <a href={getAlgorithmPath(algorithm)}>{algorithm.data.title}</a>
+            </h2>
+            <p>{algorithm.data.description}</p>
+          </article>
+        ))}
+      </div>
+    </TwoColumn>
+  </PageFrame>
+</BaseLayout>

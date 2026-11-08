@@ -1,0 +1,14 @@
+---
+interface Props {
+  index?: number;
+  total?: number;
+}
+const { index = 0, total = 1 } = Astro.props;
+---
+<div class="viz-controls">
+  <button type="button" data-prev>prev</button>
+  <button type="button" data-play>play</button>
+  <button type="button" data-next>next</button>
+  <input class="viz-scrubber" type="range" min="0" max={Math.max(total - 1, 0)} value={index} data-scrubber />
+  <span class="text-mono-meta" data-counter>step {index + 1} / {total}</span>
+</div>

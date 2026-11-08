@@ -6,10 +6,11 @@ import FilterBar from '../components/ui/FilterBar.astro';
 import PostCard from '../components/ui/PostCard.astro';
 import TwoColumn from '../components/ui/TwoColumn.astro';
 import SeriesNav from '../components/ui/SeriesNav.astro';
-import { getFeedPosts, getFeaturedSeries, getPostsByType } from '../lib/content';
+import { getFeedPosts, getFeaturedSeries, getPostsByType, getSeriesNavParts } from '../lib/content';
 
 const posts = await getFeedPosts();
 const featured = await getFeaturedSeries();
+const featuredParts = featured ? await getSeriesNavParts(featured.series.id) : [];
 const latestTils = (await getPostsByType('til')).slice(0, 2);
 ---
 
@@ -41,7 +42,7 @@ const latestTils = (await getPostsByType('til')).slice(0, 2);
         {featured && (
           <section>
             <h2 class="text-mono-eyebrow">Current series</h2>
-            <SeriesNav series={featured.series} parts={featured.parts} variant="list" />
+            <SeriesNav series={featured.series} parts={featuredParts} variant="list" />
           </section>
         )}
         {latestTils.length > 0 && (

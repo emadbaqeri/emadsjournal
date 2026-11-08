@@ -1,6 +1,6 @@
 ---
-title: "Fixture: Two Number Sum"
-description: "Fixture algorithm page for Two Number Sum."
+title: "Two Number Sum"
+description: "Find the two distinct integers that add up to a target, then step through brute force, a hash set, and sort plus two pointers."
 track: cs
 publishedAt: 2026-10-30
 viz: TwoNumberSumViz
@@ -9,4 +9,49 @@ series: cs-foundations
 seriesOrder: 3
 ---
 
-Fixture algorithm page. The interactive stepper lands in a later phase. `listInFeed` is false, so this stays out of the main feed.
+<ProblemStatement
+  topic="ARRAYS"
+  difficulty="Easy"
+  sourceHref="https://www.algoexpert.io/questions/two-number-sum"
+  statement="You get an array of distinct integers and a target number. Find the two numbers that add up to the target and return them in any order. You cannot use the same element twice: a single 5 does not make 10."
+  example={`array  = [3, 5, -4, 8, 11, 1, -1, 6]
+target = 10
+result = [11, -1]`}
+  hint="For any number x you already know the partner you need: target − x. What if you remembered the numbers you have already walked past?"
+  tags={['arrays', 'hash-set', 'two-pointers']}
+/>
+
+## Intuition
+
+Brute force tries every pair. The hash-set walk asks, at each number, whether `target - x` is already in a set of numbers you have seen; if not, you store `x` and keep going. Sorting a copy and closing in with two pointers is slower than the set, but it needs no extra lookup structure beyond the sorted copy.
+
+<TwoNumberSumViz />
+
+## Solution
+
+<SolutionTabs slug="two-number-sum" />
+
+## Complexity
+
+<div class="complexity-row">
+  <ComplexityBadge label="Brute force" time="O(n²)" space="O(1)" note="Every pair after i. A correct baseline." />
+  <ComplexityBadge label="Hash set" time="O(n)" space="O(n)" note="One pass; the set holds numbers already seen." />
+  <ComplexityBadge label="Sort + two pointers" time="O(n log n)" space="O(n)" note="The sort dominates. The walk itself is O(n)." />
+</div>
+
+## Common traps
+
+<CommonTraps
+  wrong="Start the inner loop at j = 0. A number can pair with itself, and every pair is checked twice."
+  right="Start the inner loop at j = i + 1 so each pair is used once, and never the same index twice."
+/>
+
+<CommonTraps
+  wrong="In JS/TS, sort the numbers with plain .sort(). It compares them as strings, so -1 and 11 land in the wrong order."
+  right="Sort numerically: [...list].sort((a, b) => a - b). Then the two pointers walk a real number line."
+/>
+
+<CommonTraps
+  wrong="In C, return as soon as the hash set finds a pair and forget to free the table."
+  right="The C snapshot here still returns without set_free on that path. That leak is part of the code I wrote, not a silent cleanup."
+/>

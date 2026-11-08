@@ -1,0 +1,68 @@
+---
+import { getSolutions } from '../../lib/algorithms/solutions';
+
+interface Props {
+  slug: string;
+}
+const { slug } = Astro.props;
+const solutions = getSolutions(slug) ?? { ts: '', rust: '', c: '' };
+const langs = [
+  { id: 'ts', label: 'TS', code: solutions.ts },
+  { id: 'rust', label: 'Rust', code: solutions.rust },
+  { id: 'c', label: 'C', code: solutions.c },
+].filter((lang) => lang.code);
+---
+<section class="solution-tabs" data-solution-tabs>
+  <div class="solution-head">
+    <div class="viz-lang">
+      {langs.map((lang, index) => (
+        <button type="button" data-lang={lang.id} data-selected={index === 0 ? 'true' : 'false'}>
+          {lang.label}
+        </button>
+      ))}
+    </div>
+    <button type="button" data-copy>copy</button>
+  </div>
+  {langs.map((lang, index) => (
+    <div class="solution-code" data-panel={lang.id} hidden={index !== 0}>
+      <pre><code>{lang.code}</code></pre>
+    </div>
+  ))}
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-solution-tabs]').forEach((root) => {
+    if (root.dataset.bound === 'true') return;
+    root.dataset.bound = 'true';
+    const buttons = root.querySelectorAll<HTMLButtonElement>('[data-lang]');
+    const panels = root.querySelectorAll<HTMLElement>('[data-panel]');
+    const copy = root.querySelector<HTMLButtonElement>('[data-copy]');
+
+    const selected = () => root.querySelector<HTMLElement>('[data-panel]:not([hidden])');
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        buttons.forEach((item) => {
+          item.dataset.selected = item === button ? 'true' : 'false';
+        });
+        panels.forEach((panel) => {
+          panel.hidden = panel.dataset.panel !== button.dataset.lang;
+        });
+      });
+    });
+
+    copy?.addEventListener('click', async () => {
+      const panel = selected();
+      const text = panel?.querySelector('code')?.textContent ?? '';
+      try {
+        await navigator.clipboard.writeText(text);
+        copy.textContent = 'copied ✓';
+        window.setTimeout(() => {
+          copy.textContent = 'copy';
+        }, 1500);
+      } catch {
+        copy.textContent = 'copy failed';
+      }
+    });
+  });
+</script>

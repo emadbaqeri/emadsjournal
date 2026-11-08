@@ -1,0 +1,17 @@
+---
+interface Props {
+  wrong: string;
+  right: string;
+}
+const { wrong, right } = Astro.props;
+---
+<div class="trap">
+  <div class="trap-wrong">
+    <p class="text-mono-eyebrow">Trap</p>
+    <pre>{wrong}</pre>
+  </div>
+  <div class="trap-right">
+    <p class="text-mono-eyebrow">Better</p>
+    <pre>{right}</pre>
+  </div>
+</div>

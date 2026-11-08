@@ -1,0 +1,48 @@
+---
+import AlgorithmLayout from '../../layouts/AlgorithmLayout.astro';
+import {
+  getAlgorithms,
+  getSeriesEntries,
+  getSeriesNavParts,
+  type Algorithm,
+  type SeriesEntry,
+  type SeriesNavPart,
+} from '../../lib/content';
+
+export async function getStaticPaths() {
+  const glanceById: Record<string, { label: string; time: string; space: string }[]> = {
+    'two-number-sum': [{ label: 'Hash set', time: 'O(n)', space: 'O(n)' }],
+    'validate-subsequence': [{ label: 'One pass', time: 'O(n)', space: 'O(1)' }],
+    'tournament-winner': [{ label: 'Scoreboard', time: 'O(n)', space: 'O(k)' }],
+  };
+  const algorithms = await getAlgorithms();
+  const allSeries = await getSeriesEntries();
+  return Promise.all(
+    algorithms.map(async (algorithm) => {
+      const series = algorithm.data.series
+        ? allSeries.find((entry) => entry.id === algorithm.data.series?.id)
+        : undefined;
+      const seriesParts = series ? await getSeriesNavParts(series.id) : [];
+      return {
+        params: { slug: algorithm.id },
+        props: {
+          algorithm,
+          series,
+          seriesParts,
+          glance: glanceById[algorithm.id] ?? [],
+        },
+      };
+    }),
+  );
+}
+
+interface Props {
+  algorithm: Algorithm;
+  series?: SeriesEntry;
+  seriesParts: SeriesNavPart[];
+  glance: { label: string; time: string; space: string }[];
+}
+
+const { algorithm, series, seriesParts, glance } = Astro.props;
+---
+<AlgorithmLayout algorithm={algorithm} series={series} seriesParts={seriesParts} glance={glance} />

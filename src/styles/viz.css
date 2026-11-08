@@ -1,0 +1,317 @@
+/* Algorithm stepper and page chrome. */
+
+.viz-stage {
+  overflow-x: auto;
+  padding-bottom: var(--space-3);
+}
+
+.viz-row,
+.viz-index,
+.viz-pointers {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-end;
+  min-width: min-content;
+}
+
+.viz-pointers {
+  align-items: flex-start;
+  min-height: var(--space-5);
+}
+
+.viz-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--algo-cell-size);
+  height: var(--algo-cell-size);
+  border: 1px solid var(--algo-cell-border);
+  border-radius: var(--algo-cell-radius);
+  background: var(--algo-cell-bg);
+  color: var(--algo-cell-fg);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  flex: 0 0 auto;
+}
+
+.viz-cell[data-mark='active'],
+.viz-cell[data-mark='compare'] {
+  background: var(--algo-cell-active-bg);
+  border-color: var(--algo-cell-active-border);
+}
+
+.viz-cell[data-mark='found'] {
+  background: var(--algo-cell-output-filled-bg);
+  border-color: var(--algo-cell-output-filled-border);
+}
+
+.viz-cell[data-mark='dim'] {
+  opacity: 0.45;
+}
+
+.viz-cell[data-probe='true'] {
+  outline: 1px solid var(--algo-pointer);
+}
+
+.viz-cell[data-hit='true'] {
+  background: var(--algo-cell-output-filled-bg);
+  border-color: var(--algo-cell-output-filled-border);
+}
+
+.viz-index span,
+.viz-pointers span {
+  width: var(--algo-cell-size);
+  text-align: center;
+  color: var(--algo-index-fg);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  flex: 0 0 auto;
+}
+
+.viz-pointers span {
+  color: var(--algo-pointer);
+}
+
+.viz-pointers span[data-kind='output'] {
+  color: var(--algo-pointer-output);
+}
+
+.viz-vars,
+.viz-points,
+.viz-hash,
+.viz-seq {
+  margin-top: var(--space-4);
+}
+
+.viz-vars table,
+.viz-points table,
+.viz-static table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.viz-vars th,
+.viz-vars td,
+.viz-points th,
+.viz-points td,
+.viz-static th,
+.viz-static td {
+  text-align: left;
+  padding: var(--space-1) var(--space-3);
+  border-bottom: 1px solid var(--color-border-subtle);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  vertical-align: top;
+}
+
+.viz-eq {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-mono);
+}
+
+.viz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  padding: var(--space-3);
+  background: var(--algo-control-bg);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.viz-controls button,
+.viz-toolbar button,
+.viz-editor button,
+.viz-approaches button,
+.viz-lang button,
+.solution-head button {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  background: transparent;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-3);
+  cursor: pointer;
+}
+
+.viz-approaches button[data-selected='true'],
+.viz-lang button[data-selected='true'] {
+  border-color: var(--track-accent, var(--color-accent-default));
+  color: var(--track-accent, var(--color-accent-default));
+}
+
+.viz-scrubber {
+  flex: 1 1 8rem;
+  accent-color: var(--track-accent, var(--color-accent-default));
+}
+
+.viz-toolbar,
+.viz-approaches,
+.viz-editor,
+.viz-error,
+.viz-narration {
+  margin-top: var(--space-3);
+}
+
+.viz-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.viz-editor label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-3);
+}
+
+.viz-editor textarea,
+.viz-editor input {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  padding: var(--space-2);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-raised);
+  color: var(--color-text-primary);
+}
+
+.viz-error {
+  color: var(--color-warn-fg);
+}
+
+.viz-static {
+  margin-top: var(--space-4);
+  overflow-x: auto;
+}
+
+.viz-interactive {
+  display: none;
+}
+
+[data-stepper][data-enhanced] .viz-interactive {
+  display: block;
+}
+
+[data-stepper][data-enhanced] .viz-static {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-stepper][data-enhanced] .viz-interactive {
+    display: none;
+  }
+
+  [data-stepper][data-enhanced] .viz-static {
+    display: block;
+  }
+}
+
+.trap {
+  display: grid;
+  gap: var(--space-4);
+  margin: var(--space-4) 0;
+}
+
+@media (min-width: 1024px) {
+  .trap {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.trap-wrong,
+.trap-right {
+  padding: var(--space-4);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.trap-wrong {
+  border-color: var(--algo-trap-wrong);
+}
+
+.trap-right {
+  border-color: var(--algo-trap-right);
+}
+
+.trap pre {
+  overflow-x: auto;
+  margin: var(--space-3) 0 0;
+  white-space: pre-wrap;
+}
+
+.problem-card,
+.solution-tabs,
+.complexity-row {
+  margin: var(--space-6) 0;
+}
+
+.complexity-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.complexity-badge {
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.complexity-badge p {
+  margin: var(--space-2) 0 0;
+}
+
+.track-chip {
+  display: inline-flex;
+  gap: var(--space-2);
+  align-items: center;
+  font-family: var(--font-mono);
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--track-accent, var(--color-accent-default));
+  border-radius: var(--radius-full);
+  color: var(--track-accent, var(--color-accent-default));
+  text-decoration: none;
+}
+
+.solution-code {
+  overflow-x: auto;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-code);
+}
+
+.solution-code[hidden] {
+  display: none;
+}
+
+.solution-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.solution-code pre {
+  margin: 0;
+  padding: var(--space-4);
+  overflow-x: auto;
+}
+
+.glance {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.algo-kicker {
+  color: var(--color-text-muted);
+}

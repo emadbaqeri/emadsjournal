@@ -52,3 +52,13 @@
 - MDX components passed through `<Content components={…} />`: Callout, Footnote, Figure, CodeBlock, RunnableCodeBlock (static; worker playground is Phase 6), DemoFrame (conceptual before/after strings), BuildLogEntry, and the book components.
 - Series progress rail uses flex segments, no inline `style` widths (CSP-safe).
 - `/algorithms` is not added in this phase.
+
+## Phase 5
+
+- Status: complete pending review
+- Algorithm pages at `/algorithms` and `/algorithms/[slug]` using `AlgorithmLayout` (Prototype B order). Motion player omitted until clip files exist.
+- Shared `viz/` primitives plus steppers for Two Number Sum, Validate Subsequence, and Tournament Winner. Models are pure TypeScript; apply-to-recompute; hash-set table capacity is `max(n * 2, 2)` (sample n=8 → 16 slots).
+- Default TNS approach is hash set. Solution tabs are TS, Rust, and C (no Zig). Code snapshots live in `src/content/algorithms/code/<slug>/`.
+- SeriesNav now takes generic `{ id, title, href, order }` parts so algorithm pages can sit in a series (Two Number Sum is part 3 of cs-foundations).
+- Playwright model tests in `tests/algorithms/models.spec.ts` step traces and assert parse errors plus final results, not pixels. `npm test` runs those; `npm test:e2e` is reserved for later UI specs.
+- Production draft fixture stays absent from the feed, indexes, RSS, and sitemap. Algorithm pages are in the sitemap and not listed on the home feed (`listInFeed: false`).

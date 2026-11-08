@@ -1,0 +1,35 @@
+---
+interface Props {
+  topic: string;
+  difficulty: string;
+  sourceHref: string;
+  sourceLabel?: string;
+  statement: string;
+  example: string;
+  hint: string;
+  tags?: string[];
+}
+const {
+  topic,
+  difficulty,
+  sourceHref,
+  sourceLabel = 'AlgoExpert',
+  statement,
+  example,
+  hint,
+  tags = [],
+} = Astro.props;
+---
+<section class="problem-card">
+  <p class="text-mono-eyebrow">PROBLEM · {topic} · {difficulty}</p>
+  <p class="text-mono-meta">
+    <a href={sourceHref} rel="noreferrer">{sourceLabel} ↗</a>
+  </p>
+  <p>{statement}</p>
+  <pre>{example}</pre>
+  {tags.length > 0 && <p class="text-mono-meta">{tags.join(' · ')}</p>}
+  <details>
+    <summary>▸ Try it first. Show hint</summary>
+    <p>{hint}</p>
+  </details>
+</section>

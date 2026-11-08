@@ -1,11 +1,10 @@
 ---
-import type { Post, SeriesEntry } from '../../lib/content';
-import { getPostPath } from '../../lib/content';
+import type { SeriesEntry, SeriesNavPart } from '../../lib/content';
 import styles from './SeriesNav.module.css';
 
 interface Props {
   series: SeriesEntry;
-  parts: Post[];
+  parts: SeriesNavPart[];
   variant?: 'list' | 'prev-next';
   currentId?: string;
 }
@@ -35,14 +34,14 @@ const progressCount = parts.length === 0 ? 0 : resolvedIndex + 1;
         return (
           <li class:list={[styles.part, styles[state]]}>
             <span class:list={['text-mono-meta', styles.index]}>
-              {String(part.data.seriesOrder ?? index + 1).padStart(2, '0')}
+              {String(part.order ?? index + 1).padStart(2, '0')}
             </span>
             <a
               class:list={['text-body-small', styles.partTitle]}
-              href={getPostPath(part)}
+              href={part.href}
               aria-current={state === 'current' ? 'page' : undefined}
             >
-              {part.data.title}
+              {part.title}
             </a>
           </li>
         );
@@ -52,17 +51,17 @@ const progressCount = parts.length === 0 ? 0 : resolvedIndex + 1;
 ) : (
   <nav class={styles.prevNext} data-track={series.data.track} aria-label="Series previous and next">
     {prev ? (
-      <a class={styles.sibling} href={getPostPath(prev)}>
+      <a class={styles.sibling} href={prev.href}>
         <span class:list={['text-mono-eyebrow', styles.dir]}>Previous</span>
-        <span class:list={['text-body-small', styles.sibTitle]}>{prev.data.title}</span>
+        <span class:list={['text-body-small', styles.sibTitle]}>{prev.title}</span>
       </a>
     ) : (
       <span class={styles.sibling}></span>
     )}
     {next ? (
-      <a class={styles.sibling} href={getPostPath(next)}>
+      <a class={styles.sibling} href={next.href}>
         <span class:list={['text-mono-eyebrow', styles.dir]}>Next</span>
-        <span class:list={['text-body-small', styles.sibTitle]}>{next.data.title}</span>
+        <span class:list={['text-body-small', styles.sibTitle]}>{next.title}</span>
       </a>
     ) : (
       <span class={styles.sibling}></span>

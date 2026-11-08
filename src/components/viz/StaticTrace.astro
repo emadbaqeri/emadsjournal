@@ -1,0 +1,34 @@
+---
+import type { AlgoStep } from '../../lib/algorithms/types';
+
+interface Props {
+  title: string;
+  steps: AlgoStep[];
+}
+const { title, steps } = Astro.props;
+---
+<section>
+  <h3 class="text-mono-eyebrow">{title}</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Step</th>
+        <th>Narration</th>
+        <th>State</th>
+      </tr>
+    </thead>
+    <tbody>
+      {steps.map((step, index) => (
+        <tr>
+          <td>{index + 1}</td>
+          <td>{step.narration}</td>
+          <td>
+            {step.eq ? `${step.eq.text} ` : ''}
+            {step.result !== undefined ? `result ${JSON.stringify(step.result)}` : ''}
+            {step.vars ? Object.entries(step.vars).map(([key, value]) => `${key}=${value}`).join(', ') : ''}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</section>

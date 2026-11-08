@@ -1,0 +1,36 @@
+---
+import StepperShell from './StepperShell.astro';
+import StaticTrace from './StaticTrace.astro';
+import {
+  TW_SAMPLE,
+  formatCompetitions,
+  tournamentWinnerSteps,
+} from '../../lib/algorithms/tournament-winner';
+
+const steps = tournamentWinnerSteps(TW_SAMPLE);
+const competitions = formatCompetitions(TW_SAMPLE.competitions);
+const results = TW_SAMPLE.results.join(', ');
+const initial = JSON.stringify({ competitions, results });
+---
+
+<StepperShell kind="tournament-winner" initial={initial}>
+  <div slot="editor" class="viz-editor">
+    <label>
+      competitions
+      <textarea data-field="competitions" rows="4">{competitions}</textarea>
+    </label>
+    <label>
+      results
+      <input data-field="results" value={results} />
+    </label>
+    <button type="button" data-apply>Apply ↵</button>
+  </div>
+  <div slot="static">
+    <StaticTrace title="Scoreboard" steps={steps} />
+  </div>
+</StepperShell>
+
+<script>
+  import { bindSteppers } from '../../lib/algorithms/stepper-runtime';
+  bindSteppers();
+</script>

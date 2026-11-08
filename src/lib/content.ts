@@ -96,6 +96,40 @@ export function getAlgorithmPath(algorithm: Algorithm): string {
   return `/algorithms/${algorithm.id}`;
 }
 
+export interface SeriesNavPart {
+  id: string;
+  title: string;
+  href: string;
+  order?: number;
+}
+
+export function toSeriesNavParts(posts: Post[]): SeriesNavPart[] {
+  return posts.map((post) => ({
+    id: post.id,
+    title: post.data.title,
+    href: getPostPath(post),
+    order: post.data.seriesOrder,
+  }));
+}
+
+export async function getSeriesNavParts(seriesId: string): Promise<SeriesNavPart[]> {
+  const [posts, algorithms] = await Promise.all([getFeedPosts(), getAlgorithms()]);
+  const fromPosts = toSeriesNavParts(
+    posts.filter((post) => post.data.series?.id === seriesId),
+  );
+  const fromAlgorithms = algorithms
+    .filter((algorithm) => algorithm.data.series?.id === seriesId)
+    .map((algorithm) => ({
+      id: algorithm.id,
+      title: algorithm.data.title,
+      href: getAlgorithmPath(algorithm),
+      order: algorithm.data.seriesOrder,
+    }));
+  return [...fromPosts, ...fromAlgorithms].sort(
+    (a, b) => (a.order ?? 0) - (b.order ?? 0),
+  );
+}
+
 export function getSeriesPath(series: SeriesEntry): string {
   return `/series/${series.id}`;
 }

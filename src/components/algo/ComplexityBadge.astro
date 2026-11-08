@@ -1,0 +1,13 @@
+---
+interface Props {
+  label: string;
+  time: string;
+  space: string;
+  note?: string;
+}
+const { label, time, space, note } = Astro.props;
+---
+<details class="complexity-badge">
+  <summary class="text-mono-eyebrow">{label} · {time} · {space}</summary>
+  {note && <p class="text-body-small">{note}</p>}
+</details>

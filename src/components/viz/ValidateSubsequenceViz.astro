@@ -1,0 +1,33 @@
+---
+import StepperShell from './StepperShell.astro';
+import StaticTrace from './StaticTrace.astro';
+import { VS_SAMPLE, validateSubsequenceSteps } from '../../lib/algorithms/validate-subsequence';
+
+const steps = validateSubsequenceSteps(VS_SAMPLE);
+const initial = JSON.stringify({
+  array: VS_SAMPLE.array.join(', '),
+  sequence: VS_SAMPLE.sequence.join(', '),
+});
+---
+
+<StepperShell kind="validate-subsequence" initial={initial}>
+  <div slot="editor" class="viz-editor">
+    <label>
+      array
+      <textarea data-field="array" rows="2">{VS_SAMPLE.array.join(', ')}</textarea>
+    </label>
+    <label>
+      sequence
+      <textarea data-field="sequence" rows="2">{VS_SAMPLE.sequence.join(', ')}</textarea>
+    </label>
+    <button type="button" data-apply>Apply ↵</button>
+  </div>
+  <div slot="static">
+    <StaticTrace title="One pass" steps={steps} />
+  </div>
+</StepperShell>
+
+<script>
+  import { bindSteppers } from '../../lib/algorithms/stepper-runtime';
+  bindSteppers();
+</script>

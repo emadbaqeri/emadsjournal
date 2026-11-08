@@ -1,0 +1,19 @@
+---
+interface Props {
+  vars: Record<string, string | number | boolean>;
+}
+const { vars } = Astro.props;
+---
+<div class="viz-vars">
+  <p class="text-mono-eyebrow">Variables</p>
+  <table>
+    <tbody>
+      {Object.entries(vars).map(([key, value]) => (
+        <tr>
+          <th>{key}</th>
+          <td>{String(value)}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

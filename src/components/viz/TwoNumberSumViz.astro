@@ -1,0 +1,50 @@
+---
+import StepperShell from './StepperShell.astro';
+import StaticTrace from './StaticTrace.astro';
+import {
+  TNS_SAMPLE,
+  TNS_APPROACHES,
+  twoNumberSumAllTraces,
+} from '../../lib/algorithms/two-number-sum';
+
+const traces = twoNumberSumAllTraces(TNS_SAMPLE);
+const initial = JSON.stringify({
+  array: TNS_SAMPLE.array.join(', '),
+  target: String(TNS_SAMPLE.target),
+});
+---
+
+<StepperShell kind="two-number-sum" initial={initial} approach="hashSet">
+  <div slot="approaches" class="viz-approaches">
+    {TNS_APPROACHES.map((item) => (
+      <button
+        type="button"
+        data-approach={item.id}
+        data-selected={item.id === 'hashSet' ? 'true' : 'false'}
+      >
+        {item.title}
+      </button>
+    ))}
+  </div>
+  <div slot="editor" class="viz-editor">
+    <label>
+      array
+      <textarea data-field="array" rows="2">{TNS_SAMPLE.array.join(', ')}</textarea>
+    </label>
+    <label>
+      target
+      <input data-field="target" value={String(TNS_SAMPLE.target)} />
+    </label>
+    <button type="button" data-apply>Apply ↵</button>
+  </div>
+  <div slot="static">
+    {TNS_APPROACHES.map((item) => (
+      <StaticTrace title={item.title} steps={traces[item.id]} />
+    ))}
+  </div>
+</StepperShell>
+
+<script>
+  import { bindSteppers } from '../../lib/algorithms/stepper-runtime';
+  bindSteppers();
+</script>

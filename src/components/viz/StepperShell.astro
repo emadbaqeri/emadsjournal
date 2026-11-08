@@ -1,0 +1,34 @@
+---
+import StepControls from './StepControls.astro';
+
+interface Props {
+  kind: string;
+  initial: string;
+  approach?: string;
+}
+const { kind, initial, approach } = Astro.props;
+---
+<div class="viz-shell" data-stepper data-kind={kind} data-initial={initial} data-approach={approach} tabindex="0">
+  <div class="viz-interactive">
+    <div class="viz-toolbar">
+      <p class="text-mono-eyebrow">TRY IT · OPTIONAL</p>
+      <div>
+        <button type="button" data-edit>edit ✎</button>
+        <button type="button" data-skip>skip ↓</button>
+        <button type="button" data-reset>reset</button>
+      </div>
+    </div>
+    <slot name="approaches" />
+    <div data-editor hidden>
+      <slot name="editor" />
+    </div>
+    <p class="viz-error" data-error hidden></p>
+    <div class="viz-stage" data-stage></div>
+    <p class="viz-narration" data-narration></p>
+    <StepControls />
+  </div>
+  <div class="viz-static">
+    <p class="text-mono-eyebrow">STATIC VIEW · NO JS / REDUCED MOTION</p>
+    <slot name="static" />
+  </div>
+</div>

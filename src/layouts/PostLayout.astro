@@ -9,7 +9,7 @@ import SeriesNav from '../components/ui/SeriesNav.astro';
 import PostCard from '../components/ui/PostCard.astro';
 import Callout from '../components/ui/Callout.astro';
 import PostHeader from '../components/content/PostHeader.astro';
-import type { Post, SeriesEntry } from '../lib/content';
+import type { Post, SeriesEntry, SeriesNavPart } from '../lib/content';
 import Footnote from '../components/ui/Footnote.astro';
 import Figure from '../components/ui/Figure.astro';
 import CodeBlock from '../components/ui/CodeBlock.astro';
@@ -24,7 +24,7 @@ import styles from './PostLayout.module.css';
 interface Props {
   post: Post;
   series?: SeriesEntry;
-  seriesParts?: Post[];
+  seriesParts?: SeriesNavPart[];
   moreTils?: Post[];
 }
 

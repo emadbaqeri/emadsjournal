@@ -1,0 +1,21 @@
+---
+import type { Algorithm } from '../../lib/content';
+import { formatDate } from '../../lib/format';
+import styles from '../content/PostHeader.module.css';
+
+interface Props {
+  algorithm: Algorithm;
+  topic?: string;
+}
+const { algorithm, topic = 'ARRAYS' } = Astro.props;
+const slug = algorithm.id.split('/').pop() ?? algorithm.id;
+const eyebrow = `ALGO · CS / DSA / ${topic} / ${slug.toUpperCase()}`;
+---
+<header class={styles.header} data-track={algorithm.data.track}>
+  <p class:list={['text-mono-eyebrow', styles.eyebrow]}>{eyebrow}</p>
+  <h1 class:list={['text-heading-h1', styles.title]}>{algorithm.data.title}</h1>
+  <p class:list={['text-body-lead', styles.dek]}>{algorithm.data.description}</p>
+  <p class:list={['text-mono-meta', styles.meta]}>
+    <time datetime={algorithm.data.publishedAt.toISOString()}>{formatDate(algorithm.data.publishedAt)}</time>
+  </p>
+</header>

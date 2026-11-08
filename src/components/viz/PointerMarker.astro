@@ -1,0 +1,8 @@
+---
+interface Props {
+  label?: string;
+  kind?: 'default' | 'output';
+}
+const { label = '', kind = 'default' } = Astro.props;
+---
+<span data-kind={kind === 'output' ? 'output' : undefined}>{label}</span>
