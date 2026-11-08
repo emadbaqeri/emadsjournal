@@ -1,0 +1,109 @@
+---
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import {
+  cutSeconds,
+  formatClock,
+  mediaFromSrc,
+  parseSrt,
+  publicFilePath,
+} from '../../lib/motion';
+import styles from './MotionPlayer.module.css';
+
+interface Props {
+  src: string;
+  srtPath: string;
+  durationSeconds: number;
+  caption: string;
+}
+
+const { src, srtPath, durationSeconds, caption } = Astro.props;
+const media = mediaFromSrc(src);
+const cut = cutSeconds(durationSeconds);
+const srtRaw = await readFile(path.join(process.cwd(), 'public', publicFilePath(srtPath)), 'utf8');
+const cues = parseSrt(srtRaw);
+const slug = publicFilePath(src).replace(/\.[a-z0-9]+$/i, '').replace(/[^a-z0-9]+/gi, '-');
+const anchor = `motion-${slug}`;
+---
+
+<section class={styles.player} data-motion-player id={anchor}>
+  <a class:list={['text-mono-meta', styles.skip]} href={`#${anchor}-after`}>skip ↓</a>
+  <details class={styles.shell}>
+    <summary class={styles.summary}>
+      <span class:list={['text-mono-eyebrow', styles.eyebrow]}>
+        WATCH · OPTIONAL · {cut} S CUT
+      </span>
+      <span class:list={['text-body-small', styles.title]}>{caption}</span>
+      <span class:list={['text-mono-meta', styles.duration]}>{formatClock(durationSeconds)}</span>
+    </summary>
+    <div class={styles.stage}>
+      <div class={styles.frame}>
+        <img
+          class={styles.poster}
+          src={media.poster}
+          alt={caption}
+          width="1280"
+          height="720"
+          data-motion-poster
+        />
+        <button type="button" class:list={['text-mono-label', styles.play]} data-motion-play>
+          Play
+        </button>
+        <video
+          class={styles.video}
+          preload="metadata"
+          playsinline
+          poster={media.poster}
+          data-motion-video
+          hidden
+        >
+          <source src={media.webm} type="video/webm" />
+          <source src={media.mp4} type="video/mp4" />
+        </video>
+      </div>
+      <details class={styles.transcript}>
+        <summary class="text-mono-meta">Transcript</summary>
+        <ol class={styles.cues}>
+          {
+            cues.map((cue) => (
+              <li class={styles.cue}>
+                <time class="text-mono-meta" datetime={formatClock(cue.startSeconds)}>
+                  {formatClock(cue.startSeconds)}
+                </time>
+                <span class="text-body-small">{cue.text}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </details>
+      <p class:list={['text-mono-meta', styles.credit]}>
+        clip: Motion Studio · captions burned in · SRT
+      </p>
+    </div>
+  </details>
+</section>
+<span id={`${anchor}-after`}></span>
+
+<script>
+  function bindMotionPlayers() {
+    for (const root of document.querySelectorAll<HTMLElement>('[data-motion-player]')) {
+      if (root.dataset.bound) continue;
+      root.dataset.bound = 'true';
+      const video = root.querySelector<HTMLVideoElement>('[data-motion-video]');
+      const poster = root.querySelector<HTMLElement>('[data-motion-poster]');
+      const play = root.querySelector<HTMLButtonElement>('[data-motion-play]');
+      if (!video || !poster || !play) continue;
+      play.addEventListener('click', () => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        poster.hidden = true;
+        play.hidden = true;
+        video.hidden = false;
+        video.controls = true;
+        void video.play();
+      });
+    }
+  }
+
+  bindMotionPlayers();
+  document.addEventListener('astro:page-load', bindMotionPlayers);
+</script>

@@ -39,4 +39,4 @@ Phases follow the Build Partner handover, one reviewable chunk at a time.
 - Featured/current series is the ongoing series whose latest published part is newest.
 - Home and section filters are a bundled Astro script (matching ThemeToggle), not React. That matches the `client:idle` intent.
 - Layout column measures live in `src/styles/layout.css`, same idea as the 1024px desktop breakpoint.
-- `/algorithms` and `/algorithms/[slug]` land in Phase 5. Algorithm pages stay out of the home feed unless `listInFeed: true`. The motion player is omitted until clip files exist (Phase 6).
+- `/algorithms` and `/algorithms/[slug]` land in Phase 5. Algorithm pages stay out of the home feed unless `listInFeed: true`. Phase 6 ships MotionPlayer and the Worker playground; algorithm pages still omit the player until `motion` frontmatter points at real files.

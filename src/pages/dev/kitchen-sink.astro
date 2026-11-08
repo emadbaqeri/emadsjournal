@@ -5,6 +5,8 @@ import { TRACKS } from '../../lib/tracks';
 import { cssVarName } from '../../tokens/names';
 import tokens from '../../tokens/tokens.json';
 import styles from './kitchen-sink.module.css';
+import MotionPlayer from '../../components/motion/MotionPlayer.astro';
+import RunnableCodeBlock from '../../components/ui/RunnableCodeBlock.astro';
 
 const byName = Object.fromEntries(
   tokens.collections.map((collection) => [collection.name, collection]),
@@ -20,6 +22,9 @@ const trackColorVars = (byName.Track?.variables ?? []).filter(
 const trackStringVars = (byName.Track?.variables ?? []).filter(
   (variable) => variable.resolvedType === 'STRING',
 );
+
+const playground = `const greeting: string = 'hello, journal';
+console.log(greeting);`;
 
 const sample = `function twoNumberSum(array: number[], target: number) {
   const seen = new Set<number>();
@@ -189,6 +194,31 @@ const sample = `function twoNumberSum(array: number[], target: number) {
       <div class={styles.code}>
         <Code code={sample} lang="ts" />
       </div>
+    </section>
+
+    <section class={styles.section} aria-labelledby="motion-heading">
+      <h2 id="motion-heading" class="text-heading-h2">Motion player</h2>
+      <p class={`text-body-small ${styles.note}`}>
+        Fixture clip only, so the player can be reviewed without a production video.
+        Algorithm pages omit the player until a real clip is attached in frontmatter.
+      </p>
+      <MotionPlayer
+        src="/media/kitchen-sink-fixture.mp4"
+        srtPath="/media/kitchen-sink-fixture.srt"
+        durationSeconds={2}
+        caption="Kitchen-sink fixture"
+      />
+    </section>
+
+    <section class={styles.section} aria-labelledby="playground-heading">
+      <h2 id="playground-heading" class="text-heading-h2">Runnable TypeScript</h2>
+      <p class={`text-body-small ${styles.note}`}>
+        The expected output stays visible without JavaScript. With JavaScript, Run sends the
+        TypeScript to a Web Worker.
+      </p>
+      <RunnableCodeBlock filename="hello.ts" output="hello, journal">
+        <Code code={playground} lang="ts" />
+      </RunnableCodeBlock>
     </section>
   </div>
 </BaseLayout>

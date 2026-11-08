@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import MotionPlayer from './MotionPlayer.astro';
+
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+let motion:
+  | { src: string; srtPath: string; durationSeconds: number; caption: string }
+  | undefined;
+
+if (pathname.startsWith('/algorithms/')) {
+  const id = pathname.slice('/algorithms/'.length);
+  const entries = await getCollection('algorithms');
+  const entry = entries.find((item) => item.id === id);
+  motion = entry?.data.motion;
+} else if (pathname.startsWith('/posts/')) {
+  const id = pathname.slice('/posts/'.length);
+  const entries = await getCollection('posts');
+  const entry = entries.find((item) => item.id === id);
+  motion = entry?.data.motion;
+}
+---
+
+{motion ? <MotionPlayer {...motion} /> : null}

@@ -19,6 +19,8 @@ import BuildLogEntry from '../components/ui/BuildLogEntry.astro';
 import BookCard from '../components/ui/BookCard.astro';
 import ReadingLogEntry from '../components/ui/ReadingLogEntry.astro';
 import ChapterNote from '../components/ui/ChapterNote.astro';
+import MotionPlayer from '../components/motion/MotionPlayer.astro';
+import MotionSlot from '../components/motion/MotionSlot.astro';
 import styles from './PostLayout.module.css';
 
 interface Props {
@@ -46,6 +48,8 @@ const components = {
   BookCard,
   ReadingLogEntry,
   ChapterNote,
+  MotionPlayer,
+  MotionSlot,
 };
 ---
 
@@ -54,6 +58,7 @@ const components = {
     {centered ? (
       <div class={styles.center} data-track={post.data.track}>
         <PostHeader post={post} />
+        {post.data.motion && <MotionPlayer {...post.data.motion} />}
         <Prose>
           <Content components={components} />
         </Prose>
@@ -80,6 +85,7 @@ const components = {
             seriesPart={post.data.seriesOrder}
             seriesTotal={seriesParts.length || undefined}
           />
+          {post.data.motion && <MotionPlayer {...post.data.motion} />}
           <Prose>
             <Content components={components} />
           </Prose>

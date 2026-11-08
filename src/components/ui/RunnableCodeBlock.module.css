@@ -40,3 +40,38 @@
   white-space: pre-wrap;
   color: var(--color-terminal-fg);
 }
+
+.outputHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.run {
+  display: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-accent-default);
+  cursor: pointer;
+}
+
+.block[data-enhanced] .run {
+  display: inline;
+}
+
+.run:hover,
+.run:focus-visible {
+  color: var(--color-accent-strong);
+}
+
+.liveLabel,
+.live,
+.error {
+  margin: 0;
+}
+
+.error {
+  color: var(--color-danger, var(--color-accent-default));
+}

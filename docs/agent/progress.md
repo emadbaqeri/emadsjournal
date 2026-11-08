@@ -62,3 +62,12 @@
 - SeriesNav now takes generic `{ id, title, href, order }` parts so algorithm pages can sit in a series (Two Number Sum is part 3 of cs-foundations).
 - Playwright model tests in `tests/algorithms/models.spec.ts` step traces and assert parse errors plus final results, not pixels. `npm test` runs those; `npm test:e2e` is reserved for later UI specs.
 - Production draft fixture stays absent from the feed, indexes, RSS, and sitemap. Algorithm pages are in the sitemap and not listed on the home feed (`listInFeed: false`).
+
+## Phase 6
+
+- Status: complete pending review
+- `MotionPlayer` is click-to-play with `preload="metadata"`, no `autoplay`, and no SRT `<track>`. The transcript is a `<details>` list parsed from the SRT at build time. Under `prefers-reduced-motion: reduce`, the poster and transcript stay visible and playback does not start.
+- Posts render the player when `motion` frontmatter is set. Algorithm pages include a `<MotionSlot />` after the viz; the slot renders nothing until that entry has `motion` frontmatter and the media files exist. Do not ship a placeholder player.
+- Kitchen-sink has a clearly labelled fixture clip (`/media/kitchen-sink-fixture.*`) so the player can be reviewed without a production video.
+- `RunnableCodeBlock` stays static without JS. With JS, Run sends TypeScript to a Web Worker that transpiles with sucrase. `eval` / `new Function` live only inside that worker. Demo code cannot use `fetch`.
+- Real Sorted Squared Array clip files (mp4, webm, srt, poster) are still TODO for Emad.

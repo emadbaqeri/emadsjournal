@@ -1,0 +1,135 @@
+.player {
+  position: relative;
+  margin-block: var(--space-6);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+}
+
+.skip {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-4);
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.skip:hover,
+.skip:focus-visible {
+  color: var(--color-text-primary);
+}
+
+.shell {
+  margin: 0;
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  padding-right: var(--space-10);
+  cursor: pointer;
+  list-style: none;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.eyebrow,
+.duration {
+  color: var(--color-text-muted);
+}
+
+.title {
+  margin: 0;
+  max-width: 36rem;
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+.frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-code);
+}
+
+.poster,
+.video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video[hidden],
+.poster[hidden] {
+  display: none;
+}
+
+.play {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  translate: -50% -50%;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-pill, var(--radius-md));
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+.play:hover,
+.play:focus-visible {
+  border-color: var(--color-accent-default);
+  color: var(--color-accent-default);
+}
+
+.transcript {
+  margin: 0;
+}
+
+.transcript summary {
+  cursor: pointer;
+  color: var(--color-text-muted);
+}
+
+.cues {
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.cue {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
+  gap: var(--space-3);
+}
+
+.cue time {
+  color: var(--color-text-muted);
+}
+
+.credit {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .play,
+  .video {
+    display: none;
+  }
+}

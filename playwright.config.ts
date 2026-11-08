@@ -8,7 +8,7 @@ export default defineConfig({
   projects: [
     {
       name: 'models',
-      testMatch: '**/models.spec.ts',
+      testMatch: '**/*.spec.ts',
     },
   ],
 });

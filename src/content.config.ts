@@ -62,6 +62,14 @@ const algorithms = defineCollection({
     relatedPosts: z.array(reference('posts')).default([]),
     series: reference('series').optional(),
     seriesOrder: z.number().int().positive().optional(),
+    motion: z
+      .object({
+        src: z.string(),
+        srtPath: z.string(),
+        durationSeconds: z.number().positive(),
+        caption: z.string(),
+      })
+      .optional(),
   }),
 });
 

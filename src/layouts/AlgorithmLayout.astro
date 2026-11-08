@@ -16,6 +16,8 @@ import CommonTraps from '../components/algo/CommonTraps.astro';
 import TwoNumberSumViz from '../components/viz/TwoNumberSumViz.astro';
 import ValidateSubsequenceViz from '../components/viz/ValidateSubsequenceViz.astro';
 import TournamentWinnerViz from '../components/viz/TournamentWinnerViz.astro';
+import MotionPlayer from '../components/motion/MotionPlayer.astro';
+import MotionSlot from '../components/motion/MotionSlot.astro';
 import type { Algorithm, SeriesEntry, SeriesNavPart } from '../lib/content';
 import styles from './AlgorithmLayout.module.css';
 
@@ -47,6 +49,8 @@ const components = {
   TwoNumberSumViz,
   ValidateSubsequenceViz,
   TournamentWinnerViz,
+  MotionPlayer,
+  MotionSlot,
 };
 ---
 <BaseLayout title={`${algorithm.data.title} · emad/journal`}>

@@ -9,13 +9,29 @@ interface Props {
 const { filename, output } = Astro.props;
 ---
 
-<div class={styles.block}>
+<div class={styles.block} data-playground>
   {filename && <p class:list={['text-mono-meta', styles.header]}>{filename}</p>}
-  <div class={styles.code}>
+  <div class={styles.code} data-source>
     <slot />
   </div>
   <div class={styles.output}>
-    <p class:list={['text-mono-eyebrow', styles.legend]}>Output</p>
+    <div class={styles.outputHeader}>
+      <p class:list={['text-mono-eyebrow', styles.legend]}>Output</p>
+      <button type="button" class:list={['text-mono-meta', styles.run]} data-playground-run hidden>
+        Run
+      </button>
+    </div>
     <pre class="text-mono-code">{output}</pre>
+    <p class:list={['text-mono-eyebrow', styles.legend, styles.liveLabel]} data-live-label hidden>
+      Result
+    </p>
+    <pre class:list={['text-mono-code', styles.live]} data-live-output hidden></pre>
+    <p class:list={['text-mono-code', styles.error]} data-live-error hidden></p>
   </div>
 </div>
+
+<script>
+  import { bindPlaygrounds } from '../../lib/playground-runtime';
+  bindPlaygrounds();
+  document.addEventListener('astro:page-load', bindPlaygrounds);
+</script>
