@@ -6,8 +6,14 @@
 }
 
 .text-link {
-  color: var(--astro-code-token-link);
-  text-decoration-line: underline;
-  text-decoration-thickness: 1px;
+  color: var(--color-text-primary);
+  text-decoration-line: none;
   text-underline-offset: 0.18em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .text-link:hover {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+  }
 }
