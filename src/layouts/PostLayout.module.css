@@ -1,4 +1,7 @@
 .center {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
   max-width: var(--column-main);
   margin-inline: auto;
 }
@@ -7,7 +10,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  margin-top: var(--space-8);
+  margin-top: calc(var(--space-8) - var(--space-6));
 }
 
 .more h2 {
@@ -16,7 +19,7 @@
 }
 
 .inlineToc {
-  margin-bottom: var(--space-6);
+  margin: 0;
 }
 
 .sidebarToc {

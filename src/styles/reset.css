@@ -7,11 +7,13 @@
 html {
   background-color: var(--color-bg-canvas);
   color-scheme: inherit;
+  /* Theme swaps custom properties in place. Do not fade color or background. */
+  transition: none;
 }
 
 body {
   margin: 0;
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   background-color: var(--color-bg-canvas);
@@ -19,6 +21,7 @@ body {
   font-family: var(--font-sans);
   font-size: var(--font-size-base);
   line-height: var(--line-height-body);
+  transition: none;
 }
 
 main {
@@ -31,4 +34,58 @@ a {
 
 button {
   font: inherit;
+}
+
+input,
+textarea,
+select {
+  font-size: var(--font-size-base);
+}
+
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent-default);
+  outline-offset: 2px;
+}
+
+@media (pointer: coarse) {
+  a,
+  button,
+  summary {
+    position: relative;
+  }
+
+  a::before,
+  button::before,
+  summary::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+
+  [data-prose] a::before {
+    content: none;
+  }
+
+  input[type='range'] {
+    min-height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
 }

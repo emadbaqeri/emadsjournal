@@ -10,7 +10,7 @@ const { filename } = Astro.props;
 
 <div class={styles.block}>
   {filename && <p class:list={['text-mono-meta', styles.header]}>{filename}</p>}
-  <div class={styles.code}>
+  <div class={styles.code} data-code-scroll tabindex="0">
     <slot />
   </div>
 </div>

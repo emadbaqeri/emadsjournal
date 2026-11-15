@@ -21,9 +21,9 @@ const hasAside = Astro.slots.has('aside');
       <PageIntro eyebrow={eyebrow} title={heading} lead={lead} />
       <slot />
       {hasAside && (
-        <fragment slot="aside">
+        <Fragment slot="aside">
           <slot name="aside" />
-        </fragment>
+        </Fragment>
       )}
     </TwoColumn>
   </PageFrame>

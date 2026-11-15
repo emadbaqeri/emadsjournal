@@ -25,9 +25,10 @@
   text-decoration: none;
 }
 
-.item a:hover,
-.item a:focus-visible {
-  color: var(--color-text-primary);
+@media (hover: hover) and (pointer: fine) {
+  .item a:hover {
+    color: var(--color-text-primary);
+  }
 }
 
 .nested {
@@ -39,4 +40,25 @@
   border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-md);
   background: var(--color-bg-surface);
+}
+
+.disclosure {
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+}
+
+.summary {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.disclosure .list {
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+.disclosure[open] .summary {
+  margin-bottom: var(--space-2);
 }

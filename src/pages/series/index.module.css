@@ -1,0 +1,15 @@
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.card > :global(*) {
+  margin: 0;
+}

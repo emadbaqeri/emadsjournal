@@ -5,6 +5,7 @@ import PageIntro from '../../components/ui/PageIntro.astro';
 import FilterBar from '../../components/ui/FilterBar.astro';
 import TwoColumn from '../../components/ui/TwoColumn.astro';
 import { getSeriesEntries, getPostsInSeries, getSeriesPath } from '../../lib/content';
+import styles from './index.module.css';
 
 const seriesEntries = await getSeriesEntries();
 const listed = await Promise.all(
@@ -24,15 +25,17 @@ const listed = await Promise.all(
         lead="Longer arcs, ordered part by part."
       />
       <FilterBar pathname="/series" trackFilter="all" />
-      <div>
+      <div class={styles.feed}>
         {listed.map(({ series, parts }) => (
-          <article data-feed-item data-track-id={series.data.track} data-track={series.data.track}>
+          <article class={styles.card} data-feed-item data-track-id={series.data.track} data-track={series.data.track}>
             <p class="text-mono-eyebrow">{series.data.track === 'cs' ? 'CS' : 'Security'}</p>
             <h2 class="text-heading-h3">
-              <a href={getSeriesPath(series)}>{series.data.title}</a>
+              <a class="text-link" href={getSeriesPath(series)}>{series.data.title}</a>
             </h2>
             <p class="text-body-small">{series.data.description}</p>
-            <p class="text-mono-meta">{parts.length} parts · {series.data.status}</p>
+            <p class="text-mono-meta">
+              {parts.length} part{parts.length === 1 ? '' : 's'} · {series.data.status}
+            </p>
           </article>
         ))}
         <p class="text-mono-meta" data-feed-empty hidden>

@@ -5,6 +5,9 @@
 }
 
 .main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
   min-width: 0;
   max-width: var(--column-main);
 }

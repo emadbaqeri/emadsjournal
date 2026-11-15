@@ -12,9 +12,10 @@
   text-decoration: none;
 }
 
-.title a:hover,
-.title a:focus-visible {
-  color: var(--track-accent);
+@media (hover: hover) and (pointer: fine) {
+  .title a:hover {
+    color: var(--track-accent);
+  }
 }
 
 .meta,
@@ -38,15 +39,52 @@
 }
 
 .til {
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 10ch max-content minmax(0, 1fr) max-content;
   align-items: center;
-  gap: var(--space-4);
+  column-gap: var(--space-4);
+  row-gap: var(--space-2);
   padding-block: var(--space-3);
   border-bottom: 1px solid var(--color-border-subtle);
 }
 
+.til .meta,
+.til .topic {
+  white-space: nowrap;
+}
+
 .til .title {
-  flex: 1 1 auto;
+  min-width: 0;
+}
+
+@media (max-width: 480px) {
+  .til {
+    grid-template-columns: 10ch max-content minmax(0, 1fr);
+    grid-template-areas:
+      'date label tag'
+      'title title title';
+  }
+
+  .til > :nth-child(1) {
+    grid-area: date;
+  }
+
+  .til > :nth-child(2) {
+    grid-area: label;
+  }
+
+  .til > :nth-child(3) {
+    grid-area: title;
+  }
+
+  .til > :nth-child(4) {
+    grid-area: tag;
+    justify-self: end;
+  }
+}
+
+.card + .build-log {
+  margin-top: var(--space-4);
 }
 
 .essay,

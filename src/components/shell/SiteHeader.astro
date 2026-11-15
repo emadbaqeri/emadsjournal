@@ -27,8 +27,9 @@ const pathname = Astro.url.pathname;
     <ThemeToggle />
   </nav>
 
-  <details class={styles.menu}>
+  <details class={styles.menu} data-menu>
     <summary class={styles.menuToggle}>menu ≡</summary>
+    <div class={styles.scrim} data-menu-scrim aria-hidden="true"></div>
     <nav class={styles.panel} aria-label="Primary">
       {
         PRIMARY_NAV.map((item) => (
@@ -45,3 +46,42 @@ const pathname = Astro.url.pathname;
     </nav>
   </details>
 </header>
+
+<script>
+  function bindMenus(): void {
+    document.querySelectorAll<HTMLDetailsElement>('[data-menu]').forEach((menu) => {
+      if (menu.dataset.menuBound === 'true') return;
+      menu.dataset.menuBound = 'true';
+      const summary = menu.querySelector('summary');
+      const close = () => {
+        if (!menu.open) return;
+        menu.open = false;
+        summary?.focus();
+      };
+
+      menu.querySelector('[data-menu-scrim]')?.addEventListener('click', close);
+      menu.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+          menu.open = false;
+          summary?.focus();
+        });
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape' || !menu.open) return;
+        event.preventDefault();
+        close();
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!menu.open) return;
+        const target = event.target;
+        if (!(target instanceof Node) || menu.contains(target)) return;
+        close();
+      });
+    });
+  }
+
+  bindMenus();
+  document.addEventListener('astro:page-load', bindMenus);
+</script>

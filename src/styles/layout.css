@@ -4,3 +4,10 @@
   --column-main: 718px;
   --column-aside: 400px;
 }
+
+.text-link {
+  color: var(--astro-code-token-link);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}

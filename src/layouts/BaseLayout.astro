@@ -5,6 +5,7 @@ import '../styles/reset.css';
 import '../styles/breakpoints.css';
 import '../styles/layout.css';
 import '../styles/viz.css';
+import '../styles/code-scroll.css';
 import SiteHeader from '../components/shell/SiteHeader.astro';
 import SiteFooter from '../components/shell/SiteFooter.astro';
 
@@ -20,7 +21,7 @@ const { title = 'emad/journal', noindex = false } = Astro.props;
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     {noindex && <meta name="robots" content="noindex" />}
     <title>{title}</title>
     <script is:inline src="/theme-init.js"></script>
@@ -45,5 +46,11 @@ const { title = 'emad/journal', noindex = false } = Astro.props;
       <slot />
     </main>
     <SiteFooter />
+    <script>
+      import { bindCodeScrollers } from '../lib/code-scroll';
+
+      bindCodeScrollers();
+      document.addEventListener('astro:page-load', bindCodeScrollers);
+    </script>
   </body>
 </html>

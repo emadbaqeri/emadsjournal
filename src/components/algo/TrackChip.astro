@@ -7,4 +7,4 @@ interface Props {
 const { track } = Astro.props;
 const meta = getTrack(track);
 ---
-<a class="track-chip" href={`/track/${track}`}>{meta.glyph} {meta.label}</a>
+<a class="track-chip text-mono-label" href={`/track/${track}`}>{meta.glyph} {meta.label}</a>

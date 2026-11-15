@@ -61,9 +61,10 @@
   display: inline;
 }
 
-.run:hover,
-.run:focus-visible {
-  color: var(--color-accent-strong);
+@media (hover: hover) and (pointer: fine) {
+  .run:hover {
+    color: var(--color-accent-strong);
+  }
 }
 
 .liveLabel,

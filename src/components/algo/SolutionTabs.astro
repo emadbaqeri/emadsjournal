@@ -25,7 +25,7 @@ const langs = [
   </div>
   {langs.map((lang, index) => (
     <div class="solution-code" data-panel={lang.id} hidden={index !== 0}>
-      <pre><code>{lang.code}</code></pre>
+      <pre data-code-scroll tabindex="0"><code>{lang.code}</code></pre>
     </div>
   ))}
 </section>
