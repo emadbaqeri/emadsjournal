@@ -1,8 +1,9 @@
-.page {
+div.page {
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
   width: min(100%, var(--layout-reading));
+  max-width: var(--layout-reading);
   margin-inline: auto;
 }
 
@@ -46,9 +47,9 @@
 }
 
 @media (min-width: 1024px) {
-  .page {
+  div.page {
     width: 100%;
-    max-width: none;
+    max-width: var(--layout-container-max);
   }
 
   .groups {

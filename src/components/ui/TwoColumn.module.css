@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: var(--layout-gap);
   width: min(100%, var(--layout-reading));
+  max-width: var(--layout-reading);
   margin-inline: auto;
 }
 
@@ -27,10 +28,12 @@
   .layout:has(.aside) {
     display: grid;
     grid-template-columns:
-      minmax(var(--layout-main-min), 1fr)
-      minmax(var(--layout-aside-min), var(--layout-aside));
+      minmax(var(--layout-main-min), var(--layout-reading))
+      var(--layout-aside);
     align-items: start;
-    gap: var(--layout-gap);
+    column-gap: var(--layout-gap);
+    row-gap: var(--layout-gap);
+    justify-content: center;
     width: 100%;
     max-width: none;
     margin-inline: 0;
@@ -42,8 +45,14 @@
   }
 
   .layout:has(.aside) .aside {
+    align-self: start;
     grid-column: 2;
     grid-row: 1 / span 2;
+  }
+
+  .layout:has(.aside) .aside[data-sticky] {
+    position: sticky;
+    top: calc(var(--layout-header-block) + var(--space-5));
   }
 
   .layout:has(.aside) .after {

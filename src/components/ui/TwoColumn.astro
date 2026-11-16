@@ -1,22 +1,54 @@
 ---
 import styles from './TwoColumn.module.css';
 
-const hasAside = Astro.slots.has('aside');
+const asideHtml = await Astro.slots.render('aside');
+const hasAside = Boolean(asideHtml?.trim());
 const hasAfter = Astro.slots.has('after');
 ---
 
-<div class={styles.layout}>
-  <div class={styles.main}>
-    <slot />
-  </div>
-  {hasAside && (
-    <aside class={styles.aside}>
-      <slot name="aside" />
-    </aside>
-  )}
-  {hasAfter && (
-    <div class={styles.after}>
-      <slot name="after" />
+<div class={hasAside ? 'container' : undefined}>
+  <div class={styles.layout}>
+    <div class={styles.main}>
+      <slot />
     </div>
-  )}
+    {hasAside && <aside class={styles.aside} data-rail set:html={asideHtml} />}
+    {hasAfter && (
+      <div class={styles.after}>
+        <slot name="after" />
+      </div>
+    )}
+  </div>
 </div>
+
+<script>
+  function railFits(rail: HTMLElement): boolean {
+    const header = document.querySelector('header');
+    const headerHeight = header?.offsetHeight ?? 0;
+    const space = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--space-5'));
+    const top = headerHeight + (Number.isFinite(space) ? space : 0);
+    return rail.scrollHeight <= window.innerHeight - top;
+  }
+
+  function bindRails(): void {
+    const desktop = window.matchMedia('(min-width: 1024px)');
+    document.querySelectorAll<HTMLElement>('[data-rail]').forEach((rail) => {
+      const apply = () => {
+        if (!desktop.matches || !railFits(rail)) {
+          delete rail.dataset.sticky;
+          return;
+        }
+        rail.dataset.sticky = 'true';
+      };
+      if (rail.dataset.railBound !== 'true') {
+        rail.dataset.railBound = 'true';
+        const observer = new ResizeObserver(apply);
+        observer.observe(rail);
+        window.addEventListener('resize', apply);
+      }
+      apply();
+    });
+  }
+
+  bindRails();
+  document.addEventListener('astro:page-load', bindRails);
+</script>
