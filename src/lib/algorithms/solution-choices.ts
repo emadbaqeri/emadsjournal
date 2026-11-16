@@ -4,10 +4,19 @@ export interface Marker {
   start: string;
 }
 
+export interface SolutionLanguage {
+  id: string;
+  label: string;
+  lang?: string;
+  filename?: string;
+}
+
 export interface SolutionChoice {
   id: string;
   label: string;
   code: string;
+  lang: string;
+  filename: string;
 }
 
 export function sliceFromMarkers(
@@ -33,7 +42,7 @@ export function sliceFromMarkers(
 
 export function pairChoices(
   approaches: { id: string; label: string; byLang: Record<string, string> }[],
-  languages: { id: string; label: string }[],
+  languages: SolutionLanguage[],
 ): SolutionChoice[] {
   const choices: SolutionChoice[] = [];
   for (const approach of approaches) {
@@ -44,6 +53,8 @@ export function pairChoices(
         id: `${approach.id}-${language.id}`,
         label: `${approach.label} · ${language.label}`,
         code,
+        lang: language.lang ?? language.id,
+        filename: language.filename ?? `${approach.id}.${language.id}`,
       });
     }
   }

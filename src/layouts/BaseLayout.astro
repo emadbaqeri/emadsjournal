@@ -6,6 +6,7 @@ import '../styles/breakpoints.css';
 import '../styles/layout.css';
 import '../styles/viz.css';
 import '../styles/code-scroll.css';
+import '../styles/code-blocks.css';
 import SiteHeader from '../components/shell/SiteHeader.astro';
 import SiteFooter from '../components/shell/SiteFooter.astro';
 
@@ -49,12 +50,15 @@ const { title = 'emad/journal', noindex = false } = Astro.props;
     <script>
       import { bindCodeScrollers } from '../lib/code-scroll';
       import { bindCopyButtons } from '../lib/copy-label';
+      import { bindCodeCopyTiming } from '../lib/code-copy';
 
       bindCodeScrollers();
       bindCopyButtons();
+      bindCodeCopyTiming();
       document.addEventListener('astro:page-load', () => {
         bindCodeScrollers();
         bindCopyButtons();
+        bindCodeCopyTiming();
       });
     </script>
   </body>

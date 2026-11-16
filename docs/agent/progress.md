@@ -83,3 +83,17 @@
 - `.container` caps the content grid and the header/footer inners at `--layout-container-max` (1088). Header and footer stay full-bleed; 48/96 padding stays on the shell.
 - Pages with no sidebar keep a centred 720 column. The logo stays on the 1088 container.
 - The aside sticks at `header + --space-5` only when it fits in the viewport. No inner scroll box. Below 1024 the stacked column is unchanged.
+
+## Craft pass 4
+
+- Status: in review
+- Code blocks render with Expressive Code (`astro-expressive-code` 0.44.x) and `@expressive-code/plugin-line-numbers`. Config lives in `ec.config.mjs` so fenced blocks and the `<Code>` component share it. The integration is registered before `mdx()`.
+- Themes: `src/styles/code-themes/emad-dark.json` and `emad-light.json`. Dark is the unscoped default (`themeCssSelector` returns `false`). Light is `[data-theme="light"]`. `useDarkModeMediaQuery` is off, so the toggle and `theme-init.js` stay in charge and there is no theme flash.
+- Line numbers default on. Shell languages use a terminal frame with numbers off. Blocks of 1–3 lines turn numbers off in the Short snippets plugin, after defaults are applied and before the line-numbers gutter is added.
+- `color/code/*` tokens (both modes) generate `--color-code-*`. `--color-bg-code` aliases `--color-code-bg`. `--astro-code-*` point at the code tokens. Unused `--shiki-*` aliases are removed; nothing else referenced them.
+- Solution tabs render each language through `<Code>` (title = filename). The shared copy button is gone. The 320px stage keeps the header fixed and scrolls the code on an inner scroller, so the last lines clear the bottom fade. Problem and trap examples on the algorithm pages are prose, so they stay plain `<pre>` and use the code tokens.
+- `CodeBlock` and `RunnableCodeBlock` both render an Expressive Code block. The runnable keeps the raw source in a hidden textarea so Run does not copy line numbers.
+- `minSyntaxHighlightingColorContrast` is `0` so the palette is not rewritten. `useThemedSelectionColors` is on so `codeSelectionBackground` applies.
+- Style keys that differ from the shorthand in the brief: `editorActiveTabIndicatorTopColor` and `editorActiveTabIndicatorBottomColor` (not `IndicatorTop` / `IndicatorBottom`). There is no `markDiffIndicatorColor`; mark uses background and border only. `editorActiveTabIndicatorHeight` is `0` so the flat header does not keep a tab indicator's space.
+- Zig stays available because `shiki.bundledLangs` is unset and the full Shiki bundle includes it. No `.zig` solution files exist, so the language tabs stay TS, Rust, and C. The kitchen sink snippet is Zig.
+- No fenced block was added to a fixture post. The fixtures are placeholder paragraphs, not code notes.

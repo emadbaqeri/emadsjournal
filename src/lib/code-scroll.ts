@@ -12,7 +12,9 @@ function fadeState(el: HTMLElement): '' | 'start' | 'end' | 'both' {
 }
 
 function scrollers(): HTMLElement[] {
-  return Array.from(document.querySelectorAll<HTMLElement>('pre, [data-code-scroll]'));
+  return Array.from(document.querySelectorAll<HTMLElement>('pre, [data-code-scroll]')).filter(
+    (el) => !el.closest('.expressive-code') && !el.closest('[data-solution-scroll]'),
+  );
 }
 
 function refresh(): void {

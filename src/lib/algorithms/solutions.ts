@@ -26,9 +26,9 @@ export function getSolutions(slug: string): SolutionSet | undefined {
 }
 
 const LANGUAGES = [
-  { id: 'ts', label: 'TS' },
-  { id: 'rust', label: 'Rust' },
-  { id: 'c', label: 'C' },
+  { id: 'ts', label: 'TS', lang: 'ts', filename: 'mod.ts' },
+  { id: 'rust', label: 'Rust', lang: 'rust', filename: 'main.rs' },
+  { id: 'c', label: 'C', lang: 'c', filename: 'solution.c' },
 ] as const;
 
 function langCode(set: SolutionSet, id: string): string {

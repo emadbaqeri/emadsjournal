@@ -1,18 +1,21 @@
 ---
+import { Code } from 'astro-expressive-code/components';
 import styles from './RunnableCodeBlock.module.css';
 
 interface Props {
   filename?: string;
+  lang?: string;
+  code: string;
   output: string;
 }
 
-const { filename, output } = Astro.props;
+const { filename, lang = 'ts', code, output } = Astro.props;
 ---
 
 <div class={styles.block} data-playground>
-  {filename && <p class:list={['text-mono-meta', styles.header]}>{filename}</p>}
-  <div class={styles.code} data-source data-code-scroll tabindex="0">
-    <slot />
+  <textarea class={styles.source} data-source hidden readonly>{code}</textarea>
+  <div class={styles.code}>
+    <Code code={code} lang={lang} title={filename} />
   </div>
   <div class={styles.output}>
     <div class={styles.outputHeader}>
