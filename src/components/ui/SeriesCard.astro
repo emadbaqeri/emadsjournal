@@ -1,0 +1,36 @@
+---
+import type { SeriesEntry } from '../../lib/content';
+import { getSeriesPath } from '../../lib/content';
+import { plural } from '../../lib/format';
+import styles from './SeriesCard.module.css';
+
+interface Props {
+  series: SeriesEntry;
+  partCount: number;
+}
+
+const { series, partCount } = Astro.props;
+const href = getSeriesPath(series);
+---
+
+<article class:list={[styles.card, 'hit-card']} data-track={series.data.track} data-feed-item data-track-id={series.data.track}>
+  <p class:list={['text-mono-meta', styles.status]}>
+    <span class={styles.dot} aria-hidden="true"></span>
+    {series.data.status}
+  </p>
+  <h3 class:list={['text-heading-h3', styles.title]}>
+    <a href={href}>{series.data.title}</a>
+  </h3>
+  <p class:list={['text-body-small', styles.description]}>{series.data.description}</p>
+  {partCount > 0 && (
+    <div class={styles.rail} aria-hidden="true">
+      {Array.from({ length: partCount }, () => (
+        <span class={styles.seg}></span>
+      ))}
+    </div>
+  )}
+  <div class={styles.foot}>
+    <p class:list={['text-mono-meta', styles.count]}>{plural(partCount, 'part')}</p>
+    <a class={styles.more} href={href}>Read series →</a>
+  </div>
+</article>

@@ -71,3 +71,9 @@
 - Kitchen-sink has a clearly labelled fixture clip (`/media/kitchen-sink-fixture.*`) so the player can be reviewed without a production video.
 - `RunnableCodeBlock` stays static without JS. With JS, Run sends TypeScript to a Web Worker that transpiles with sucrase. `eval` / `new Function` live only inside that worker. Demo code cannot use `fetch`.
 - Real Sorted Squared Array clip files (mp4, webm, srt, poster) are still TODO for Emad.
+
+## Craft pass 2
+
+- Status: in review
+- Layout tokens live in `src/styles/layout.css`. Motion tokens are `--motion-duration-*` and `--motion-ease-out` only.
+- Series index and series posts share `getSeriesNavParts` (posts plus algorithms). CS foundations is 3 parts, including Two Number Sum.

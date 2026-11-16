@@ -2,11 +2,27 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+  min-width: 0;
 }
 
 .legend {
   margin: 0;
   color: var(--color-text-muted);
+}
+
+.listWrap {
+  position: relative;
+}
+
+.indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  background: var(--track-accent, var(--color-accent-default));
+  transform: translateY(0);
+  transition: transform var(--motion-duration-base) var(--motion-ease-out);
+  pointer-events: none;
 }
 
 .list {
@@ -21,14 +37,41 @@
 }
 
 .item a {
+  display: flex;
+  gap: var(--space-3);
+  align-items: baseline;
   color: var(--color-text-secondary);
   text-decoration: none;
 }
 
+.num {
+  min-width: 2.5ch;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.item[data-active='true'] a {
+  color: var(--color-text-primary);
+}
+
+.item[data-active='true'] .num {
+  color: var(--track-accent, var(--color-accent-default));
+}
+
 @media (hover: hover) and (pointer: fine) {
-  .item a:hover {
+  .item:hover {
+    border-left-color: var(--color-border-default);
+  }
+
+  .item:hover a {
     color: var(--color-text-primary);
   }
+}
+
+.item:active {
+  background: var(--color-bg-raised);
 }
 
 .nested {
@@ -36,10 +79,7 @@
 }
 
 .inline {
-  padding: var(--space-5);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-md);
-  background: var(--color-bg-surface);
+  margin: 0;
 }
 
 .disclosure {
@@ -53,12 +93,19 @@
   padding: var(--space-3) var(--space-4);
   color: var(--color-text-muted);
   cursor: pointer;
+  min-height: var(--layout-touch);
+  display: flex;
+  align-items: center;
 }
 
-.disclosure .list {
+.disclosure .listWrap {
   padding: 0 var(--space-4) var(--space-4);
 }
 
 .disclosure[open] .summary {
   margin-bottom: var(--space-2);
+}
+
+.sidebar {
+  display: block;
 }

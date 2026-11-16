@@ -4,7 +4,7 @@ import PageFrame from '../../components/shell/PageFrame.astro';
 import PageIntro from '../../components/ui/PageIntro.astro';
 import TwoColumn from '../../components/ui/TwoColumn.astro';
 import { getAlgorithms, getAlgorithmPath } from '../../lib/content';
-import { formatDate } from '../../lib/format';
+import { formatShortDate } from '../../lib/format';
 
 const algorithms = await getAlgorithms();
 ---
@@ -21,7 +21,7 @@ const algorithms = await getAlgorithms();
           <article>
             <p class="text-mono-meta">
               <time datetime={algorithm.data.publishedAt.toISOString()}>
-                {formatDate(algorithm.data.publishedAt)}
+                {formatShortDate(algorithm.data.publishedAt)}
               </time>
             </p>
             <h2 class="text-heading-h2">

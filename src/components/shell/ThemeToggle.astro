@@ -1,14 +1,21 @@
 ---
 import styles from './ThemeToggle.module.css';
+
+interface Props {
+  variant?: 'nav' | 'sheet';
+}
+
+const { variant = 'nav' } = Astro.props;
 ---
 
 <button
   type="button"
   class={styles.toggle}
   data-theme-toggle
+  data-theme-variant={variant}
   aria-label="Theme: dark"
 >
-  ◐ theme
+  <span aria-hidden="true">◐ </span><span data-theme-name>{variant === 'sheet' ? 'dark' : 'theme'}</span>
 </button>
 
 <script>
@@ -16,12 +23,17 @@ import styles from './ThemeToggle.module.css';
     cycleTheme,
     persistTheme,
     readStoredTheme,
+    resolveTheme,
   } from '../../lib/theme';
 
   function sync(button: HTMLButtonElement) {
     const pref = readStoredTheme();
     button.setAttribute('aria-label', `Theme: ${pref}`);
     button.dataset.themePref = pref;
+    const name = button.querySelector('[data-theme-name]');
+    if (button.dataset.themeVariant === 'sheet' && name) {
+      name.textContent = resolveTheme(pref);
+    }
   }
 
   function bind(button: HTMLButtonElement) {

@@ -133,7 +133,7 @@ function hrefFor(updates: { type?: string | null; track?: string | null; tag?: s
       if (show) visible += 1;
     });
 
-    document.querySelectorAll<HTMLElement>('[data-month-group]').forEach((group) => {
+    document.querySelectorAll<HTMLElement>('[data-month-group], [data-track-group]').forEach((group) => {
       const anyVisible = group.querySelectorAll<HTMLElement>('[data-feed-item]:not([hidden])').length > 0;
       group.hidden = !anyVisible;
     });

@@ -14,29 +14,118 @@ interface Props {
 
 const { headings, variant = 'sidebar' } = Astro.props;
 const items = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 3);
+let h2 = 0;
+let h3 = 0;
+const numbered = items.map((heading) => {
+  if (heading.depth === 2) {
+    h2 += 1;
+    h3 = 0;
+    return { ...heading, num: String(h2) };
+  }
+  h3 += 1;
+  return { ...heading, num: `${h2}.${h3}` };
+});
 ---
 
-{items.length > 0 && variant === 'inline' && (
-  <details class={styles.disclosure}>
-    <summary class:list={['text-mono-eyebrow', styles.summary]}>On this page</summary>
-    <ol class={styles.list}>
-      {items.map((heading) => (
-        <li class:list={[styles.item, heading.depth === 3 && styles.nested]}>
-          <a class="text-body-small" href={`#${heading.slug}`}>{heading.text}</a>
-        </li>
-      ))}
-    </ol>
-  </details>
-)}
-{items.length > 0 && variant !== 'inline' && (
-  <nav class:list={[styles.toc, styles[variant]]} aria-label="On this page">
-    <p class:list={['text-mono-eyebrow', styles.legend]}>On this page</p>
-    <ol class={styles.list}>
-      {items.map((heading) => (
-        <li class:list={[styles.item, heading.depth === 3 && styles.nested]}>
-          <a class="text-body-small" href={`#${heading.slug}`}>{heading.text}</a>
-        </li>
-      ))}
-    </ol>
+{numbered.length > 0 && (
+  <nav class:list={[styles.toc, styles[variant]]} data-toc aria-label="On this page">
+    {variant === 'inline' ? (
+      <details class={styles.disclosure}>
+        <summary class:list={['text-mono-eyebrow', styles.summary]}>On this page</summary>
+        <div class={styles.listWrap}>
+          <span class={styles.indicator} data-toc-indicator></span>
+          <ol class={styles.list}>
+            {numbered.map((heading) => (
+              <li
+                class:list={[styles.item, heading.depth === 3 && styles.nested]}
+                data-toc-item
+                data-slug={heading.slug}
+              >
+                <a class="text-body-small" href={`#${heading.slug}`}>
+                  <span class={styles.num}>{heading.num}</span>
+                  <span>{heading.text}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </details>
+    ) : (
+      <>
+        <p class:list={['text-mono-eyebrow', styles.legend]}>On this page</p>
+        <div class={styles.listWrap}>
+          <span class={styles.indicator} data-toc-indicator></span>
+          <ol class={styles.list}>
+            {numbered.map((heading) => (
+              <li
+                class:list={[styles.item, heading.depth === 3 && styles.nested]}
+                data-toc-item
+                data-slug={heading.slug}
+              >
+                <a class="text-body-small" href={`#${heading.slug}`}>
+                  <span class={styles.num}>{heading.num}</span>
+                  <span>{heading.text}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </>
+    )}
   </nav>
 )}
+
+<script>
+  interface Link {
+    item: HTMLElement;
+    id: string;
+    heading: HTMLElement;
+  }
+
+  function visible(el: HTMLElement): boolean {
+    return el.getClientRects().length > 0;
+  }
+
+  function place(nav: HTMLElement): void {
+    if (!visible(nav)) return;
+    const indicator = nav.querySelector<HTMLElement>('[data-toc-indicator]');
+    const links: Link[] = [];
+    nav.querySelectorAll<HTMLElement>('[data-toc-item]').forEach((item) => {
+      const id = item.dataset.slug;
+      const heading = id ? document.getElementById(id) : null;
+      if (id && heading) links.push({ item, id, heading });
+    });
+    if (!indicator || links.length === 0) return;
+
+    const line = 128;
+    let active = links[0];
+    for (const link of links) {
+      if (link.heading.getBoundingClientRect().top - line <= 0) active = link;
+    }
+    for (const link of links) {
+      link.item.dataset.active = link === active ? 'true' : 'false';
+    }
+    indicator.hidden = false;
+    indicator.style.height = `${active.item.offsetHeight}px`;
+    indicator.style.transform = `translateY(${active.item.offsetTop}px)`;
+  }
+
+  function bindTocs(): void {
+    const navs = Array.from(document.querySelectorAll<HTMLElement>('[data-toc]'));
+    navs.forEach((nav) => {
+      if (nav.dataset.tocReady === 'true') return;
+      nav.dataset.tocReady = 'true';
+      nav.querySelector('details')?.addEventListener('toggle', () => place(nav));
+    });
+    const update = () => document.querySelectorAll<HTMLElement>('[data-toc]').forEach(place);
+    update();
+    if (document.documentElement.dataset.tocBound === 'true') return;
+    document.documentElement.dataset.tocBound = 'true';
+    document.addEventListener('scroll', update, { passive: true, capture: true });
+    window.addEventListener('resize', update);
+    window.addEventListener('hashchange', update);
+  }
+
+  bindTocs();
+  document.addEventListener('astro:page-load', bindTocs);
+</script>

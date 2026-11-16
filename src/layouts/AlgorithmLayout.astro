@@ -66,20 +66,17 @@ const components = {
         <Prose>
           <Content components={components} />
         </Prose>
-        {series && (
-          <div class={styles.series}>
-            <p class="text-mono-eyebrow">
-              Series · {series.data.title}
-              {algorithm.data.seriesOrder ? ` · Part ${algorithm.data.seriesOrder} of ${seriesParts.length || algorithm.data.seriesOrder}` : ''}
-            </p>
-            <SeriesNav series={series} parts={seriesParts} variant="prev-next" currentId={algorithm.id} />
-          </div>
-        )}
         <Fragment slot="aside">
           {tocHeadings.length > 0 && (
             <div class={styles.sidebarToc}>
               <TOC headings={tocHeadings} variant="sidebar" />
             </div>
+          )}
+          {series && (
+            <section class={styles.railBlock}>
+              <h2 class:list={['text-mono-eyebrow', styles.railLabel]}>In this series</h2>
+              <SeriesNav series={series} parts={seriesParts} variant="list" currentId={algorithm.id} />
+            </section>
           )}
           <TrackChip track={algorithm.data.track} />
           <section class="glance" aria-label="At a glance">
@@ -89,6 +86,11 @@ const components = {
             ))}
           </section>
         </Fragment>
+        {series && (
+          <div slot="after" class={styles.series}>
+            <SeriesNav series={series} parts={seriesParts} variant="prev-next" currentId={algorithm.id} />
+          </div>
+        )}
       </TwoColumn>
     </div>
   </PageFrame>

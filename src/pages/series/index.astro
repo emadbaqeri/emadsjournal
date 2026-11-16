@@ -3,45 +3,65 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageFrame from '../../components/shell/PageFrame.astro';
 import PageIntro from '../../components/ui/PageIntro.astro';
 import FilterBar from '../../components/ui/FilterBar.astro';
-import TwoColumn from '../../components/ui/TwoColumn.astro';
-import { getSeriesEntries, getPostsInSeries, getSeriesPath } from '../../lib/content';
+import SeriesCard from '../../components/ui/SeriesCard.astro';
+import { getSeriesEntries, getSeriesNavParts } from '../../lib/content';
+import { plural } from '../../lib/format';
+import { getTrack, type TrackId } from '../../lib/tracks';
 import styles from './index.module.css';
 
 const seriesEntries = await getSeriesEntries();
 const listed = await Promise.all(
   seriesEntries.map(async (series) => ({
     series,
-    parts: await getPostsInSeries(series.id),
+    partCount: (await getSeriesNavParts(series.id)).length,
   })),
 );
+
+const tracks: TrackId[] = ['cs', 'security'];
+const groups = tracks
+  .map((track) => ({
+    track,
+    items: listed.filter((item) => item.series.data.track === track),
+  }))
+  .filter((group) => group.items.length > 0);
 ---
 
 <BaseLayout title="Series · emad/journal">
   <PageFrame>
-    <TwoColumn>
+    <div class={styles.page}>
       <PageIntro
         eyebrow="Series · Tracks"
         title="Series"
         lead="Longer arcs, ordered part by part."
       />
       <FilterBar pathname="/series" trackFilter="all" />
-      <div class={styles.feed}>
-        {listed.map(({ series, parts }) => (
-          <article class={styles.card} data-feed-item data-track-id={series.data.track} data-track={series.data.track}>
-            <p class="text-mono-eyebrow">{series.data.track === 'cs' ? 'CS' : 'Security'}</p>
-            <h2 class="text-heading-h3">
-              <a class="text-link" href={getSeriesPath(series)}>{series.data.title}</a>
-            </h2>
-            <p class="text-body-small">{series.data.description}</p>
-            <p class="text-mono-meta">
-              {parts.length} part{parts.length === 1 ? '' : 's'} · {series.data.status}
-            </p>
-          </article>
-        ))}
-        <p class="text-mono-meta" data-feed-empty hidden>
-          No matching series. <a href="/series">Clear filters</a>
-        </p>
+      <div class={styles.groups}>
+        {groups.map((group) => {
+          const meta = getTrack(group.track);
+          const label = group.track === 'cs' ? 'CS' : 'Security';
+          return (
+            <section class={styles.group} data-track-group data-track={group.track}>
+              <header class={styles.groupHead}>
+                <h2 class:list={['text-mono-eyebrow', styles.trackName]}>
+                  <span aria-hidden="true">{meta.glyph} </span>
+                  {label}
+                </h2>
+                <p class:list={['text-mono-meta', styles.groupCount]}>
+                  {plural(group.items.length, 'series', 'series')}
+                </p>
+              </header>
+              <div class={styles.cards}>
+                {group.items.map(({ series, partCount }) => (
+                  <SeriesCard series={series} partCount={partCount} />
+                ))}
+              </div>
+            </section>
+          );
+        })}
       </div>
-    </TwoColumn>
+      <p class="text-mono-meta" data-feed-empty hidden>
+        No matching series. <a href="/series">Clear filters</a>
+      </p>
+    </div>
   </PageFrame>
 </BaseLayout>

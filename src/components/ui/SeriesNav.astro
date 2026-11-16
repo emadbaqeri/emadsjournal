@@ -18,7 +18,7 @@ const progressCount = parts.length === 0 ? 0 : resolvedIndex + 1;
 ---
 
 {variant === 'list' ? (
-  <section class={styles.list} data-track={series.data.track} aria-label={`${series.data.title} parts`}>
+  <section class:list={[styles.list, 'hit-card']} data-track={series.data.track} aria-label={`${series.data.title} parts`}>
     <header class={styles.head}>
       <p class:list={['text-mono-eyebrow', styles.kicker]}>{series.data.title}</p>
       <p class:list={['text-mono-meta', styles.count]}>{progressCount} / {parts.length}</p>
@@ -33,6 +33,9 @@ const progressCount = parts.length === 0 ? 0 : resolvedIndex + 1;
         const state = index < resolvedIndex ? 'done' : index === resolvedIndex ? 'current' : 'upcoming';
         return (
           <li class:list={[styles.part, styles[state]]}>
+            <span class={styles.marker} aria-hidden="true">
+              {state === 'done' ? '✓' : state === 'current' ? '●' : '○'}
+            </span>
             <span class:list={['text-mono-meta', styles.index]}>
               {String(part.order ?? index + 1).padStart(2, '0')}
             </span>
@@ -56,14 +59,18 @@ const progressCount = parts.length === 0 ? 0 : resolvedIndex + 1;
       aria-label="Series previous and next"
     >
       {prev && (
-        <a class={styles.sibling} href={prev.href}>
-          <span class:list={['text-mono-eyebrow', styles.dir]}>Previous</span>
+        <a class:list={[styles.sibling, 'hit-card']} href={prev.href}>
+          <span class:list={['text-mono-eyebrow', styles.dir]}>
+            ← Previous · part {prev.order ?? resolvedIndex}
+          </span>
           <span class:list={['text-body-small', styles.sibTitle]}>{prev.title}</span>
         </a>
       )}
       {next && (
-        <a class={styles.sibling} href={next.href}>
-          <span class:list={['text-mono-eyebrow', styles.dir]}>Next</span>
+        <a class:list={[styles.sibling, 'hit-card']} href={next.href}>
+          <span class:list={['text-mono-eyebrow', styles.dir]}>
+            Next · part {next.order ?? resolvedIndex + 2} →
+          </span>
           <span class:list={['text-body-small', styles.sibTitle]}>{next.title}</span>
         </a>
       )}

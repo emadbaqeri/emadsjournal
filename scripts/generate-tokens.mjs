@@ -26,7 +26,7 @@ function roundNumber(n) {
 
 function floatCss(varName, value) {
   if (varName.startsWith('line-height/')) return roundNumber(value);
-  if (varName.startsWith('duration/')) return `${roundNumber(value)}ms`;
+  if (varName.includes('duration/')) return `${roundNumber(value)}ms`;
   return `${roundNumber(value)}px`;
 }
 

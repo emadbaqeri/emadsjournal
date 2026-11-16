@@ -74,26 +74,29 @@ const components = {
     ) : (
       <div data-track={post.data.track}>
         <TwoColumn>
-          {showToc && (
-            <div class={styles.inlineToc}>
-              <TOC headings={headings} variant="inline" />
-            </div>
-          )}
           <PostHeader
             post={post}
             seriesTitle={series?.data.title}
             seriesPart={post.data.seriesOrder}
             seriesTotal={seriesParts.length || undefined}
           />
+          {showToc && (
+            <div class={styles.inlineToc}>
+              <TOC headings={headings} variant="inline" />
+            </div>
+          )}
           {post.data.motion && <MotionPlayer {...post.data.motion} />}
           <Prose>
             <Content components={components} />
           </Prose>
-          {post.data.type === 'series-post' && series && (
-            <SeriesNav series={series} parts={seriesParts} variant="prev-next" currentId={post.id} />
-          )}
-          {(showToc || showBuildNote) && (
+          {(showToc || showBuildNote || (post.data.type === 'series-post' && series)) && (
             <Fragment slot="aside">
+              {post.data.type === 'series-post' && series && (
+                <section class={styles.railBlock}>
+                  <h2 class:list={['text-mono-eyebrow', styles.railLabel]}>In this series</h2>
+                  <SeriesNav series={series} parts={seriesParts} variant="list" currentId={post.id} />
+                </section>
+              )}
               {showToc && (
                 <div class={styles.sidebarToc}>
                   <TOC headings={headings} variant="sidebar" />
@@ -105,6 +108,11 @@ const components = {
                 </Callout>
               )}
             </Fragment>
+          )}
+          {post.data.type === 'series-post' && series && (
+            <div slot="after">
+              <SeriesNav series={series} parts={seriesParts} variant="prev-next" currentId={post.id} />
+            </div>
           )}
         </TwoColumn>
       </div>

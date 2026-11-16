@@ -36,3 +36,14 @@
   background: var(--color-bg-raised);
   color: var(--color-text-secondary);
 }
+
+@media (hover: hover) and (pointer: fine) {
+  .tag:hover {
+    border-color: color-mix(in srgb, var(--color-accent-default) 40%, transparent);
+    color: var(--color-text-primary);
+  }
+}
+
+.tag:active {
+  border-color: color-mix(in srgb, var(--color-accent-default) 60%, transparent);
+}

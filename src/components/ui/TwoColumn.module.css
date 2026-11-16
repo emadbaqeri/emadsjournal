@@ -1,15 +1,18 @@
 .layout {
   display: flex;
   flex-direction: column;
-  gap: var(--space-8);
+  gap: var(--layout-gap);
+  width: min(100%, var(--layout-reading));
+  margin-inline: auto;
 }
 
-.main {
+.main,
+.after {
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
   min-width: 0;
-  max-width: var(--column-main);
+  width: 100%;
 }
 
 .aside {
@@ -17,15 +20,34 @@
   flex-direction: column;
   gap: var(--space-7);
   min-width: 0;
-  max-width: var(--column-aside);
+  width: 100%;
 }
 
 @media (min-width: 1024px) {
-  .layout {
+  .layout:has(.aside) {
     display: grid;
-    grid-template-columns: minmax(0, var(--column-main)) var(--column-aside);
-    justify-content: space-between;
+    grid-template-columns:
+      minmax(var(--layout-main-min), 1fr)
+      minmax(var(--layout-aside-min), var(--layout-aside));
     align-items: start;
-    gap: var(--space-7);
+    gap: var(--layout-gap);
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+  }
+
+  .layout:has(.aside) .main {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .layout:has(.aside) .aside {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .layout:has(.aside) .after {
+    grid-column: 1;
+    grid-row: 2;
   }
 }

@@ -1,6 +1,6 @@
 ---
 import type { Algorithm } from '../../lib/content';
-import { formatDate } from '../../lib/format';
+import { formatShortDate } from '../../lib/format';
 import styles from '../content/PostHeader.module.css';
 
 interface Props {
@@ -16,6 +16,6 @@ const eyebrow = `ALGO · CS / DSA / ${topic} / ${slug.toUpperCase()}`;
   <h1 class:list={['text-heading-h1', styles.title]}>{algorithm.data.title}</h1>
   <p class:list={['text-body-lead', styles.dek]}>{algorithm.data.description}</p>
   <p class:list={['text-mono-meta', styles.meta]}>
-    <time datetime={algorithm.data.publishedAt.toISOString()}>{formatDate(algorithm.data.publishedAt)}</time>
+    <time datetime={algorithm.data.publishedAt.toISOString()}>{formatShortDate(algorithm.data.publishedAt)}</time>
   </p>
 </header>
