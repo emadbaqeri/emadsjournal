@@ -93,7 +93,7 @@ const components = {
             <SeriesNav series={series} parts={seriesParts} variant="prev-next" currentId={post.id} />
           )}
           {(showToc || showBuildNote) && (
-            <fragment slot="aside">
+            <Fragment slot="aside">
               {showToc && (
                 <div class={styles.sidebarToc}>
                   <TOC headings={headings} variant="sidebar" />
@@ -104,7 +104,7 @@ const components = {
                   {post.data.description}
                 </Callout>
               )}
-            </fragment>
+            </Fragment>
           )}
         </TwoColumn>
       </div>

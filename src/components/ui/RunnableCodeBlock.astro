@@ -11,7 +11,7 @@ const { filename, output } = Astro.props;
 
 <div class={styles.block} data-playground>
   {filename && <p class:list={['text-mono-meta', styles.header]}>{filename}</p>}
-  <div class={styles.code} data-source>
+  <div class={styles.code} data-source data-code-scroll tabindex="0">
     <slot />
   </div>
   <div class={styles.output}>

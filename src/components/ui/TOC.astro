@@ -16,7 +16,19 @@ const { headings, variant = 'sidebar' } = Astro.props;
 const items = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 3);
 ---
 
-{items.length > 0 && (
+{items.length > 0 && variant === 'inline' && (
+  <details class={styles.disclosure}>
+    <summary class:list={['text-mono-eyebrow', styles.summary]}>On this page</summary>
+    <ol class={styles.list}>
+      {items.map((heading) => (
+        <li class:list={[styles.item, heading.depth === 3 && styles.nested]}>
+          <a class="text-body-small" href={`#${heading.slug}`}>{heading.text}</a>
+        </li>
+      ))}
+    </ol>
+  </details>
+)}
+{items.length > 0 && variant !== 'inline' && (
   <nav class:list={[styles.toc, styles[variant]]} aria-label="On this page">
     <p class:list={['text-mono-eyebrow', styles.legend]}>On this page</p>
     <ol class={styles.list}>

@@ -26,6 +26,7 @@ function roundNumber(n) {
 
 function floatCss(varName, value) {
   if (varName.startsWith('line-height/')) return roundNumber(value);
+  if (varName.startsWith('duration/')) return `${roundNumber(value)}ms`;
   return `${roundNumber(value)}px`;
 }
 
@@ -52,7 +53,7 @@ function serialize(val, varName) {
     throw new Error(`Missing value for ${varName}`);
   }
   if (typeof val === 'string') {
-    if (val.startsWith('#')) return val;
+    if (val.startsWith('#') || val.startsWith('cubic-bezier(')) return val;
     return JSON.stringify(val);
   }
   if (typeof val === 'number') return floatCss(varName, val);
@@ -92,6 +93,7 @@ const track = mustFind('Track');
 const spacing = mustFind('Spacing');
 const radius = mustFind('Radius');
 const type = mustFind('Type');
+const motion = mustFind('Motion');
 
 function typeClass(name) {
   return `.text-${name.toLowerCase().replaceAll('/', '-')}`;
@@ -165,6 +167,7 @@ ${decls(primitives, primitives.defaultModeId).join('\n')}
 ${decls(spacing, spacing.defaultModeId).join('\n')}
 ${decls(radius, radius.defaultModeId).join('\n')}
 ${decls(type, type.defaultModeId).join('\n')}
+${decls(motion, motion.defaultModeId).join('\n')}
 ${decls(color, modeId(color, 'Dark')).join('\n')}
 ${shiki}
 }

@@ -57,12 +57,12 @@ const components = {
   <PageFrame>
     <div data-track={algorithm.data.track}>
       <TwoColumn>
+        <AlgorithmHeader algorithm={algorithm} />
         {tocHeadings.length > 0 && (
           <div class={styles.inlineToc}>
             <TOC headings={tocHeadings} variant="inline" />
           </div>
         )}
-        <AlgorithmHeader algorithm={algorithm} />
         <Prose>
           <Content components={components} />
         </Prose>
@@ -75,7 +75,7 @@ const components = {
             <SeriesNav series={series} parts={seriesParts} variant="prev-next" currentId={algorithm.id} />
           </div>
         )}
-        <fragment slot="aside">
+        <Fragment slot="aside">
           {tocHeadings.length > 0 && (
             <div class={styles.sidebarToc}>
               <TOC headings={tocHeadings} variant="sidebar" />
@@ -88,7 +88,7 @@ const components = {
               <p class="text-mono-meta">{item.label} · {item.time} · {item.space}</p>
             ))}
           </section>
-        </fragment>
+        </Fragment>
       </TwoColumn>
     </div>
   </PageFrame>

@@ -4,3 +4,16 @@
   --column-main: 718px;
   --column-aside: 400px;
 }
+
+.text-link {
+  color: var(--color-text-primary);
+  text-decoration-line: none;
+  text-underline-offset: 0.18em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .text-link:hover {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+  }
+}

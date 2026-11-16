@@ -1,5 +1,5 @@
 .inlineToc {
-  margin-bottom: var(--space-6);
+  margin: 0;
 }
 
 .sidebarToc {
@@ -17,5 +17,12 @@
 }
 
 .series {
-  margin-top: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: calc(var(--space-8) - var(--space-6));
+}
+
+.series > :global(p) {
+  margin: 0;
 }

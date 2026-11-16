@@ -49,22 +49,24 @@ const progressCount = parts.length === 0 ? 0 : resolvedIndex + 1;
     </ol>
   </section>
 ) : (
-  <nav class={styles.prevNext} data-track={series.data.track} aria-label="Series previous and next">
-    {prev ? (
-      <a class={styles.sibling} href={prev.href}>
-        <span class:list={['text-mono-eyebrow', styles.dir]}>Previous</span>
-        <span class:list={['text-body-small', styles.sibTitle]}>{prev.title}</span>
-      </a>
-    ) : (
-      <span class={styles.sibling}></span>
-    )}
-    {next ? (
-      <a class={styles.sibling} href={next.href}>
-        <span class:list={['text-mono-eyebrow', styles.dir]}>Next</span>
-        <span class:list={['text-body-small', styles.sibTitle]}>{next.title}</span>
-      </a>
-    ) : (
-      <span class={styles.sibling}></span>
-    )}
-  </nav>
+  (prev || next) && (
+    <nav
+      class:list={[styles.prevNext, !(prev && next) && styles.single]}
+      data-track={series.data.track}
+      aria-label="Series previous and next"
+    >
+      {prev && (
+        <a class={styles.sibling} href={prev.href}>
+          <span class:list={['text-mono-eyebrow', styles.dir]}>Previous</span>
+          <span class:list={['text-body-small', styles.sibTitle]}>{prev.title}</span>
+        </a>
+      )}
+      {next && (
+        <a class={styles.sibling} href={next.href}>
+          <span class:list={['text-mono-eyebrow', styles.dir]}>Next</span>
+          <span class:list={['text-body-small', styles.sibTitle]}>{next.title}</span>
+        </a>
+      )}
+    </nav>
+  )
 )}

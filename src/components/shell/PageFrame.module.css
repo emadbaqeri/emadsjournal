@@ -1,9 +1,13 @@
 .frame {
-  padding: var(--space-7) var(--space-5) var(--space-10);
+  padding-top: var(--space-7);
+  padding-bottom: var(--space-10);
+  padding-left: max(var(--space-5), env(safe-area-inset-left));
+  padding-right: max(var(--space-5), env(safe-area-inset-right));
 }
 
 @media (min-width: 1024px) {
   .frame {
-    padding-inline: var(--space-9);
+    padding-left: max(var(--space-9), env(safe-area-inset-left));
+    padding-right: max(var(--space-9), env(safe-area-inset-right));
   }
 }

@@ -137,6 +137,15 @@
   cursor: pointer;
 }
 
+.viz-actions,
+.viz-approaches,
+.viz-lang {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
 .viz-approaches button[data-selected='true'],
 .viz-lang button[data-selected='true'] {
   border-color: var(--track-accent, var(--color-accent-default));
@@ -174,7 +183,7 @@
 .viz-editor textarea,
 .viz-editor input {
   font-family: var(--font-mono);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
   padding: var(--space-2);
   border: 1px solid var(--color-border-default);
   border-radius: var(--radius-sm);
@@ -270,18 +279,32 @@
 
 .track-chip {
   display: inline-flex;
-  gap: var(--space-2);
+  align-self: flex-start;
+  gap: var(--space-1);
   align-items: center;
-  font-family: var(--font-mono);
-  padding: var(--space-1) var(--space-3);
+  width: fit-content;
+  padding: var(--space-1) var(--space-2);
   border: 1px solid var(--track-accent, var(--color-accent-default));
   border-radius: var(--radius-full);
   color: var(--track-accent, var(--color-accent-default));
   text-decoration: none;
 }
 
-.solution-code {
+.problem-card summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.problem-card summary::-webkit-details-marker {
+  display: none;
+}
+
+.problem-card pre {
   overflow-x: auto;
+}
+
+.solution-code {
+  overflow: hidden;
   border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-md);
   background: var(--color-bg-code);

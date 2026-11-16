@@ -7,6 +7,7 @@ import PostCard from '../components/ui/PostCard.astro';
 import TwoColumn from '../components/ui/TwoColumn.astro';
 import SeriesNav from '../components/ui/SeriesNav.astro';
 import { getFeedPosts, getFeaturedSeries, getPostsByType, getSeriesNavParts } from '../lib/content';
+import styles from './index.module.css';
 
 const posts = await getFeedPosts();
 const featured = await getFeaturedSeries();
@@ -31,29 +32,33 @@ const latestTils = (await getPostsByType('til')).slice(0, 2);
           No matching posts. <a href="/">Clear filters</a>
         </p>
       </div>
-      <fragment slot="aside">
-        <section>
-          <h2 class="text-mono-eyebrow">Sections</h2>
-          <p><a href="/series">Series →</a></p>
-          <p><a href="/tils">TILs →</a></p>
-          <p><a href="/essays">Essays →</a></p>
-          <p><a href="/build-logs">Build logs →</a></p>
+      <Fragment slot="aside">
+        <section class={styles.asideBlock}>
+          <h2 class:list={['text-mono-eyebrow', styles.asideTitle]}>Sections</h2>
+          <ul class={styles.sectionList}>
+            <li><a class="text-link" href="/series">Series →</a></li>
+            <li><a class="text-link" href="/tils">TILs →</a></li>
+            <li><a class="text-link" href="/essays">Essays →</a></li>
+            <li><a class="text-link" href="/build-logs">Build logs →</a></li>
+          </ul>
         </section>
         {featured && (
-          <section>
-            <h2 class="text-mono-eyebrow">Current series</h2>
+          <section class={styles.asideBlock}>
+            <h2 class:list={['text-mono-eyebrow', styles.asideTitle]}>Current series</h2>
             <SeriesNav series={featured.series} parts={featuredParts} variant="list" />
           </section>
         )}
         {latestTils.length > 0 && (
-          <section>
-            <h2 class="text-mono-eyebrow">Latest TILs</h2>
-            {latestTils.map((post) => (
-              <PostCard post={post} headingLevel="h3" />
-            ))}
+          <section class={styles.asideBlock}>
+            <h2 class:list={['text-mono-eyebrow', styles.asideTitle]}>Latest TILs</h2>
+            <div>
+              {latestTils.map((post) => (
+                <PostCard post={post} headingLevel="h3" />
+              ))}
+            </div>
           </section>
         )}
-      </fragment>
+      </Fragment>
     </TwoColumn>
   </PageFrame>
 </BaseLayout>

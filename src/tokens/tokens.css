@@ -65,6 +65,10 @@
   --line-height-snug: 1.35;
   --line-height-body: 1.65;
   --line-height-code: 1.6;
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+  --duration-slow: 240ms;
+  --ease-out: cubic-bezier(.2,.8,.2,1);
   --color-bg-canvas: var(--primitives-ink-950);
   --color-bg-surface: var(--primitives-ink-900);
   --color-bg-raised: var(--primitives-ink-850);
