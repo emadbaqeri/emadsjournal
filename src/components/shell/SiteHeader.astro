@@ -8,56 +8,58 @@ const pathname = Astro.url.pathname;
 
 <a class={styles.skip} href="#main">Skip to content</a>
 <header class={styles.header}>
-  <a class={styles.wordmark} href="/" aria-label="emad/journal home">
-    <span class={styles.brand}>emad</span><span class={styles.slash}>/</span><span class={styles.name}>journal</span>
-  </a>
+  <div class:list={[styles.bar, 'container']}>
+    <a class={styles.wordmark} href="/" aria-label="emad/journal home">
+      <span class={styles.brand}>emad</span><span class={styles.slash}>/</span><span class={styles.name}>journal</span>
+    </a>
 
-  <nav class={styles.desktopNav} aria-label="Primary">
-    {
-      PRIMARY_NAV.map((item) => (
-        <a
-          class={styles.navLink}
-          href={item.href}
-          aria-current={isCurrentPath(pathname, item.href) ? 'page' : undefined}
-        >
-          {item.label}
-        </a>
-      ))
-    }
-    <ThemeToggle />
-  </nav>
-
-  <details class={styles.menu} data-menu>
-    <summary class={styles.menuToggle}>
-      <span class={styles.menuOpenLabel}>menu ≡</span>
-      <span class={styles.menuCloseLabel}>close ×</span>
-    </summary>
-    <div class={styles.scrim} data-menu-scrim aria-hidden="true"></div>
-    <nav class={styles.panel} aria-label="Primary">
-      <ol class={styles.sheetList}>
-        {
-          PRIMARY_NAV.map((item, index) => (
-            <li>
-              <a
-                class={styles.sheetLink}
-                href={item.href}
-                aria-current={isCurrentPath(pathname, item.href) ? 'page' : undefined}
-              >
-                <span class={styles.sheetIndex}>{String(index + 1).padStart(2, '0')}</span>
-                <span class={styles.sheetLabel}>{item.label}</span>
-                <span class={styles.sheetArrow} aria-hidden="true">→</span>
-              </a>
-            </li>
-          ))
-        }
-        <li class={styles.sheetTheme}>
-          <span class={styles.sheetIndex}>{String(PRIMARY_NAV.length + 1).padStart(2, '0')}</span>
-          <span class={styles.sheetLabel}>theme</span>
-          <ThemeToggle variant="sheet" />
-        </li>
-      </ol>
+    <nav class={styles.desktopNav} aria-label="Primary">
+      {
+        PRIMARY_NAV.map((item) => (
+          <a
+            class={styles.navLink}
+            href={item.href}
+            aria-current={isCurrentPath(pathname, item.href) ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <ThemeToggle />
     </nav>
-  </details>
+
+    <details class={styles.menu} data-menu>
+      <summary class={styles.menuToggle}>
+        <span class={styles.menuOpenLabel}>menu ≡</span>
+        <span class={styles.menuCloseLabel}>close ×</span>
+      </summary>
+      <div class={styles.scrim} data-menu-scrim aria-hidden="true"></div>
+      <nav class={styles.panel} aria-label="Primary">
+        <ol class={styles.sheetList}>
+          {
+            PRIMARY_NAV.map((item, index) => (
+              <li>
+                <a
+                  class={styles.sheetLink}
+                  href={item.href}
+                  aria-current={isCurrentPath(pathname, item.href) ? 'page' : undefined}
+                >
+                  <span class={styles.sheetIndex}>{String(index + 1).padStart(2, '0')}</span>
+                  <span class={styles.sheetLabel}>{item.label}</span>
+                  <span class={styles.sheetArrow} aria-hidden="true">→</span>
+                </a>
+              </li>
+            ))
+          }
+          <li class={styles.sheetTheme}>
+            <span class={styles.sheetIndex}>{String(PRIMARY_NAV.length + 1).padStart(2, '0')}</span>
+            <span class={styles.sheetLabel}>theme</span>
+            <ThemeToggle variant="sheet" />
+          </li>
+        </ol>
+      </nav>
+    </details>
+  </div>
 </header>
 
 <script>
