@@ -1,0 +1,124 @@
+/* Thin header: file name, language, copy. No editor tab and no window dots. */
+
+.expressive-code .frame.has-title:not(.is-terminal) .header,
+.expressive-code .frame.is-terminal .header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 2rem;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-code-header-bg);
+  border-bottom: 1px solid var(--color-code-border);
+}
+
+.expressive-code .frame.has-title:not(.is-terminal) .title,
+.expressive-code .frame.is-terminal .title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-code-text);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.expressive-code .frame.has-title:not(.is-terminal) .title::after,
+.expressive-code .frame.is-terminal .header::before {
+  content: none;
+  display: none;
+}
+
+.expressive-code .lang {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--color-code-comment);
+}
+
+.expressive-code .title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.expressive-code .lang {
+  flex: none;
+}
+
+.expressive-code .header .copy {
+  position: static;
+  inset: auto;
+  flex: none;
+  margin-inline-start: auto;
+}
+
+.expressive-code .frame .copy button {
+  opacity: 1;
+}
+
+.expressive-code .frame .copy button,
+.expressive-code .frame .copy button div,
+.expressive-code .frame .copy .feedback {
+  transition-property: opacity, transform;
+  transition-duration: var(--motion-duration-base);
+  transition-timing-function: var(--motion-ease-out);
+}
+
+.expressive-code .frame .copy button:focus {
+  outline: none;
+}
+
+.expressive-code .frame .copy button:focus-visible {
+  outline: 2px solid var(--color-accent-default);
+  outline-offset: 2px;
+}
+
+.expressive-code .frame.has-title .ec-line:nth-child(1 of .ec-line) .code,
+.expressive-code .frame.is-terminal .ec-line:nth-child(1 of .ec-line) .code {
+  padding-inline-end: 1rem;
+}
+
+@media (hover: hover) and (pointer: coarse) {
+  .expressive-code .copy button {
+    opacity: 0.75;
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .expressive-code .frame .copy button:hover {
+    opacity: 1;
+  }
+}
+
+@media (pointer: coarse) {
+  .expressive-code .frame .copy button {
+    width: 44px;
+    height: 44px;
+    background: transparent;
+  }
+
+  .expressive-code .frame .copy button::before {
+    inset: calc((44px - 2rem) / 2);
+  }
+
+  .expressive-code .frame .copy button::after {
+    inset: calc((44px - 1rem) / 2);
+    margin: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .expressive-code .frame .copy button,
+  .expressive-code .frame .copy button div,
+  .expressive-code .frame .copy .feedback {
+    transition: none;
+  }
+}

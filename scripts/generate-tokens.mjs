@@ -132,28 +132,17 @@ function typeRules() {
     .join('\n\n');
 }
 
-const shiki = `  --astro-code-foreground: var(--color-text-primary);
+const shiki = `  --astro-code-foreground: var(--color-code-text);
   --astro-code-background: var(--color-bg-code);
-  --astro-code-token-constant: var(--color-accent-default);
-  --astro-code-token-string: var(--color-terminal-fg);
-  --astro-code-token-comment: var(--color-text-muted);
-  --astro-code-token-keyword: var(--color-info-fg);
-  --astro-code-token-parameter: var(--color-text-secondary);
-  --astro-code-token-function: var(--color-accent-strong);
-  --astro-code-token-string-expression: var(--color-terminal-fg);
-  --astro-code-token-punctuation: var(--color-text-secondary);
-  --astro-code-token-link: var(--color-info-fg);
-  --shiki-color-text: var(--astro-code-foreground);
-  --shiki-color-background: var(--astro-code-background);
-  --shiki-token-constant: var(--astro-code-token-constant);
-  --shiki-token-string: var(--astro-code-token-string);
-  --shiki-token-comment: var(--astro-code-token-comment);
-  --shiki-token-keyword: var(--astro-code-token-keyword);
-  --shiki-token-parameter: var(--astro-code-token-parameter);
-  --shiki-token-function: var(--astro-code-token-function);
-  --shiki-token-string-expression: var(--astro-code-token-string-expression);
-  --shiki-token-punctuation: var(--astro-code-token-punctuation);
-  --shiki-token-link: var(--astro-code-token-link);`;
+  --astro-code-token-constant: var(--color-code-number);
+  --astro-code-token-string: var(--color-code-string);
+  --astro-code-token-comment: var(--color-code-comment);
+  --astro-code-token-keyword: var(--color-code-keyword);
+  --astro-code-token-parameter: var(--color-code-text);
+  --astro-code-token-function: var(--color-code-function);
+  --astro-code-token-string-expression: var(--color-code-string);
+  --astro-code-token-punctuation: var(--color-code-muted);
+  --astro-code-token-link: var(--color-code-keyword);`;
 
 const css = `/* Generated from src/tokens/tokens.json. Do not edit by hand. */
 

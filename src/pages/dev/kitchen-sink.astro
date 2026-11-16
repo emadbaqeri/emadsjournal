@@ -1,6 +1,7 @@
 ---
-import { Code } from 'astro:components';
+import { Code } from 'astro-expressive-code/components';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import SolutionTabs from '../../components/algo/SolutionTabs.astro';
 import { TRACKS } from '../../lib/tracks';
 import { cssVarName } from '../../tokens/names';
 import tokens from '../../tokens/tokens.json';
@@ -26,7 +27,7 @@ const trackStringVars = (byName.Track?.variables ?? []).filter(
 const playground = `const greeting: string = 'hello, journal';
 console.log(greeting);`;
 
-const sample = `function twoNumberSum(array: number[], target: number) {
+const fileSample = `function twoNumberSum(array: number[], target: number) {
   const seen = new Set<number>();
   for (const value of array) {
     const complement = target - value;
@@ -35,6 +36,69 @@ const sample = `function twoNumberSum(array: number[], target: number) {
   }
   return [];
 }`;
+
+const terminalSample = `cd journal
+npm run tokens
+npm run build
+npm run preview`;
+
+const snippet = `const answer: i32 = 42;
+try stdout.print("{d}\\n", .{answer});`;
+
+const marked = `function score(value: number) {
+  if (value < 0) return 0;
+  if (value > 10) return 10;
+  return value;
+}`;
+
+const diffSample = `export function add(left: number, right: number) {
+  return left - right;
+  return left + right;
+}`;
+
+const overflow = `const label = "this line is intentionally long so the code block can scroll sideways without wrapping the source on a phone";
+const next = label.length;
+const last = next + 1;
+export { label, next, last };`;
+
+const rustSample = `pub fn is_valid_subsequence(array: &[i32], sequence: &[i32]) -> bool {
+    let mut index = 0;
+    for &value in array {
+        if index == sequence.len() {
+            break;
+        }
+        if value == sequence[index] {
+            index += 1;
+        }
+    }
+    index == sequence.len()
+}`;
+
+const tsSample = `export function isValidSubsequence(array: number[], sequence: number[]) {
+  let index = 0;
+  for (const value of array) {
+    if (index === sequence.length) break;
+    if (value === sequence[index]) index += 1;
+  }
+  return index === sequence.length;
+}`;
+
+const solutionChoices = [
+  {
+    id: 'one-pass-rust',
+    label: 'One pass · Rust',
+    code: rustSample,
+    lang: 'rust',
+    filename: 'main.rs',
+  },
+  {
+    id: 'one-pass-ts',
+    label: 'One pass · TS',
+    code: tsSample,
+    lang: 'ts',
+    filename: 'mod.ts',
+  },
+];
 ---
 
 <BaseLayout title="Kitchen sink · emad/journal" noindex>
@@ -187,13 +251,25 @@ const sample = `function twoNumberSum(array: number[], target: number) {
     </section>
 
     <section class={styles.section} aria-labelledby="code-heading">
-      <h2 id="code-heading" class="text-heading-h2">Shiki (css-variables)</h2>
+      <h2 id="code-heading" class="text-heading-h2">Code</h2>
       <p class={`text-body-small ${styles.note}`}>
-        Highlight colours are bound to theme tokens, so they follow dark and light.
+        Expressive Code. Line numbers stay on for code files, and turn off for
+        terminals and snippets of one to three lines.
       </p>
-      <div class={styles.code} data-code-scroll tabindex="0">
-        <Code code={sample} lang="ts" />
-      </div>
+      <h3 class="text-heading-h3">File</h3>
+      <Code code={fileSample} lang="ts" title="two-number-sum.ts" />
+      <h3 class="text-heading-h3">Terminal</h3>
+      <Code code={terminalSample} lang="bash" title="build" />
+      <h3 class="text-heading-h3">Snippet</h3>
+      <Code code={snippet} lang="zig" title="answer.zig" />
+      <h3 class="text-heading-h3">Marked lines</h3>
+      <Code code={marked} lang="ts" title="score.ts" mark={[2, 4]} />
+      <h3 class="text-heading-h3">Diff</h3>
+      <Code code={diffSample} lang="ts" title="add.ts" del={[2]} ins={[3]} />
+      <h3 class="text-heading-h3">Long line</h3>
+      <Code code={overflow} lang="ts" title="overflow.ts" />
+      <h3 class="text-heading-h3">Solution tabs</h3>
+      <SolutionTabs choices={solutionChoices} />
     </section>
 
     <section class={styles.section} aria-labelledby="motion-heading">
@@ -216,9 +292,7 @@ const sample = `function twoNumberSum(array: number[], target: number) {
         The expected output stays visible without JavaScript. With JavaScript, Run sends the
         TypeScript to a Web Worker.
       </p>
-      <RunnableCodeBlock filename="hello.ts" output="hello, journal">
-        <Code code={playground} lang="ts" />
-      </RunnableCodeBlock>
+      <RunnableCodeBlock filename="hello.ts" code={playground} output="hello, journal" />
     </section>
   </div>
 </BaseLayout>

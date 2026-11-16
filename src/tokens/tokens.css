@@ -37,6 +37,7 @@
   --primitives-red-700: #b42318;
   --primitives-red-a12: rgba(255, 138, 122, 0.122);
   --primitives-red-a10: rgba(180, 35, 24, 0.078);
+  --primitives-amber-800: #8c5800;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -72,7 +73,7 @@
   --color-bg-canvas: var(--primitives-ink-950);
   --color-bg-surface: var(--primitives-ink-900);
   --color-bg-raised: var(--primitives-ink-850);
-  --color-bg-code: var(--primitives-ink-900);
+  --color-bg-code: var(--color-code-bg);
   --color-border-subtle: var(--primitives-ink-800);
   --color-border-default: var(--primitives-ink-700);
   --color-text-primary: var(--primitives-ink-100);
@@ -90,28 +91,36 @@
   --color-warn-bg: var(--primitives-red-a12);
   --color-note-fg: var(--primitives-amber-400);
   --color-note-bg: var(--primitives-amber-a12);
-  --astro-code-foreground: var(--color-text-primary);
+  --color-code-bg: var(--primitives-ink-900);
+  --color-code-header-bg: var(--primitives-ink-850);
+  --color-code-border: var(--primitives-ink-700);
+  --color-code-text: var(--primitives-ink-100);
+  --color-code-muted: var(--primitives-ink-300);
+  --color-code-comment: var(--primitives-ink-400);
+  --color-code-keyword: var(--primitives-amber-400);
+  --color-code-string: var(--primitives-mint-400);
+  --color-code-number: var(--primitives-blue-400);
+  --color-code-function: var(--primitives-ink-100);
+  --color-code-line-number: var(--primitives-ink-400);
+  --color-code-line-number-active: var(--primitives-ink-300);
+  --color-code-marked-bg: #f5b8411f;
+  --color-code-marked-bar: var(--primitives-amber-400);
+  --color-code-diff-ins-bg: #5ee6a01f;
+  --color-code-diff-ins-marker: var(--primitives-mint-400);
+  --color-code-diff-del-bg: #ff8a7a1f;
+  --color-code-diff-del-marker: var(--primitives-red-400);
+  --color-code-selection: #7ab8ff1f;
+  --astro-code-foreground: var(--color-code-text);
   --astro-code-background: var(--color-bg-code);
-  --astro-code-token-constant: var(--color-accent-default);
-  --astro-code-token-string: var(--color-terminal-fg);
-  --astro-code-token-comment: var(--color-text-muted);
-  --astro-code-token-keyword: var(--color-info-fg);
-  --astro-code-token-parameter: var(--color-text-secondary);
-  --astro-code-token-function: var(--color-accent-strong);
-  --astro-code-token-string-expression: var(--color-terminal-fg);
-  --astro-code-token-punctuation: var(--color-text-secondary);
-  --astro-code-token-link: var(--color-info-fg);
-  --shiki-color-text: var(--astro-code-foreground);
-  --shiki-color-background: var(--astro-code-background);
-  --shiki-token-constant: var(--astro-code-token-constant);
-  --shiki-token-string: var(--astro-code-token-string);
-  --shiki-token-comment: var(--astro-code-token-comment);
-  --shiki-token-keyword: var(--astro-code-token-keyword);
-  --shiki-token-parameter: var(--astro-code-token-parameter);
-  --shiki-token-function: var(--astro-code-token-function);
-  --shiki-token-string-expression: var(--astro-code-token-string-expression);
-  --shiki-token-punctuation: var(--astro-code-token-punctuation);
-  --shiki-token-link: var(--astro-code-token-link);
+  --astro-code-token-constant: var(--color-code-number);
+  --astro-code-token-string: var(--color-code-string);
+  --astro-code-token-comment: var(--color-code-comment);
+  --astro-code-token-keyword: var(--color-code-keyword);
+  --astro-code-token-parameter: var(--color-code-text);
+  --astro-code-token-function: var(--color-code-function);
+  --astro-code-token-string-expression: var(--color-code-string);
+  --astro-code-token-punctuation: var(--color-code-muted);
+  --astro-code-token-link: var(--color-code-keyword);
 }
 
 html[data-theme="light"] {
@@ -119,7 +128,7 @@ html[data-theme="light"] {
   --color-bg-canvas: var(--primitives-paper-50);
   --color-bg-surface: var(--primitives-paper-0);
   --color-bg-raised: var(--primitives-paper-100);
-  --color-bg-code: var(--primitives-paper-100);
+  --color-bg-code: var(--color-code-bg);
   --color-border-subtle: var(--primitives-paper-200);
   --color-border-default: var(--primitives-paper-300);
   --color-text-primary: var(--primitives-ink-950);
@@ -137,6 +146,25 @@ html[data-theme="light"] {
   --color-warn-bg: var(--primitives-red-a10);
   --color-note-fg: var(--primitives-amber-700);
   --color-note-bg: var(--primitives-amber-a10dk);
+  --color-code-bg: var(--primitives-paper-100);
+  --color-code-header-bg: var(--primitives-paper-200);
+  --color-code-border: var(--primitives-paper-300);
+  --color-code-text: var(--primitives-ink-950);
+  --color-code-muted: var(--primitives-ink-700);
+  --color-code-comment: var(--primitives-ink-500);
+  --color-code-keyword: var(--primitives-amber-800);
+  --color-code-string: var(--primitives-mint-700);
+  --color-code-number: var(--primitives-blue-700);
+  --color-code-function: var(--primitives-ink-950);
+  --color-code-line-number: var(--primitives-ink-500);
+  --color-code-line-number-active: var(--primitives-ink-700);
+  --color-code-marked-bg: #9a610014;
+  --color-code-marked-bar: var(--primitives-amber-800);
+  --color-code-diff-ins-bg: #137a4b14;
+  --color-code-diff-ins-marker: var(--primitives-mint-700);
+  --color-code-diff-del-bg: #b4231814;
+  --color-code-diff-del-marker: var(--primitives-red-700);
+  --color-code-selection: #1d5fbf14;
 }
 
 [data-track="cs"] {

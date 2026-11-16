@@ -281,6 +281,17 @@
   border-color: var(--algo-trap-right);
 }
 
+.problem-card pre,
+.trap pre {
+  background: var(--color-code-bg);
+  color: var(--color-code-text);
+  border: 1px solid var(--color-code-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: var(--line-height-code);
+}
+
 .trap pre {
   flex: 1 1 auto;
   overflow-x: auto;
@@ -335,25 +346,68 @@
 
 .problem-card pre {
   overflow-x: auto;
+  margin: var(--space-4) 0;
 }
 
 .solution-stage {
   position: relative;
   height: var(--layout-code);
+  max-height: var(--layout-code);
   overflow: hidden;
-  border: 1px solid var(--color-border-subtle);
+  border: 1px solid var(--color-code-border);
   border-radius: var(--radius-md);
-  background: var(--color-bg-code);
+  background: var(--color-code-bg);
 }
 
 .solution-code {
+  display: flex;
+  flex-direction: column;
   height: 100%;
+  min-height: 0;
   overflow: hidden;
-  background: var(--color-bg-code);
+  background: transparent;
 }
 
 .solution-code[hidden] {
   display: none;
+}
+
+.solution-stage .expressive-code .solution-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+  overflow: auto;
+}
+
+.solution-stage .expressive-code,
+.solution-stage .expressive-code .frame {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+
+.solution-stage .expressive-code .frame .header {
+  flex: none;
+}
+
+.solution-stage .expressive-code .frame .header::before {
+  content: none;
+  display: none;
+}
+
+.solution-stage .expressive-code pre {
+  overflow: visible;
+  width: max-content;
+  min-width: 100%;
+  max-width: none;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 .solution-fade {
@@ -363,7 +417,7 @@
   left: 0;
   height: var(--space-7);
   pointer-events: none;
-  background: linear-gradient(to bottom, transparent, var(--color-bg-code));
+  background: linear-gradient(to bottom, transparent, var(--color-code-bg));
 }
 
 .solution-stage[data-bottom-fade='off'] .solution-fade {
@@ -385,10 +439,7 @@
 }
 
 .solution-code pre {
-  height: 100%;
   margin: 0;
-  padding: var(--space-4);
-  overflow: auto;
 }
 
 .glance {

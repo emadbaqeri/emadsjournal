@@ -36,7 +36,7 @@ export function bindPlaygrounds(): void {
     root.dataset.bound = 'true';
     root.dataset.enhanced = '';
     const button = root.querySelector<HTMLButtonElement>('[data-playground-run]');
-    const source = root.querySelector('[data-source]');
+    const source = root.querySelector<HTMLTextAreaElement | HTMLElement>('[data-source]');
     const result = root.querySelector<HTMLElement>('[data-live-output]');
     const error = root.querySelector<HTMLElement>('[data-live-error]');
     const label = root.querySelector<HTMLElement>('[data-live-label]');
@@ -47,7 +47,8 @@ export function bindPlaygrounds(): void {
       nextId += 1;
       if (label) label.hidden = false;
       pending.set(id, { result, error });
-      worker.postMessage({ id, code: source.textContent ?? '' });
+      const code = source instanceof HTMLTextAreaElement ? source.value : (source.textContent ?? '');
+      worker.postMessage({ id, code });
     });
   }
 }
