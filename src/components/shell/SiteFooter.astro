@@ -4,12 +4,14 @@ import styles from './SiteFooter.module.css';
 ---
 
 <footer class={styles.footer}>
-  <p class={styles.tagline}>{SITE_TAGLINE}</p>
-  <nav class={styles.links} aria-label="Footer">
-    <a href="/rss.xml">rss</a>
-    <span aria-hidden="true"> · </span>
-    <a href={GITHUB_URL}>github</a>
-    <span aria-hidden="true"> · </span>
-    <a href={`mailto:${CONTACT_EMAIL}`}>email</a>
-  </nav>
+  <div class:list={[styles.inner, 'container']}>
+    <p class={styles.tagline}>{SITE_TAGLINE}</p>
+    <nav class={styles.links} aria-label="Footer">
+      <a href="/rss.xml">rss</a>
+      <span aria-hidden="true"> · </span>
+      <a href={GITHUB_URL}>github</a>
+      <span aria-hidden="true"> · </span>
+      <a href={`mailto:${CONTACT_EMAIL}`}>email</a>
+    </nav>
+  </div>
 </footer>

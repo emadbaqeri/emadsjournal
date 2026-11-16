@@ -1,7 +1,8 @@
 /*
-  Layout tiers. Two columns from 1024: fluid main (min 560) + aside
-  (min 280, 320 preferred). Below 1024, one centred reading column.
-  At 1024 the sum is 48 + 560 + 48 + 280 + 48 = 984.
+  Layout tiers. Side padding lives on the shell (20, then 48 from 1024,
+  96 from 1280). From 1024 the content grid, header, and footer share
+  .container, capped at reading + gap + aside. Below 1024, and on pages
+  with no sidebar, the reading column stays centred at 720.
 */
 :root {
   --layout-pad-lg: 96px;
@@ -12,8 +13,23 @@
   --layout-aside-min: 280px;
   --layout-aside: 320px;
   --layout-reading: 720px;
+  --layout-container-max: 1088px;
   --layout-touch: 44px;
   --layout-code: 320px;
+  /* Desktop header: top pad + wordmark line + bottom pad + border. */
+  --layout-header-block: calc(var(--space-5) + var(--font-size-sm) * 1.3 + var(--space-5) + 1px);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--layout-container-max);
+  margin-inline: auto;
+}
+
+@media (min-width: 1024px) {
+  html {
+    scroll-padding-top: calc(var(--layout-header-block) + var(--space-5));
+  }
 }
 
 .text-link {

@@ -78,6 +78,12 @@
 - Layout tokens live in `src/styles/layout.css`. Motion tokens are `--motion-duration-*` and `--motion-ease-out` only.
 - Series index and series posts share `getSeriesNavParts` (posts plus algorithms). CS foundations is 3 parts, including Two Number Sum.
 
+## Craft pass 3
+
+- `.container` caps the content grid and the header/footer inners at `--layout-container-max` (1088). Header and footer stay full-bleed; 48/96 padding stays on the shell.
+- Pages with no sidebar keep a centred 720 column. The logo stays on the 1088 container.
+- The aside sticks at `header + --space-5` only when it fits in the viewport. No inner scroll box. Below 1024 the stacked column is unchanged.
+
 ## Craft pass 4
 
 - Status: in review

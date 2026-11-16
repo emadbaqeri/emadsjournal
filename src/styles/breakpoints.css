@@ -1,7 +1,6 @@
 /*
-  Single layout switch. Desktop frame is 1440 (main 718 + aside 400 +
-  margins); mobile frame is 390. No tablet layout.
-  1024px is the smallest width where the two columns can sit without colliding.
+  Single layout switch at 1024px. Below that, one centred column.
+  From 1024 the centred group is reading + gap + aside, max 1088.
 */
 :root {
   --breakpoint-desktop: 1024px;
