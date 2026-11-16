@@ -1,8 +1,19 @@
-/* Layout measures from Figma desktop frames (article 680, main 718, aside 400). */
+/*
+  Layout tiers. Two columns from 1024: fluid main (min 560) + aside
+  (min 280, 320 preferred). Below 1024, one centred reading column.
+  At 1024 the sum is 48 + 560 + 48 + 280 + 48 = 984.
+*/
 :root {
-  --column-article: 680px;
-  --column-main: 718px;
-  --column-aside: 400px;
+  --layout-pad-lg: 96px;
+  --layout-pad-md: 48px;
+  --layout-pad-sm: 20px;
+  --layout-gap: 48px;
+  --layout-main-min: 560px;
+  --layout-aside-min: 280px;
+  --layout-aside: 320px;
+  --layout-reading: 720px;
+  --layout-touch: 44px;
+  --layout-code: 320px;
 }
 
 .text-link {
@@ -16,4 +27,32 @@
     text-decoration-line: underline;
     text-decoration-thickness: 1px;
   }
+}
+
+.hit-rule {
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.hit-card {
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hit-rule:hover {
+    border-bottom-color: color-mix(in srgb, var(--track-accent, var(--color-accent-default)) 40%, transparent);
+  }
+
+  .hit-card:hover {
+    border-color: color-mix(in srgb, var(--track-accent, var(--color-accent-default)) 40%, transparent);
+  }
+}
+
+.hit-rule:active {
+  border-bottom-color: color-mix(in srgb, var(--track-accent, var(--color-accent-default)) 60%, transparent);
+}
+
+.hit-card:active {
+  border-color: color-mix(in srgb, var(--track-accent, var(--color-accent-default)) 60%, transparent);
 }

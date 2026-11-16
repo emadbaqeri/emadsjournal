@@ -2,6 +2,7 @@
 import styles from './TwoColumn.module.css';
 
 const hasAside = Astro.slots.has('aside');
+const hasAfter = Astro.slots.has('after');
 ---
 
 <div class={styles.layout}>
@@ -12,5 +13,10 @@ const hasAside = Astro.slots.has('aside');
     <aside class={styles.aside}>
       <slot name="aside" />
     </aside>
+  )}
+  {hasAfter && (
+    <div class={styles.after}>
+      <slot name="after" />
+    </div>
   )}
 </div>

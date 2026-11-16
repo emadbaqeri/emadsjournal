@@ -1,6 +1,6 @@
 ---
 import type { Post } from '../../lib/content';
-import { formatDate, readingTimeMinutes } from '../../lib/format';
+import { formatShortDate, plural, readingTimeMinutes } from '../../lib/format';
 import { getTrack } from '../../lib/tracks';
 import PostTypeLabel from '../ui/PostTypeLabel.astro';
 import Tag from '../ui/Tag.astro';
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const { post, seriesTitle, seriesPart, seriesTotal } = Astro.props;
-const date = formatDate(post.data.publishedAt);
+const date = formatShortDate(post.data.publishedAt);
 const track = getTrack(post.data.track);
 const source = typeof post.body === 'string' ? post.body : post.data.description;
 const minutes = readingTimeMinutes(`${post.data.title} ${post.data.description} ${source}`);
@@ -61,7 +61,7 @@ const buildPath = `Build log · ${post.data.track === 'cs' ? 'CS' : 'Security'}`
       <p class:list={['text-mono-meta', styles.meta]}>
         <time datetime={post.data.publishedAt.toISOString()}>{date}</time>
         {' · '}
-        {minutes} min read
+        {plural(minutes, 'min')} read
       </p>
     </>
   )}

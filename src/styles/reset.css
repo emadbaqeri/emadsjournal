@@ -34,6 +34,11 @@ a {
 
 button {
   font: inherit;
+  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+button:active {
+  transform: scale(0.98);
 }
 
 input,
@@ -65,8 +70,8 @@ select {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: max(100%, 44px);
-    height: max(100%, 44px);
+    width: max(100%, var(--layout-touch));
+    height: max(100%, var(--layout-touch));
     transform: translate(-50%, -50%);
   }
 

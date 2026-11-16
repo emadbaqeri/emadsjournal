@@ -60,7 +60,7 @@ export function bindCodeScrollers(): void {
   window.addEventListener('resize', refresh);
   document.addEventListener('click', (event) => {
     const target = event.target;
-    if (target instanceof Element && target.closest('[data-lang], [data-solution-tabs]')) {
+    if (target instanceof Element && target.closest('[data-lang], [data-solution-choice], [data-solution-tabs]')) {
       requestAnimationFrame(refresh);
     }
   });

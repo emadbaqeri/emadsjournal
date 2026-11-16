@@ -8,9 +8,14 @@ interface Props {
 const { filename } = Astro.props;
 ---
 
-<div class={styles.block}>
-  {filename && <p class:list={['text-mono-meta', styles.header]}>{filename}</p>}
-  <div class={styles.code} data-code-scroll tabindex="0">
+<div class={styles.block} data-copy-root>
+  <div class={styles.header}>
+    {filename && <p class:list={['text-mono-meta', styles.file]}>{filename}</p>}
+    <button type="button" class={styles.copy} data-copy data-copy-idle="copy" aria-live="polite">
+      copy
+    </button>
+  </div>
+  <div class={styles.code} data-code-scroll data-copy-source tabindex="0">
     <slot />
   </div>
 </div>

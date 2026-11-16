@@ -1,68 +1,94 @@
 ---
-import { getSolutions } from '../../lib/algorithms/solutions';
+import { getSolutionChoices } from '../../lib/algorithms/solutions';
 
 interface Props {
   slug: string;
 }
 const { slug } = Astro.props;
-const solutions = getSolutions(slug) ?? { ts: '', rust: '', c: '' };
-const langs = [
-  { id: 'ts', label: 'TS', code: solutions.ts },
-  { id: 'rust', label: 'Rust', code: solutions.rust },
-  { id: 'c', label: 'C', code: solutions.c },
-].filter((lang) => lang.code);
+const choices = getSolutionChoices(slug);
 ---
 <section class="solution-tabs" data-solution-tabs>
   <div class="solution-head">
-    <div class="viz-lang">
-      {langs.map((lang, index) => (
-        <button type="button" data-lang={lang.id} data-selected={index === 0 ? 'true' : 'false'}>
-          {lang.label}
+    <div class="viz-lang" role="group" aria-label="Approach and language">
+      {choices.map((choice, index) => (
+        <button
+          type="button"
+          data-solution-choice={choice.id}
+          data-selected={index === 0 ? 'true' : 'false'}
+          aria-pressed={index === 0 ? 'true' : 'false'}
+        >
+          {choice.label}
         </button>
       ))}
     </div>
-    <button type="button" data-copy>copy</button>
+    <button type="button" data-solution-copy aria-live="polite">copy</button>
   </div>
-  {langs.map((lang, index) => (
-    <div class="solution-code" data-panel={lang.id} hidden={index !== 0}>
-      <pre data-code-scroll tabindex="0"><code>{lang.code}</code></pre>
-    </div>
-  ))}
+  <div class="solution-stage" data-solution-stage data-bottom-fade="on">
+    {choices.map((choice, index) => (
+      <div class="solution-code" data-panel={choice.id} hidden={index !== 0}>
+        <pre data-code-scroll tabindex="0"><code>{choice.code}</code></pre>
+      </div>
+    ))}
+    <div class="solution-fade" aria-hidden="true"></div>
+  </div>
 </section>
 
 <script>
+  const COPIED_MS = 1200;
+
   document.querySelectorAll<HTMLElement>('[data-solution-tabs]').forEach((root) => {
     if (root.dataset.bound === 'true') return;
     root.dataset.bound = 'true';
-    const buttons = root.querySelectorAll<HTMLButtonElement>('[data-lang]');
+    const buttons = root.querySelectorAll<HTMLButtonElement>('[data-solution-choice]');
     const panels = root.querySelectorAll<HTMLElement>('[data-panel]');
-    const copy = root.querySelector<HTMLButtonElement>('[data-copy]');
+    const copy = root.querySelector<HTMLButtonElement>('[data-solution-copy]');
+    const stage = root.querySelector<HTMLElement>('[data-solution-stage]');
 
     const selected = () => root.querySelector<HTMLElement>('[data-panel]:not([hidden])');
+
+    const syncFade = () => {
+      const pre = selected()?.querySelector('pre');
+      if (!pre || !stage) return;
+      const max = pre.scrollHeight - pre.clientHeight;
+      const more = max > 8 && pre.scrollTop < max - 8;
+      stage.dataset.bottomFade = more ? 'on' : 'off';
+    };
 
     buttons.forEach((button) => {
       button.addEventListener('click', () => {
         buttons.forEach((item) => {
-          item.dataset.selected = item === button ? 'true' : 'false';
+          const on = item === button;
+          item.dataset.selected = on ? 'true' : 'false';
+          item.setAttribute('aria-pressed', on ? 'true' : 'false');
         });
         panels.forEach((panel) => {
-          panel.hidden = panel.dataset.panel !== button.dataset.lang;
+          panel.hidden = panel.dataset.panel !== button.dataset.solutionChoice;
         });
+        requestAnimationFrame(syncFade);
       });
     });
 
+    panels.forEach((panel) => {
+      panel.querySelector('pre')?.addEventListener('scroll', syncFade, { passive: true });
+    });
+
     copy?.addEventListener('click', async () => {
-      const panel = selected();
-      const text = panel?.querySelector('code')?.textContent ?? '';
+      const text = selected()?.querySelector('code')?.textContent ?? '';
+      const idle = 'copy';
       try {
         await navigator.clipboard.writeText(text);
-        copy.textContent = 'copied ✓';
-        window.setTimeout(() => {
-          copy.textContent = 'copy';
-        }, 1500);
+        copy.textContent = 'Copied';
+        copy.dataset.copied = 'true';
       } catch {
-        copy.textContent = 'copy failed';
+        copy.textContent = 'Copy failed';
+        delete copy.dataset.copied;
       }
+      window.setTimeout(() => {
+        copy.textContent = idle;
+        delete copy.dataset.copied;
+      }, COPIED_MS);
     });
+
+    syncFade();
   });
 </script>

@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { seriesParts } from './series-parts';
 
 export type Post = CollectionEntry<'posts'>;
 export type SeriesEntry = CollectionEntry<'series'>;
@@ -125,9 +126,7 @@ export async function getSeriesNavParts(seriesId: string): Promise<SeriesNavPart
       href: getAlgorithmPath(algorithm),
       order: algorithm.data.seriesOrder,
     }));
-  return [...fromPosts, ...fromAlgorithms].sort(
-    (a, b) => (a.order ?? 0) - (b.order ?? 0),
-  );
+  return seriesParts(fromPosts, fromAlgorithms);
 }
 
 export function getSeriesPath(series: SeriesEntry): string {

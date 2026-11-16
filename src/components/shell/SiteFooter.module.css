@@ -4,8 +4,8 @@
   gap: var(--space-2);
   padding-top: var(--space-6);
   padding-bottom: max(var(--space-6), env(safe-area-inset-bottom));
-  padding-left: max(var(--space-5), env(safe-area-inset-left));
-  padding-right: max(var(--space-5), env(safe-area-inset-right));
+  padding-left: max(var(--layout-pad-sm), env(safe-area-inset-left));
+  padding-right: max(var(--layout-pad-sm), env(safe-area-inset-right));
   background: var(--color-bg-canvas);
   border-top: 1px solid var(--color-border-subtle);
 }
@@ -43,7 +43,14 @@
     justify-content: space-between;
     padding-top: var(--space-7);
     padding-bottom: max(var(--space-7), env(safe-area-inset-bottom));
-    padding-left: max(var(--space-9), env(safe-area-inset-left));
-    padding-right: max(var(--space-9), env(safe-area-inset-right));
+    padding-left: max(var(--layout-pad-md), env(safe-area-inset-left));
+    padding-right: max(var(--layout-pad-md), env(safe-area-inset-right));
+  }
+}
+
+@media (min-width: 1280px) {
+  .footer {
+    padding-left: max(var(--layout-pad-lg), env(safe-area-inset-left));
+    padding-right: max(var(--layout-pad-lg), env(safe-area-inset-right));
   }
 }

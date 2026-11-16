@@ -11,6 +11,19 @@ export function formatDate(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
 
+const SHORT_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/** Calendar date as `Nov 05`. UTC so a date-only frontmatter value does not shift a day. */
+export function formatShortDate(date: Date): string {
+  const month = SHORT_MONTHS[date.getUTCMonth()] ?? '';
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  return `${month} ${day}`;
+}
+
+export function plural(count: number, singular: string, pluralForm = `${singular}s`): string {
+  return `${count} ${count === 1 ? singular : pluralForm}`;
+}
+
 export function formatMonth(date: Date): string {
   return date.toLocaleString('en-GB', { month: 'long', year: 'numeric' });
 }

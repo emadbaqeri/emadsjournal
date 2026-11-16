@@ -1,7 +1,7 @@
 ---
 import type { Post } from '../../lib/content';
-import { getPostPath } from '../../lib/content';
-import { formatDate, readingTimeMinutes } from '../../lib/format';
+import { getPostPath, getSeriesNavParts } from '../../lib/content';
+import { formatShortDate, plural, readingTimeMinutes } from '../../lib/format';
 import PostTypeLabel from './PostTypeLabel.astro';
 import Tag from './Tag.astro';
 import styles from './PostCard.module.css';
@@ -13,93 +13,52 @@ interface Props {
 
 const { post, headingLevel = 'h2' } = Astro.props;
 const path = getPostPath(post);
-const date = formatDate(post.data.publishedAt);
+const date = formatShortDate(post.data.publishedAt);
 const Heading = headingLevel;
 const source = typeof post.body === 'string' ? post.body : post.data.description;
 const minutes = readingTimeMinutes(`${post.data.title} ${post.data.description} ${source}`);
-const topic = post.data.tags[0];
+const topic = post.data.type === 'til' ? post.data.tags[0] : undefined;
+const showExcerpt = post.data.type !== 'til';
+const showTags = post.data.type === 'essay' || post.data.type === 'series-post';
+const seriesTotal =
+  post.data.type === 'series-post' && post.data.series
+    ? (await getSeriesNavParts(post.data.series.id)).length
+    : undefined;
+
+const essayMeta = post.data.type === 'essay' ? ` · ${plural(minutes, 'min')} read` : '';
+const seriesMeta =
+  post.data.type === 'series-post' && post.data.seriesOrder && seriesTotal
+    ? ` · part ${post.data.seriesOrder} of ${seriesTotal}`
+    : '';
 ---
 
 <article
-  class:list={[styles.card, styles[post.data.type] ?? styles['series-post']]}
+  class:list={[styles.card, 'hit-rule', post.data.type === 'til' && styles.til]}
   data-track={post.data.track}
   data-feed-item
   data-type={post.data.type}
   data-track-id={post.data.track}
   data-tags={post.data.tags.join(',')}
 >
-  {
-    post.data.type === 'til' && (
-      <>
-        <time class:list={['text-mono-meta', styles.meta]} datetime={post.data.publishedAt.toISOString()}>
-          {date}
-        </time>
-        <PostTypeLabel type={post.data.type} track={post.data.track} />
-        <Heading class:list={['text-body-strong', styles.title]}>
-          <a href={path}>{post.data.title}</a>
-        </Heading>
-        {topic && <span class:list={['text-mono-meta', styles.topic]}>#{topic}</span>}
-      </>
-    )
-  }
-  {
-    post.data.type === 'essay' && (
-      <>
-        <div class={styles.row}>
-          <PostTypeLabel type={post.data.type} track={post.data.track} />
-          <p class:list={['text-mono-meta', styles.meta]}>
-            <time datetime={post.data.publishedAt.toISOString()}>{date}</time>
-            {' · '}
-            {minutes} min read
-          </p>
-        </div>
-        <Heading class:list={['text-heading-h2', styles.title]}>
-          <a href={path}>{post.data.title}</a>
-        </Heading>
-        <p class:list={['text-body-default', styles.excerpt]}>{post.data.description}</p>
-        {post.data.tags.length > 0 && (
-          <p class={styles.tags}>
-            {post.data.tags.map((tag) => (
-              <Tag>{tag}</Tag>
-            ))}
-          </p>
-        )}
-      </>
-    )
-  }
-  {
-    post.data.type === 'build-log' && (
-      <>
-        <div class={styles.row}>
-          <PostTypeLabel type={post.data.type} track={post.data.track} />
-        </div>
-        <Heading class:list={['text-heading-h3', styles.title]}>
-          <a href={path}>{post.data.title}</a>
-        </Heading>
-        <p class:list={['text-mono-meta', styles.meta]}>started {date}</p>
-        <p class:list={['text-body-small', styles.excerpt]}>{post.data.description}</p>
-      </>
-    )
-  }
-  {
-    post.data.type === 'series-post' && (
-      <>
-        <PostTypeLabel type={post.data.type} track={post.data.track} />
-        <p class:list={['text-mono-meta', styles.meta]}>
-          <time datetime={post.data.publishedAt.toISOString()}>{date}</time>
-        </p>
-        <Heading class:list={['text-heading-h3', styles.title]}>
-          <a href={path}>{post.data.title}</a>
-        </Heading>
-        <p class:list={['text-body-small', styles.excerpt]}>{post.data.description}</p>
-        {post.data.tags.length > 0 && (
-          <p class={styles.tags}>
-            {post.data.tags.map((tag) => (
-              <Tag>{tag}</Tag>
-            ))}
-          </p>
-        )}
-      </>
-    )
-  }
+  <div class={styles.metaRow}>
+    <PostTypeLabel type={post.data.type} track={post.data.track} />
+    <p class:list={['text-mono-meta', styles.meta]}>
+      {post.data.type === 'build-log' && 'started '}
+      <time datetime={post.data.publishedAt.toISOString()}>{date}</time>
+      {essayMeta}
+      {seriesMeta}
+    </p>
+    {topic && <span class:list={['text-mono-meta', styles.topic]}>#{topic}</span>}
+  </div>
+  <Heading class:list={['text-heading-h3', styles.title]}>
+    <a href={path}>{post.data.title}</a>
+  </Heading>
+  {showExcerpt && <p class:list={['text-body-small', styles.excerpt]}>{post.data.description}</p>}
+  {showTags && post.data.tags.length > 0 && (
+    <p class={styles.tags}>
+      {post.data.tags.map((tag) => (
+        <Tag>{tag}</Tag>
+      ))}
+    </p>
+  )}
 </article>

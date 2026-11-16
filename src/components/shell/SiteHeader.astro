@@ -28,41 +28,79 @@ const pathname = Astro.url.pathname;
   </nav>
 
   <details class={styles.menu} data-menu>
-    <summary class={styles.menuToggle}>menu ≡</summary>
+    <summary class={styles.menuToggle}>
+      <span class={styles.menuOpenLabel}>menu ≡</span>
+      <span class={styles.menuCloseLabel}>close ×</span>
+    </summary>
     <div class={styles.scrim} data-menu-scrim aria-hidden="true"></div>
     <nav class={styles.panel} aria-label="Primary">
-      {
-        PRIMARY_NAV.map((item) => (
-          <a
-            class={styles.navLink}
-            href={item.href}
-            aria-current={isCurrentPath(pathname, item.href) ? 'page' : undefined}
-          >
-            {item.label}
-          </a>
-        ))
-      }
-      <ThemeToggle />
+      <ol class={styles.sheetList}>
+        {
+          PRIMARY_NAV.map((item, index) => (
+            <li>
+              <a
+                class={styles.sheetLink}
+                href={item.href}
+                aria-current={isCurrentPath(pathname, item.href) ? 'page' : undefined}
+              >
+                <span class={styles.sheetIndex}>{String(index + 1).padStart(2, '0')}</span>
+                <span class={styles.sheetLabel}>{item.label}</span>
+                <span class={styles.sheetArrow} aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))
+        }
+        <li class={styles.sheetTheme}>
+          <span class={styles.sheetIndex}>{String(PRIMARY_NAV.length + 1).padStart(2, '0')}</span>
+          <span class={styles.sheetLabel}>theme</span>
+          <ThemeToggle variant="sheet" />
+        </li>
+      </ol>
     </nav>
   </details>
 </header>
 
 <script>
+  const CLOSE_MS = 180;
+
   function bindMenus(): void {
     document.querySelectorAll<HTMLDetailsElement>('[data-menu]').forEach((menu) => {
       if (menu.dataset.menuBound === 'true') return;
       menu.dataset.menuBound = 'true';
       const summary = menu.querySelector('summary');
-      const close = () => {
-        if (!menu.open) return;
+      let closing = false;
+
+      const finish = () => {
         menu.open = false;
+        delete menu.dataset.closing;
+        closing = false;
         summary?.focus();
       };
+
+      const close = () => {
+        if (!menu.open || closing) return;
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce) {
+          finish();
+          return;
+        }
+        closing = true;
+        menu.dataset.closing = 'true';
+        window.setTimeout(finish, CLOSE_MS);
+      };
+
+      summary?.addEventListener('click', (event) => {
+        if (!menu.open) return;
+        event.preventDefault();
+        close();
+      });
 
       menu.querySelector('[data-menu-scrim]')?.addEventListener('click', close);
       menu.querySelectorAll('a').forEach((link) => {
         link.addEventListener('click', () => {
           menu.open = false;
+          delete menu.dataset.closing;
+          closing = false;
           summary?.focus();
         });
       });

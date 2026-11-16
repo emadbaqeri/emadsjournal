@@ -1,6 +1,12 @@
 .card {
+  position: relative;
   display: flex;
-  max-width: var(--column-article);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  width: 100%;
+  min-width: 0;
+  padding-block: var(--space-5);
 }
 
 .title {
@@ -10,12 +16,6 @@
 .title a {
   color: inherit;
   text-decoration: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .title a:hover {
-    color: var(--track-accent);
-  }
 }
 
 .meta,
@@ -29,83 +29,27 @@
   color: var(--color-text-secondary);
 }
 
-.row,
+.metaRow,
 .tags {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-3);
+  width: 100%;
   margin: 0;
 }
 
-.til {
-  display: grid;
-  grid-template-columns: 10ch max-content minmax(0, 1fr) max-content;
-  align-items: center;
-  column-gap: var(--space-4);
-  row-gap: var(--space-2);
-  padding-block: var(--space-3);
-  border-bottom: 1px solid var(--color-border-subtle);
+.topic {
+  margin-left: auto;
 }
 
-.til .meta,
-.til .topic {
-  white-space: nowrap;
-}
-
-.til .title {
-  min-width: 0;
-}
-
-@media (max-width: 480px) {
-  .til {
-    grid-template-columns: 10ch max-content minmax(0, 1fr);
-    grid-template-areas:
-      'date label tag'
-      'title title title';
+@media (max-width: 1023px) {
+  .til .metaRow {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .til > :nth-child(1) {
-    grid-area: date;
+  .til .topic {
+    margin-left: 0;
   }
-
-  .til > :nth-child(2) {
-    grid-area: label;
-  }
-
-  .til > :nth-child(3) {
-    grid-area: title;
-  }
-
-  .til > :nth-child(4) {
-    grid-area: tag;
-    justify-self: end;
-  }
-}
-
-.card + .build-log {
-  margin-top: var(--space-4);
-}
-
-.essay,
-.series-post {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-2);
-  padding-block: var(--space-5);
-  border-bottom: 1px solid var(--color-border-subtle);
-}
-
-.essay {
-  padding-block: var(--space-6);
-}
-
-.build-log {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-2);
-  padding: var(--space-5);
-  border: 1px solid var(--track-accent);
-  border-radius: var(--radius-lg);
-  background: var(--color-bg-surface);
 }

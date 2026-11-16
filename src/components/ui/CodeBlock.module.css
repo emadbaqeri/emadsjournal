@@ -7,10 +7,33 @@
 }
 
 .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
   margin: 0;
   padding: var(--space-2) var(--space-4);
   border-bottom: 1px solid var(--color-border-subtle);
   color: var(--color-text-muted);
+}
+
+.file {
+  margin: 0;
+}
+
+.copy {
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+}
+
+.copy[data-copied='true'] {
+  color: var(--color-accent-default);
 }
 
 .code {
